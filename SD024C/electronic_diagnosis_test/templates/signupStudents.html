@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="form-card">
+            <div class="text-center mb-4">
+                <h2 class="text-lg-orange">تسجيل طالب جديد</h2>
+            </div>
+
+            <!-- Messages -->
+            {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+
+            <!-- Form -->
+            <form action="" method="POST" style="direction: rtl;">
+                {% csrf_token %}
+
+                <div class="row g-3">
+
+                    <!-- اسم الطالب -->
+                    <div class="col-md-6">
+                        <label for="studentName" class="form-label">اسم المفحوص رباعياً</label>
+                        <input type="text" class="form-control" id="studentName" name="studentName" required>
+                    </div>
+
+                    <!-- الجنس -->
+                    <div class="col-md-6">
+                        <label for="gender" class="form-label">جنس المفحوص</label>
+                        <select class="form-select" id="gender" name="gender" required>
+                            <option value="">اختر</option>
+                            <option value="male">ذكر</option>
+                            <option value="female">أنثى</option>
+                        </select>
+                    </div>
+
+                    <!-- المدرسة -->
+                    <div class="col-md-6">
+                        <label for="schoolName" class="form-label">اسم المدرسة</label>
+                        <input type="text" class="form-control" id="schoolName" name="schoolName" required>
+                    </div>
+
+                    <!-- الصف الدراسي -->
+                    <div class="col-md-6">
+                        <label for="grade" class="form-label">الصف الدراسي</label>
+                        <select class="form-select" id="grade" name="grade" required>
+                            <option value="">اختر</option>
+                            {% if stage == "PRIMARY" or stage == "BOTH" %}
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            {% endif %}
+                            {% if stage == "SECONDARY" or stage == "BOTH" %}
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <!-- الرقم المدني -->
+                    <div class="col-md-6">
+                        <label for="civilID" class="form-label">الرقم المدني</label>
+                        <input type="text" class="form-control" id="civilID" name="civilID" required>
+                    </div>
+
+                    <!-- المنطقة التعليمية -->
+                    <div class="col-md-6">
+                        <label for="eduDistrict" class="form-label">المنطقة التعليمية</label>
+                        <select class="form-select" id="eduDistrict" name="eduDistrict" required>
+                            <option value="">اختر</option>
+                            <option value="العاصمة">العاصمة</option>
+                            <option value="حولي">حولي</option>
+                            <option value="الفروانية">الفروانية</option>
+                            <option value="الجهراء">الجهراء</option>
+                            <option value="مبارك الكبير">مبارك الكبير</option>
+                            <option value="الأحمدي">الأحمدي</option>
+                        </select>
+                    </div>
+
+                    <!-- تاريخ اجراء الاختبار -->
+                    <div class="col-md-6">
+                        <label for="examDate" class="form-label">تاريخ اجراء الاختبار</label>
+                        <input type="date" class="form-control" id="examDate" name="examDate" required>
+                    </div>
+
+                    <!-- تاريخ الميلاد -->
+                    <div class="col-md-6">
+                        <label for="birthDate" class="form-label">تاريخ ميلاد المفحوص</label>
+                        <input type="date" class="form-control" id="birthDate" name="birthDate" required>
+                    </div>
+
+                    <!-- الجنسية -->
+                    <div class="col-12">
+                        <label for="nationality" class="form-label">الجنسية</label>
+                        <input type="text" class="form-control" id="nationality" name="nationality" required>
+                    </div>
+
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid col-4 mx-auto mt-4">
+                    <button type="submit" class="btn btn-primary-color fs-5">تسجيل</button>
+                </div>
+
+            </form>
+        </div>
+
+
+{% endblock %}
