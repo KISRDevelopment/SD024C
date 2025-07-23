@@ -1,0 +1,349 @@
+
+:root {
+    --primary-color: #cc5500;
+    --primary-hover: #b34700;
+    --text-color: #ffffff;
+}
+
+
+
+.bg-primary-color {
+    background-color: var(--primary-color) !important;
+}
+
+.text-primary-color {
+    color: var(--primary-color) !important;
+}
+
+.nav-link {
+    color: var(--text-color) !important;
+    transition: 0.3s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    text-decoration: underline;
+    color: var(--text-color) !important;
+}
+
+footer {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+}
+
+footer .nav-link {
+    color: var(--text-color) !important;
+}
+
+footer .nav-link:hover {
+    text-decoration: underline;
+}
+
+.btn-primary-color {
+background-color: #cc5500; /* Main burnt orange */
+color: white;
+border: none;
+transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary-color:hover {
+background-color: #873f00; /* Slightly darker on hover */
+transform: scale(1.02); /* Optional: subtle grow effect */
+}
+
+.btn-primary-color:active {
+background-color: #6f3400; /* Even darker when clicked */
+transform: scale(0.98); /* Click press effect */
+}
+
+.btn-primary-color:disabled {
+background-color: #d3d3d3;
+color: #888;
+cursor: not-allowed;
+opacity: 0.7;
+}
+
+input:focus, .form-control:focus {
+border-color: #a44b00;
+box-shadow: 0 0 0 0.2rem rgba(164, 75, 0, 0.25);
+}
+
+.bg-white {
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.form-card {
+max-width: 700px;
+margin: auto;
+}
+
+
+/*border: 1px solid #28a745;*/
+ /*color: #28a745;*/
+
+.score-cell {
+    
+    cursor: pointer;
+    background-color: white;
+   
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.score-cell.selected {
+    background-color: #28a745;
+    color: white;
+}
+
+.bg-purple-100 {
+    background-color: #e2d9f3 !important;
+  }
+
+.rounded-card {
+    border-radius: 15px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/*table.table {
+    border: 1px solid #ccc;
+}*/
+
+
+
+.btn-purple {
+    background-color: #720e9e;
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 8px;
+}
+.btn-purple:hover {
+    background-color: #5a0b7a;
+}
+
+/* Base table style */
+/*.table {
+    border-collapse: collapse;
+    width: 100%;
+}*/
+
+/* Table cell borders */
+/*.table th,
+.table td {
+    border: 5px solid white;
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    height: 60px;
+}*/
+
+.custom-reading-table th,
+.custom-reading-table td {
+
+    height: 60px;
+}
+
+/*.table td, .table th {
+    padding: 12px;
+    height: 60px;
+    vertical-align: middle;
+}*/
+
+/* Header row style */
+/*.table thead th {
+    background-color: #720e9e; /* slightly deeper purple for header */
+    /*color: white;
+    font-size: 1rem;
+}*/
+
+/*.custom-reading-table thead th {
+    background-color: #720e9e; /* slightly deeper purple for header */
+    /*color: white;
+    font-size: 1rem;
+}*/
+
+/* Score cell customization */
+/*.score-cell {
+    cursor: pointer;
+    font-weight: bold;
+    background-color: white;
+    transition: background-color 0.2s ease;
+}
+
+.score-cell.selected {
+    background-color: #28a745;
+    color: white;
+}*/
+
+/* Tight spacing between columns */
+/*.table td:first-child {
+    width: 10%;
+}
+
+.table td:nth-child(2) {
+    width: 70%;
+}
+
+.table td:last-child {
+    width: 20%;
+}*/
+
+.custom-reading-table th:first-child {
+    width: 60px;
+}
+
+.custom-reading-table th:nth-child(2) {
+    width: 100%;
+}
+
+.custom-reading-table th:last-child {
+    width: 20%;
+}
+
+/* Add padding inside cells for better spacing */
+/*.table td {
+    padding: 12px 18px; /* vertical | horizontal */
+/*}*/
+
+/* Specific adjustments */
+/*.table td.number-cell {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.table td.word-cell {
+    padding-left: 25px;
+    padding-right: 25px;
+    
+}*/
+
+/*.table td.score-cell {
+    padding: 10px 20px;
+    font-size: 20px;
+}*/
+
+/* Orange border between cells */
+.orange-border {
+    border: 2px solid orange !important;  /* Burnt orange */
+}
+
+.table-bordered > :not(caption) > * > * {
+    border-width: 2px;
+}
+
+.cell-word, .score-cell {
+    border: 2px solid #cc5500;  /* Orange */
+    vertical-align: middle;
+    text-align: center;
+    font-size: 20px;
+}
+
+.custom-reading-table {
+    border-collapse: separate;
+    border-spacing: 10px;
+    width: 100%;
+    table-layout: fixed;
+    direction: rtl;
+  }
+
+.custom-reading-table thead, .custom-reading-table th {
+    background-color: #720e9e;
+    padding: 12px 10px;
+    text-align: center;
+    vertical-align: middle;
+    /*font-weight: bold;*/
+    /*font-size: 18px;*/
+    color: white;
+}
+  
+.custom-reading-table td  {
+    padding: 12px 10px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  /* Purple number cell (م) */
+  .cell-number {
+    background-color: #e2d9f3 !important;
+    /*background-color: #720e9e;*/ /* deep purple */
+    color: black;
+    width: 60px;
+    border: 2px solid white;
+  }
+  
+  /* Word cell with orange inner border */
+  .cell-word {
+    background-color: white;
+    border: 2px solid #ff7b00; /* orange */
+    width: 100%;
+  }
+  
+  /* Clickable cell */
+  .cell-check {
+    background-color: white;
+    border: 2px solid #ff7b00;
+    cursor: pointer;
+    color: black;
+    width: 60px;
+  }
+  
+  /* Selected style */
+  .cell-check.selected {
+    background-color: #28a745;
+    color: white;
+  }
+
+  .bg-purple-score {
+    background: linear-gradient(to left, #e0d2f4 15%, #c6aef0 15%); /* dark to light purple */
+  color: white !important; /* Light lavender-like purple */
+  }
+  
+  .border-purple-score {
+    border-color: #c48ed8 !important;
+  }
+  
+  #result,
+  #timeDisplay {
+    width: 100%;
+    max-width: 150px;
+    margin: auto;
+  }
+  
+  input#timeDisplay {
+    background-color: #f9f9f9;
+    border-width: 2px;
+  }
+  
+  .outer-purple-box {
+    background-color: #e2d9f3; /* Light lavender (purple-200) */
+    padding: 4px; /* Creates the visible border effect */
+    border-radius: 10px;
+    display: inline-block;
+  }
+  
+  .inner-purple-box {
+    background-color: #a74ac7; /* Deeper lavender (purple-300) */
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 6px 18px;
+    border-radius: 6px;
+  }
+  
+  
+
+  
+
+
+
+
+
+

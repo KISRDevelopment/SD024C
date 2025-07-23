@@ -1,92 +1,29 @@
-{%load static%}
+
+
+{% load static %}
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
-
 <head>
+    <meta charset="UTF-8">
     <title>اختبار القراءة والإملاء المقنن للأطفال</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-    <style>
-        :root {
-            --primary-color: #cc5500;
-            --primary-hover: #b34700;
-            --text-color: #ffffff;
-        }
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
 
-        .bg-primary-color {
-            background-color: var(--primary-color) !important;
-        }
-
-        .text-primary-color {
-            color: var(--primary-color) !important;
-        }
-
-        .nav-link {
-            color: var(--text-color) !important;
-            transition: 0.3s;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            text-decoration: underline;
-            color: var(--text-color) !important;
-        }
-
-        footer {
-            background-color: var(--primary-color);
-            color: var(--text-color);
-        }
-
-        footer .nav-link {
-            color: var(--text-color) !important;
-        }
-
-        footer .nav-link:hover {
-            text-decoration: underline;
-        }
-
-        .btn-primary-color {
-  background-color: #cc5500; /* Main burnt orange */
-  color: white;
-  border: none;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn-primary-color:hover {
-  background-color: #873f00; /* Slightly darker on hover */
-  transform: scale(1.02); /* Optional: subtle grow effect */
-}
-
-.btn-primary-color:active {
-  background-color: #6f3400; /* Even darker when clicked */
-  transform: scale(0.98); /* Click press effect */
-}
-
-.btn-primary-color:disabled {
-  background-color: #d3d3d3;
-  color: #888;
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-input:focus, .form-control:focus {
-  border-color: #a44b00;
-  box-shadow: 0 0 0 0.2rem rgba(164, 75, 0, 0.25);
-}
-
-.bg-white {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'style/styles.css' %}">
 </head>
 
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- Header -->
-    <header class="py-3 bg-light">
+    <!-- ======================= Header ======================= -->
+    <header class="py-3">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-3 text-end">
@@ -96,37 +33,301 @@ input:focus, .form-control:focus {
                 </div>
 
                 <div class="col-6 text-center">
-                    <h4 class="text-primary-color fw-bold">اختبار القراءة والإملاء المقنن للأطفال</h4>
+                    <h4 class="text-secondary-color fw-bold">
+                        اختبار القراءة والإملاء المقنن للأطفال
+                    </h4>
                 </div>
+
                 <div class="col-3">
                     <a href="https://www.kisr.edu.kw">
                         <img src="{% static 'images/kisrlogo.png' %}" width="180" class="img-fluid" alt="KISR Logo">
                     </a>
                 </div>
-
             </div>
         </div>
     </header>
 
-    <!-- Navbar -->
-    <nav class="py-3 navbar navbar-expand-lg navbar-dark bg-primary-color" aria-label="Main navigation">
+    <!-- ======================= Navbar ======================= -->
+
+    <!--<nav class="navbar navbar-expand-lg navbar-dark bg-primary-color">
         <div class="container">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link active" href="{% url 'index' %}">الرئيسية</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'help' %}">مساعدة</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">دخول</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">الرئيسية</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'help' %}active{% endif %}" href="{% url 'help' %}">مساعدة</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" href="{% url 'login' %}">دخول</a></li>
+            </ul>
+        </div>
+    </nav>-->
+    {% if user.is_authenticated %}
+   <!-- <div class="navbar navbar-expand py-0 mb-5 bg-color-green ">
+        <div class="container">
+            <div class="dropdown">
+                <a class="link-light fs-4 dropdown-toggle text-decoration-none mb-2 mb-lg-0" href="#" role="button" id="dropdownMenuLinkUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{user}}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkUser" id="styleDropDown">
+                    <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{% url 'profile' %}" method="POST" id="styleDropDown" value={{Examiners.user_id}}>
+                        الحساب
+                        <li class="bi bi-person-fill mx-3"></li>
+                    </a>
+                    <hr>
+                    <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{% url 'logout' %}" id="styleDropDown">
+                        خروج
+                        <i class="bi bi-lock-fill mx-3"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="nav justify-content-end">
+                <div class="navbar navbar">
+                    <div class="dropdown">
+                        <a class="link-light fs-4 dropdown-toggle text-decoration-none mb-2 mb-lg-0 " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            الأدلة
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="styleDropDown">
+                            {% if examiners.stage == "PRIMARY" %}
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/التسمية السريعة للأشكال.pdf'%}" id="styleDropDown">
+                                التسمية السريعة للأشكال
+                            </a>
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/التسمية السريعة للحروف.pdf'%}" id="styleDropDown">
+                                التسمية السريعة للحروف
+                            </a>
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دقة قراءة الكلمات غير الحقيقية.pdf'%}" id="styleDropDown">
+                                اختبار دقة قراءة الكلمات غير الحقيقية
+                            </a>
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دليل استخدام الاختبارات - المرحلة الابتدائية.pdf'%}" id="styleDropDown">
+                                دليل استخدام الاختبارات
+                            </a>
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دليل الاختبار - الابتدائي.pdf'%}" id="styleDropDown">
+                                دليل الاختبار
+                            </a>
+                            {% elif examiners.stage == "SECONDARY" %}
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/‎⁨اختبار التسمية السريعة للصور⁩.pdf'%}" id="styleDropDown">
+                                ‎⁨اختبار التسمية السريعة للصور⁩
+                            </a>
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/متوسط - اختبار  دقة قراءة الكلمات غير الحقيقية.pdf'%}" id="styleDropDown">
+                                اختبار دقة قراءة الكلمات غير الحقيقية
+                            </a>
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دليل استخدام الاختبارات - المرحلة المتوسطة.pdf'%}" id="styleDropDown">
+                                دليل استخدام الاختبارات
+                            </a> 
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دليل الاختبار - المتوسط.pdf'%}" id="styleDropDown">
+                                دليل الاختبار
+                            </a> 
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% if user.is_staff %}
+                <li class="nav-link mx-3"><a href="{% url 'admin'%} " class="nav-link text-light fs-4"> المستخدمين </a></li>
+                {% else %}
+                <li class="nav-link mx-3"><a href="{% url 'examinerPage'%} " class="nav-link text-light fs-4"> الطلاب </a></li>
+                {% if stage == "SECONDARY"%}
+                <li class="nav-link mx-3"><a href="" class="nav-link text-light fs-4"> اختبارات المرحلة المتوسطة </a></li>
+                {% endif %} {% if stage == "PRIMARY"%}
+                <li class="nav-link mx-3"><a href="{% url 'examinerPage'%}" class="nav-link text-light fs-4"> اختبارات المرحلة الابتدائية  </a></li>
+                {% endif %} {% endif %}
+                <li class="nav-link mx-3"><a href="{% url 'index' %} " class="nav-link active text-light fs-4"> الرئيسة </a></li>
+                </ul>
+            </div>
+        </div>
+    </div>-->
+    <!--<nav class="navbar navbar-expand-lg navbar-dark bg-primary-color">
+        <div class="container">
+            <div class="dropdown">
+                <a class="link-light fs-4 dropdown-toggle text-decoration-none mb-2 mb-lg-0"
+                   href="#" role="button" id="dropdownMenuLinkUser"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ user }}
+                </a>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLinkUser">
+                    <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{% url 'profile' %}">
+                        الحساب
+                        <i class="bi bi-person-fill mx-3"></i>
+                    </a>
+                    <hr>
+                    <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{% url 'logout' %}">
+                        خروج
+                        <i class="bi bi-lock-fill mx-3"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="nav justify-content-end">
+                <div class="navbar navbar">
+                    <div class="dropdown">
+                        <a class="link-light fs-4 dropdown-toggle text-decoration-none mb-2 mb-lg-0 " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            الأدلة
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="styleDropDown">
+                            {% if examiners.stage == "PRIMARY" %}
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/التسمية السريعة للأشكال.pdf'%}" id="styleDropDown">
+                                التسمية السريعة للأشكال
+                            </a>
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/التسمية السريعة للحروف.pdf'%}" id="styleDropDown">
+                                التسمية السريعة للحروف
+                            </a>
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دقة قراءة الكلمات غير الحقيقية.pdf'%}" id="styleDropDown">
+                                اختبار دقة قراءة الكلمات غير الحقيقية
+                            </a>
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دليل استخدام الاختبارات - المرحلة الابتدائية.pdf'%}" id="styleDropDown">
+                                دليل استخدام الاختبارات
+                            </a>
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دليل الاختبار - الابتدائي.pdf'%}" id="styleDropDown">
+                                دليل الاختبار
+                            </a>
+                            {% elif examiners.stage == "SECONDARY" %}
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/‎⁨اختبار التسمية السريعة للصور⁩.pdf'%}" id="styleDropDown">
+                                ‎⁨اختبار التسمية السريعة للصور⁩
+                            </a>
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/متوسط - اختبار  دقة قراءة الكلمات غير الحقيقية.pdf'%}" id="styleDropDown">
+                                اختبار دقة قراءة الكلمات غير الحقيقية
+                            </a>
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دليل استخدام الاختبارات - المرحلة المتوسطة.pdf'%}" id="styleDropDown">
+                                دليل استخدام الاختبارات
+                            </a> 
+                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دليل الاختبار - المتوسط.pdf'%}" id="styleDropDown">
+                                دليل الاختبار
+                            </a> 
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% if user.is_staff %}
+                <li class="nav-link mx-3"><a href="{% url 'admin'%} " class="nav-link text-light fs-4"> المستخدمين </a></li>
+                {% else %}
+                <li class="nav-link mx-3"><a href="{% url 'examinerPage'%} " class="nav-link text-light fs-4"> الطلاب </a></li>
+                {% if stage == "SECONDARY"%}
+                <li class="nav-link mx-3"><a href="" class="nav-link text-light fs-4"> اختبارات المرحلة المتوسطة </a></li>
+                {% endif %} {% if stage == "PRIMARY"%}
+                <li class="nav-link mx-3"><a href="{% url 'examinerPage'%}" class="nav-link text-light fs-4"> اختبارات المرحلة الابتدائية  </a></li>
+                {% endif %} {% endif %}
+                <li class="nav-link mx-3"><a href="{% url 'index' %} " class="nav-link active text-light fs-4"> الرئيسة </a></li>
+                </ul>
+            </div>-->
+            <!--<ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">الرئيسية</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'help' %}active{% endif %}" href="{% url 'help' %}">مساعدة</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" href="{% url 'login' %}">دخول</a></li>
+            </ul>-->
+       <!-- </div>
+    </nav>
+    {% else %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary-color">
+        <div class="container">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">الرئيسية</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'help' %}active{% endif %}" href="{% url 'help' %}">مساعدة</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" href="{% url 'login' %}">دخول</a></li>
             </ul>
         </div>
     </nav>
+    {% endif %} -->
 
-    <!-- Main Content -->
+    {% if user.is_authenticated %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary-color">
+    <div class="container d-flex justify-content-between align-items-center">
+
+        <!-- Main navigation links (right side in RTL) -->
+        <ul class="navbar-nav flex-row-reverse">
+            <!--<li class="nav-item mx-2">
+                <a href="{% url 'index' %}" class="nav-link text-light fs-4 {% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+                    الرئيسة
+                </a>
+            </li>-->
+
+
+            {% if user.is_staff %}
+            <li class="nav-item mx-2">
+                <a href="{% url 'admin' %}" class="nav-link text-light fs-4">المستخدمين</a>
+            </li>
+            {% else %}
+                                    <!-- أدلة dropdown -->
+                                    <li class="nav-item dropdown mx-2">
+                                        <a class="nav-link dropdown-toggle text-light fs-4" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                            الأدلة
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end text-end" aria-labelledby="dropdownMenuLink">
+                                            {% if examiners.stage == "PRIMARY" %}
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/التسمية السريعة للأشكال.pdf' %}">التسمية السريعة للأشكال</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/التسمية السريعة للحروف.pdf' %}">التسمية السريعة للحروف</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/دقة قراءة الكلمات غير الحقيقية.pdf' %}">اختبار دقة قراءة الكلمات غير الحقيقية</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/دليل استخدام الاختبارات - المرحلة الابتدائية.pdf' %}">دليل استخدام الاختبارات</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/دليل الاختبار - الابتدائي.pdf' %}">دليل الاختبار</a></li>
+                                            {% elif examiners.stage == "SECONDARY" %}
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/‎⁨اختبار التسمية السريعة للصور⁩.pdf' %}">اختبار التسمية السريعة للصور</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/متوسط - اختبار  دقة قراءة الكلمات غير الحقيقية.pdf' %}">اختبار دقة قراءة الكلمات غير الحقيقية</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/دليل استخدام الاختبارات - المرحلة المتوسطة.pdf' %}">دليل استخدام الاختبارات</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/دليل الاختبار - المتوسط.pdf' %}">دليل الاختبار</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </li>
+            <li class="nav-item mx-2">
+                <a href="{% url 'examinerPage' %}" class="nav-link text-light fs-4">الطلاب</a>
+            </li>
+            {% if stage == "PRIMARY" %}
+            <li class="nav-item mx-2">
+                <a href="{% url 'examinerPage' %}" class="nav-link text-light fs-4">اختبارات المرحلة الابتدائية</a>
+            </li>
+            {% elif stage == "SECONDARY" %}
+            <li class="nav-item mx-2">
+                <a href="#" class="nav-link text-light fs-4">اختبارات المرحلة المتوسطة</a>
+            </li>
+            {% endif %}
+            {% endif %}
+
+
+        </ul>
+
+        <!-- User dropdown (left side in RTL) -->
+        <div class="dropdown">
+            <a class="link-light fs-4 dropdown-toggle text-decoration-none" href="#" role="button" id="dropdownMenuLinkUser" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ user }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end text-end" aria-labelledby="dropdownMenuLinkUser">
+                <li>
+                    <a class="dropdown-item fs-5 fw-bold" href="{% url 'profile' %}">
+                        الحساب
+                        <i class="bi bi-person-fill mx-2"></i>
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <a class="dropdown-item fs-5 fw-bold" href="{% url 'logout' %}">
+                        خروج
+                        <i class="bi bi-lock-fill mx-2"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+{% else %}
+<!--<nav class="navbar navbar-expand-lg navbar-dark bg-primary-color">
+    <div class="container">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">الرئيسية</a></li>
+            <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'help' %}active{% endif %}" href="{% url 'help' %}">مساعدة</a></li>
+            <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" href="{% url 'login' %}">دخول</a></li>
+        </ul>
+    </div>
+</nav>-->
+{% endif %}
+
+
+    <!-- ======================= Main Content ======================= -->
     <main class="flex-grow-1">
-        <div class="container py-5">
-            {% block content %}{% endblock content %}
+        <div class="container py-5 ">
+            <div class="p-5 bg-body-tertiary rounded-3" >
+                <div class="container" >
+                    <div class="bg-white p-5 rounded-4 shadow-sm">
+                        {% block content %}{% endblock content %}
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
-    <!-- Footer -->
+    <!-- ======================= Footer ======================= -->
     <footer class="py-4 mt-auto bg-primary-color">
         <div class="container">
             <ul class="nav justify-content-center border-bottom pb-3 mb-3">
@@ -138,6 +339,5 @@ input:focus, .form-control:focus {
     </footer>
 
 </body>
-
 
 </html>

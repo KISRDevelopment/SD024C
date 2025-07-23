@@ -1,0 +1,187 @@
+{% extends 'base.html' %} {%load static %} {% block content %}
+
+
+
+                <!-- Add User Button -->
+                <div class="d-flex justify-content-start mb-3">
+                    <a href="{% url 'signupSuperUser' %}" class="btn btn-primary-color">
+                      إضافة مستخدم جديد
+                    </a>
+                  </div>
+                  
+
+                <!-- Data Table -->
+                <div class="table-responsive fs-5">
+                    <!--<table class="table table-striped text-center">
+                        <thead>
+                          <tr>
+                            <th>الاسم</th>
+                            <th>التخصص</th>
+                            <th>الجهة</th>
+                            
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for Examiners in examiners %}
+                          <tr>
+                            <td>{{ Examiners.name }}</td>
+                            <td>{{ Examiners.speciality }}</td>
+                            <td>{{ Examiners.organization }}</td>
+                            <td>
+                                <td>
+                                    <a href="#" class=" text-decoration-none color-purple" data-bs-toggle="modal" data-bs-target="#ModalEdit{{Examiners.pk}}"><i class="bi bi-pencil-square color-purple"></i> تحرير </a>
+                                </td>
+                                <td>
+                                    <a href="#" class=" text-decoration-none color-purple"  data-bs-toggle="modal" data-bs-target="#Modal{{Examiners.user_id}}"><i class="bi bi-trash-fill color-purple"></i> حذف</a>
+                                </td>
+                                  
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>-->
+                      
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="fw-bold text-center">قائمة المستخدمين</h3>
+                        <!--<a href="{% url 'signupSuperUser' %}" class="btn btn-primary-color">
+                          إضافة مستخدم جديد
+                        </a>-->
+                      </div>
+                      
+                      <div class="table-responsive">
+                        <table class="table table-striped text-center align-middle">
+                          <thead class="table-light">
+                            <tr>
+                              <th>الاسم</th>
+                              <th>التخصص</th>
+                              <th>الجهة</th>
+                              <th>الإجراءات</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for Examiners in examiners %}
+                            <tr>
+                              <td>{{ Examiners.name }}</td>
+                              <td>{{ Examiners.speciality }}</td>
+                              <td>{{ Examiners.organization }}</td>
+                              <td>
+                                <a href="#" class="btn btn-sm btn-outline-primary mx-1 " data-bs-toggle="modal" data-bs-target="#ModalEdit{{Examiners.pk}}">
+                                  <i class="bi bi-pencil"></i> تحرير
+                                </a>
+                                <a href="#" class="btn btn-sm btn-outline-danger mx-1" data-bs-toggle="modal" data-bs-target="#Modal{{Examiners.user_id}}">
+                                  <i class="bi bi-trash"></i> حذف
+                                </a>
+                              </td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                      
+                    
+                    
+                    <!--modal for the delete part-->
+                    {% for Examiners in examiners %}
+                    <div class="modal fade" id="Modal{{Examiners.user_id}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+                        <form action="{% url 'delete' Examiners.user_id %}" method="POST">
+                            {% csrf_token %}
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content rounded-3 shadow">
+                                    <div class="modal-header p-4" id="labelText">
+                                        <h5 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder"> هل أنت متأكد من حذف المستخدم؟</h5>
+                                    </div>
+                                    <div class="modal-body fs-5">
+                                        <table class="table table-striped" style="direction: rtl;">
+                                            <thead>
+                                                <tr>
+                                                    <th>الاسم</th>
+                                                    <th>التخصص</th>
+                                                    <th>الجهة</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        {{Examiners.name}}
+                                                    </td>
+                                                    <td>
+                                                        {{Examiners.speciality}}
+                                                    </td>
+                                                    <td>
+                                                        {{Examiners.organization}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                    
+                                    </div>
+                                    <div class="modal-footer flex-nowrap p-0">
+                                        <button type="button" class="btn fs-5 btn-secondary col-6 py-3 m-0 rounded-0" data-bs-dismiss="modal">الغاء</button>
+                                        <button class="btn btn-danger fs-5 col-6 py-3 m-0 rounded-0 " type="submit" >حذف</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    {%endfor%}
+                    
+                    <!--modal for the edit part-->
+                    {% for Examiners in examiners %}
+                    <div class="modal fade" id="ModalEdit{{Examiners.pk}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+                        <form action="{% url 'edit' Examiners.user_id %}" method="POST">
+                            {% csrf_token %}
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content rounded-3 shadow">
+                                    <div class="modal-header p-4">
+                                        <h2 class="modal-title mb-0 w-100 text-center fs-1 fw-bolder">تحرير المعلومات</h2>
+                                    </div>
+                                    <div class="modal-body" style="text-align: right;">
+                                        <div class="mx-auto" style="width: 400px;">
+                    
+                                            <div class="form-group mb-3">
+                                                <label for="username" class="text-m-b">اسم المستخدم</label>
+                                                <input type="text" class="form-control " name="username" id="username" value="{{Examiners.user.username}}" Required>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="password" class="text-m-b">كلمة المرور</label>
+                                                <input type="text" class="form-control" name="password" id="password" placeholder="تغيير كلمة المرور">
+                                            </div>
+                    
+                                            <div class="form-group mb-3">
+                                                <label for="name" class="text-m-b">الاسم</label>
+                                                <input type="text" class="form-control" name="name" id="name" value="{{Examiners.name}}" Required>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="speciality" class="text-m-b">التخصص</label>
+                                                <input type="text" class="form-control" name="speciality" id="speciality" value="{{Examiners.speciality}}" Required>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="speciality" class="text-m-b">الجهة</label>
+                                                <input type="text" class="form-control" name="organization" id="organization" value="{{Examiners.organization}}" Required>
+                                            </div>
+                                        </div>
+                    
+                                    </div>
+                    
+                                    <div class="modal-footer flex-nowrap p-0">
+                                        <button type="button" class="btn fs-5 btn-secondary col-6 py-3 m-0 rounded-0" data-bs-dismiss="modal">الغاء</button>
+                                        <button class="btn btn-danger fs-5 col-6 py-3 m-0 rounded-0 " type="submit" style="background-color: #720e9e; border-color: #720e9e">تحديث</button>
+                                    </div>
+                    
+                                </div>
+                            </div>
+                    
+                        </form>
+                    </div>
+                    {%endfor%}
+                    
+                </div>
+
+
+
+
+
+
+
+
+{% endblock %}

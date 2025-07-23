@@ -1,0 +1,133 @@
+:root {
+    --primary-color: #cc5500;      /* Main orange */
+    --primary-hover: #a34700;      /* Hover orange */
+    --primary-dark: #873f00;       /* Active/darker */
+    --secondary-color: #5a4c9c;    /* Soft purple (optional for accent) */
+    --background-color: #f9f9f9;   /* Light gray page background */
+    --text-color: #ffffff;         /* Text for navbar/footer */
+    --card-color: #ffffff;         /* Card background */
+  }
+  
+  /* ===================
+     Page Background & Layout
+  =================== */
+  body {
+    background-color: var(--background-color);
+    font-family: 'Tajawal', sans-serif;
+  }
+  
+  /* ===================
+     Header & Footer
+  =================== */
+  header, .navbar, footer {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+  }
+  
+  .nav-link {
+    color: var(--text-color) !important;
+    transition: 0.3s;
+  }
+  
+  .nav-link:hover,
+  .nav-link.active {
+    text-decoration: underline;
+    color: var(--text-color) !important;
+  }
+  
+  footer .nav-link {
+    color: var(--text-color) !important;
+  }
+  
+  footer .nav-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* ===================
+     Buttons
+  =================== */
+  .btn-primary-color {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .btn-primary-color:hover {
+    background-color: var(--primary-hover);
+    transform: scale(1.02);
+  }
+  
+  .btn-primary-color:active {
+    background-color: var(--primary-dark);
+    transform: scale(0.98);
+  }
+  
+  .btn-primary-color:disabled {
+    background-color: #d3d3d3;
+    color: #888;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  
+  /* Optional secondary button if needed */
+  .btn-secondary-color {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+  }
+  
+  .btn-secondary-color:hover {
+    background-color: #4b3f85;
+  }
+  
+  /* ===================
+     Cards & Containers
+  =================== */
+  .bg-white,
+  .form-card {
+    background-color: var(--card-color);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    padding: 30px;
+  }
+  
+  .form-card {
+    max-width: 700px;
+    margin: auto;
+  }
+  
+  .table {
+    background-color: var(--card-color);
+  }
+  
+  /* ===================
+     Form Inputs
+  =================== */
+  input:focus,
+  .form-control:focus,
+  select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.15rem rgba(204, 85, 0, 0.3);
+  }
+  
+  input,
+  .form-control,
+  select {
+    border-radius: 6px;
+  }
+  
+  /* ===================
+     Utilities
+  =================== */
+  .bg-primary-color {
+    background-color: var(--primary-color) !important;
+  }
+  
+  .text-primary-color {
+    color: var(--primary-color) !important;
+  }
+  
+  .text-secondary-color {
+    color: var(--secondary-color) !important;
+  }
