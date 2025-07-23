@@ -33,6 +33,7 @@ urlpatterns = [
     path('test4', views.primary_test4, name='test4'),
     path('test5', views.primary_test5, name='test5'),
     path('test6', views.primary_test6, name='test6'),
+    path('test1_training_sec/', views.secondary_test1_training, name='test1_training_sec'),
     path('test1_sec', views.secondary_test1, name='secondary_test1'),
     path('test2_sec', views.secondary_test2, name='secondary_test2'),
     path('test3_sec', views.secondary_test3, name='secondary_test3'),

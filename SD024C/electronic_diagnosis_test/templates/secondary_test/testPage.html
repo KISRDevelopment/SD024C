@@ -10,9 +10,9 @@
     </div>
     <div class="container" style="direction: rtl;">
         <p class="text-m-b fs-3" style="margin-bottom: 10px;">الطالب : {{student}}</p>
-        {% if context_obj.status_obj == "منجز " and context_ltrs.status_ltrs == "منجز " and context_phoneme.status_phoneme == "منجز " and context_nonWrdRep.status_nonWrdRep == "منجز " and context_nonWrdReading.status_nonWrdReading == "منجز "%}
+        {% if context_test1.status_test1 == "منجز " %}
         <a href="{% url 'showREC'%}" style="font-weight: bold;" type="submit" class="btn-outline-p"> عرض النتائج والتوصيات </a>
-        {% elif context_obj.status_obj == "توقف " or context_ltrs.status_ltrs == "توقف "%}
+        {% elif context_test1.status_test1 == "توقف " or context_ltrs.status_ltrs == "توقف "%}
         <a href="{% url 'showREC'%}" style="font-weight: bold;" type="submit" class="btn-outline-p"> عرض النتائج والتوصيات </a>
         {% else %}
         <button class="btn" disabled="disabled" style="font-weight: bold;" href="#" type="submit" class="btn-outline-p"> عرض النتائج والتوصيات</button> {% endif %}
@@ -30,65 +30,65 @@
                 <tbody>
                     <tr>
                         <td>
-                            <a name="rpdNOTst" href="{% url 'secondary_test1'%}" id="rapidNamingObj" type="submit" value="التسمية السريعة للأشكال" class="btn-t-enabled">دقة قراءة الكلمة المفردة</a>
+                            <a name="test1" href="{% url 'test1_training_sec'%}" id="test1Obj" type="submit" value="دقة قراءة الكلمة المفردة" class="btn-t-enabled">دقة قراءة الكلمة المفردة</a>
                         </td>
                         <td style="text-align: center;">
-                            {%if context_obj.rpdNOwrongA != None%} {{context_obj.status_obj}} {% else %} {{context_obj.status_obj}} {%endif%}
+                            {%if context_test1.correctAnswers != None%} {{context_test1.status_test1}} {% else %} {{context_test1.status_test1}} {%endif%}
                         </td>
-                        <td style="text-align: center;">{%if context_obj.rpdNOwrongA != None%} {{context_obj.totalScore_obj}} {% else %} ------- {%endif%}
+                        <td style="text-align: center;">{%if context_test1.correctAnswers != None%} {{context_test1.status_test1}} {% else %} ------- {%endif%}
                         </td>
-                        <td style="text-align: center;">{%if context_obj.rpdNOwrongA != None%}
+                        <td style="text-align: center;">{%if context_test1.status_test1 != None%}
                             <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowObj" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
-                    <tr>
+                    <!--<tr>
                         <td>
-                            <a id="phonemeDeletion" href="{% url 'secondary_test2'%}" type="button" class="btn-t-enabled">الطلاقة في فهم المقروه</a>
+                            <a id="test2" href="{% url 'secondary_test2'%}" type="button" class="btn-t-enabled">الطلاقة في فهم المقروه</a>
                         </td>
                         <td style="text-align: center;">
-                            {%if context_phoneme.correctAnswers != None%} {{context_phoneme.status_phoneme}} {% else %} {{context_phoneme.status_phoneme}} {%endif%}
+                            {%if context_test2.correctAnswers != None%} {{context_test2.status_test2}} {% else %} {{context_test2.status_test2}} {%endif%}
                         </td>
                         <td style="text-align: center;">
-                            {%if context_phoneme.correctAnswers != None%} {{context_phoneme.correctAnswers}} {% else %} ------- {%endif%}
+                            {%if context_test2.correctAnswers != None%} {{context_test2.correctAnswers}} {% else %} ------- {%endif%}
                         </td>
                         <td style="text-align: center;">
-                            {%if context_phoneme.correctAnswers != None%}
+                            {%if context_test2.correctAnswers != None%}
                             <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowPhoneme" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <a name="rpdNLTst" href="{% url 'secondary_test3'%}" id="rapidNamingLtr" type="submit" value="التسمية السريعة للحروف" class="btn-t-enabled">إملاء الكلمة</a>
+                            <a name="test3" href="{% url 'secondary_test3'%}" id="test3" type="submit" value="التسمية السريعة للحروف" class="btn-t-enabled">إملاء الكلمة</a>
                         </td>
                         <td style="text-align: center;">
-                            {%if context_ltrs.rpdNLwrongA != None%} {{context_ltrs.status_ltrs}} {% else %} {{context_ltrs.status_ltrs}} {%endif%}
+                            {%if context_test3.rpdNLwrongA != None%} {{context_test3.status_test3}} {% else %} {{context_test3.status_test3}} {%endif%}
                         </td>
                         <td style="text-align: center;">
-                            {%if context_ltrs.rpdNLwrongA != None%} {{context_ltrs.totalScore_ltr}} {% else %} ------- {%endif%}
+                            {%if context_test3.rpdNLwrongA != None%} {{context_test3.totalScore_test3}} {% else %} ------- {%endif%}
                         </td>
-                        <td style="text-align: center;">{%if context_ltrs.rpdNLwrongA != None%}
+                        <td style="text-align: center;">{%if context_test3.rpdNLwrongA != None%}
                             <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowLtrs" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <a href="{% url 'secondary_test4'%}" id="nonWordRepetition" type="button" class="btn-t-enabled">فهم المقروء (القطعة)</a>
+                            <a href="{% url 'secondary_test4'%}" id="test4" type="button" class="btn-t-enabled">فهم المقروء (القطعة)</a>
                         </td>
                         <td style="text-align: center;">
-                            {%if context_nonWrdRep.correctAnswers != None%} {{context_nonWrdRep.status_nonWrdRep}} {% else %} {{context_nonWrdRep.status_nonWrdRep}} {%endif%}
+                            {%if context_test4.correctAnswers != None%} {{context_test4.status_test4}} {% else %} {{context_test4.status_test4}} {%endif%}
                         </td>
                         <td style="text-align: center;">
-                            {%if context_nonWrdRep.correctAnswers != None%} {{context_nonWrdRep.correctAnswers}} {% else %} ------- {%endif%}
+                            {%if context_test4.correctAnswers != None%} {{context_test4.correctAnswers}} {% else %} ------- {%endif%}
                         </td>
                         <td style="text-align: center;">
-                            {%if context_nonWrdRep.correctAnswers != None%}
+                            {%if context_test4.correctAnswers != None%}
                             <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowRep" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
-                    </tr>
+                    </tr>-->
 
                 </tbody>
             </table>

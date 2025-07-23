@@ -30,7 +30,7 @@
                 <tbody>
                     <tr>
                         <td>
-                            <a name="rpdNOTst" href="{% url 'test1'%}" id="rapidNamingObj" type="submit" value="التسمية السريعة للأشكال" class="btn-t-enabled">دقة قراءة الكلمة المفردة</a>
+                            <a name="test1" href="{% url 'test1_training'%}" id="test1" type="submit" value="التسمية السريعة للأشكال" class="btn-t-enabled">دقة قراءة الكلمة المفردة</a>
                         </td>
                         <td style="text-align: center;">
                             {%if context_test1.total_correct != None%} {{context_test1.status_obj}} {% else %} {{context_test1.status_obj}} {%endif%}

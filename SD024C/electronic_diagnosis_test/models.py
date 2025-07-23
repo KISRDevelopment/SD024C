@@ -137,6 +137,17 @@ class PrimaryTest1(models.Model):
 
     def __str__(self):
         return f"{self.student} - {self.date.strftime('%Y-%m-%d %H:%M:%S')}"
+    
+class SecondaryTest1(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    total_correct = models.PositiveIntegerField()
+    time_seconds = models.FloatField()
+    fluency_score = models.FloatField()
+    reason = models.CharField(max_length=255, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.student} - {self.date.strftime('%Y-%m-%d %H:%M:%S')}"
 
 #Primary - test 5
 class NonWordReadingAcc(models.Model):
