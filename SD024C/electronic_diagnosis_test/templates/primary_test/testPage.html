@@ -75,10 +75,10 @@
                             <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowPhoneme" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
-                    </tr>
+                    </tr>-->
                     <tr>
                         <td>
-                            <a name="rpdNLTst" href="{% url 'test4'%}" id="rapidNamingLtr" type="submit" value="التسمية السريعة للحروف" class="btn-t-enabled">إملاء الكلمة</a>
+                            <a name="test4" href="{% url 'test4'%}" id="test4" type="submit" value="إملاء الكلمة" class="btn-t-enabled">إملاء الكلمة</a>
                         </td>
                         <td style="text-align: center;">
                             {%if context_ltrs.rpdNLwrongA != None%} {{context_ltrs.status_ltrs}} {% else %} {{context_ltrs.status_ltrs}} {%endif%}
@@ -91,7 +91,7 @@
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
-                    <tr>
+                   <!-- <tr>
                         <td>
                             <a name="rpdNLTst" href="{% url 'test5'%}" id="rapidNamingLtr" type="submit" value="التسمية السريعة للحروف" class="btn-t-enabled">اختيار الإملاء الصحيح</a>
                         </td>
