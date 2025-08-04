@@ -61,6 +61,15 @@ primary_test2_sentences = {
     10: "اِنْتَظَرَ فَيْصَلٌ بِصُحْبَةِ الرَّجُلِ الْكَفيفِ في الْمَكانِ الْمُخَصَّصِ لِعُبورِ الْمُشاةِ، وَ عِنْدَما تَوّقَّفَتِ السَّيّاراتُ، عَبَرَ فَيْصَلٌ الشّارِعَ مُمْسِكاً بِيَدِ الرَّجُلِ، فَشَكَرَ الرَّجُلُ فَيْصَلاً وَ دَعا لَهُ."
 }
 
+primary_test4_words = [
+    "", "", "", "", "",
+    "", "", "", "", "",
+    "", "", "","","",
+    "", "", "", "", "",
+    "", "", "", "","",
+    "", "", "", "", ""
+]
+
 def index(request):
     return render(request,"index.html")
 
@@ -603,7 +612,56 @@ def primary_test3(request):
 
 @login_required(login_url="/login")
 def primary_test4(request):
-    return render(request,"primary_test/test4.html")
+    student = Student.objects.get(id=request.session['student'])
+
+    # Modal confirmation submit
+    if request.method == 'POST' and request.POST.get("form2"):
+        print(request.POST)
+        # Get saved values from session
+        total_correct = request.session.get('test4_total_correct', 0)
+        raw_scores = request.session.get('test4_raw_scores', [])
+        reason = request.POST.get("submitTst", "")
+
+        # Save final test result
+        PrimaryTest4.objects.create(
+            student=student,
+            raw_scores = raw_scores,
+            total_correct=total_correct,
+            reason=reason,
+            date=datetime.now()
+        )
+
+        # Clear session if you want
+        if reason != "الوصول الى الحد السقفي":
+            request.session.pop('test4_total_correct', None)
+            request.session.pop('test4_raw_scores', None)
+
+
+        return redirect('testsPage')
+
+    # Main test submission (score & time)
+    if request.method == 'POST' and request.POST.get("form1"):
+        raw_scores = []
+        for i in range(30):
+            val = request.POST.get(f'score_{i}', "-")
+            raw_scores.append(val)
+
+        #test_scores = [int(request.POST.get(f'score_{i}', 0)) for i in range(30)]
+        total_correct = sum(1 for val in raw_scores if val == "1")
+
+        # Save to session for modal confirmation
+        request.session['test4_total_correct'] = total_correct
+        request.session['test4_raw_scores'] = raw_scores
+
+        return render(request, 'primary_test/test4.html', {
+            'test_words': primary_test4_words,
+            'result': {
+                'total_correct': total_correct,
+            }
+        })
+    return render(request,"primary_test/test4.html", {
+        'test_words': primary_test4_words
+    })
 
 @login_required(login_url="/login")
 def primary_test5(request):
