@@ -49,178 +49,8 @@
 
     <!-- ======================= Navbar ======================= -->
 
-    <!--<nav class="navbar navbar-expand-lg navbar-dark bg-primary-color">
-        <div class="container">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">الرئيسية</a></li>
-                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'help' %}active{% endif %}" href="{% url 'help' %}">مساعدة</a></li>
-                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" href="{% url 'login' %}">دخول</a></li>
-            </ul>
-        </div>
-    </nav>-->
-    {% if user.is_authenticated %}
-   <!-- <div class="navbar navbar-expand py-0 mb-5 bg-color-green ">
-        <div class="container">
-            <div class="dropdown">
-                <a class="link-light fs-4 dropdown-toggle text-decoration-none mb-2 mb-lg-0" href="#" role="button" id="dropdownMenuLinkUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {{user}}
-                </a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkUser" id="styleDropDown">
-                    <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{% url 'profile' %}" method="POST" id="styleDropDown" value={{Examiners.user_id}}>
-                        الحساب
-                        <li class="bi bi-person-fill mx-3"></li>
-                    </a>
-                    <hr>
-                    <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{% url 'logout' %}" id="styleDropDown">
-                        خروج
-                        <i class="bi bi-lock-fill mx-3"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="nav justify-content-end">
-                <div class="navbar navbar">
-                    <div class="dropdown">
-                        <a class="link-light fs-4 dropdown-toggle text-decoration-none mb-2 mb-lg-0 " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            الأدلة
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="styleDropDown">
-                            {% if examiners.stage == "PRIMARY" %}
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/التسمية السريعة للأشكال.pdf'%}" id="styleDropDown">
-                                التسمية السريعة للأشكال
-                            </a>
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/التسمية السريعة للحروف.pdf'%}" id="styleDropDown">
-                                التسمية السريعة للحروف
-                            </a>
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دقة قراءة الكلمات غير الحقيقية.pdf'%}" id="styleDropDown">
-                                اختبار دقة قراءة الكلمات غير الحقيقية
-                            </a>
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دليل استخدام الاختبارات - المرحلة الابتدائية.pdf'%}" id="styleDropDown">
-                                دليل استخدام الاختبارات
-                            </a>
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دليل الاختبار - الابتدائي.pdf'%}" id="styleDropDown">
-                                دليل الاختبار
-                            </a>
-                            {% elif examiners.stage == "SECONDARY" %}
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/‎⁨اختبار التسمية السريعة للصور⁩.pdf'%}" id="styleDropDown">
-                                ‎⁨اختبار التسمية السريعة للصور⁩
-                            </a>
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/متوسط - اختبار  دقة قراءة الكلمات غير الحقيقية.pdf'%}" id="styleDropDown">
-                                اختبار دقة قراءة الكلمات غير الحقيقية
-                            </a>
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دليل استخدام الاختبارات - المرحلة المتوسطة.pdf'%}" id="styleDropDown">
-                                دليل استخدام الاختبارات
-                            </a> 
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دليل الاختبار - المتوسط.pdf'%}" id="styleDropDown">
-                                دليل الاختبار
-                            </a> 
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% if user.is_staff %}
-                <li class="nav-link mx-3"><a href="{% url 'admin'%} " class="nav-link text-light fs-4"> المستخدمين </a></li>
-                {% else %}
-                <li class="nav-link mx-3"><a href="{% url 'examinerPage'%} " class="nav-link text-light fs-4"> الطلاب </a></li>
-                {% if stage == "SECONDARY"%}
-                <li class="nav-link mx-3"><a href="" class="nav-link text-light fs-4"> اختبارات المرحلة المتوسطة </a></li>
-                {% endif %} {% if stage == "PRIMARY"%}
-                <li class="nav-link mx-3"><a href="{% url 'examinerPage'%}" class="nav-link text-light fs-4"> اختبارات المرحلة الابتدائية  </a></li>
-                {% endif %} {% endif %}
-                <li class="nav-link mx-3"><a href="{% url 'index' %} " class="nav-link active text-light fs-4"> الرئيسة </a></li>
-                </ul>
-            </div>
-        </div>
-    </div>-->
-    <!--<nav class="navbar navbar-expand-lg navbar-dark bg-primary-color">
-        <div class="container">
-            <div class="dropdown">
-                <a class="link-light fs-4 dropdown-toggle text-decoration-none mb-2 mb-lg-0"
-                   href="#" role="button" id="dropdownMenuLinkUser"
-                   data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ user }}
-                </a>
-                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLinkUser">
-                    <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{% url 'profile' %}">
-                        الحساب
-                        <i class="bi bi-person-fill mx-3"></i>
-                    </a>
-                    <hr>
-                    <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{% url 'logout' %}">
-                        خروج
-                        <i class="bi bi-lock-fill mx-3"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="nav justify-content-end">
-                <div class="navbar navbar">
-                    <div class="dropdown">
-                        <a class="link-light fs-4 dropdown-toggle text-decoration-none mb-2 mb-lg-0 " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            الأدلة
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="styleDropDown">
-                            {% if examiners.stage == "PRIMARY" %}
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/التسمية السريعة للأشكال.pdf'%}" id="styleDropDown">
-                                التسمية السريعة للأشكال
-                            </a>
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/التسمية السريعة للحروف.pdf'%}" id="styleDropDown">
-                                التسمية السريعة للحروف
-                            </a>
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دقة قراءة الكلمات غير الحقيقية.pdf'%}" id="styleDropDown">
-                                اختبار دقة قراءة الكلمات غير الحقيقية
-                            </a>
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دليل استخدام الاختبارات - المرحلة الابتدائية.pdf'%}" id="styleDropDown">
-                                دليل استخدام الاختبارات
-                            </a>
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دليل الاختبار - الابتدائي.pdf'%}" id="styleDropDown">
-                                دليل الاختبار
-                            </a>
-                            {% elif examiners.stage == "SECONDARY" %}
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/‎⁨اختبار التسمية السريعة للصور⁩.pdf'%}" id="styleDropDown">
-                                ‎⁨اختبار التسمية السريعة للصور⁩
-                            </a>
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/متوسط - اختبار  دقة قراءة الكلمات غير الحقيقية.pdf'%}" id="styleDropDown">
-                                اختبار دقة قراءة الكلمات غير الحقيقية
-                            </a>
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دليل استخدام الاختبارات - المرحلة المتوسطة.pdf'%}" id="styleDropDown">
-                                دليل استخدام الاختبارات
-                            </a> 
-                            <a class="dropdown-item d-flex justify-content-end fs-5 fw-bold" href="{%static 'pdf/دليل الاختبار - المتوسط.pdf'%}" id="styleDropDown">
-                                دليل الاختبار
-                            </a> 
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% if user.is_staff %}
-                <li class="nav-link mx-3"><a href="{% url 'admin'%} " class="nav-link text-light fs-4"> المستخدمين </a></li>
-                {% else %}
-                <li class="nav-link mx-3"><a href="{% url 'examinerPage'%} " class="nav-link text-light fs-4"> الطلاب </a></li>
-                {% if stage == "SECONDARY"%}
-                <li class="nav-link mx-3"><a href="" class="nav-link text-light fs-4"> اختبارات المرحلة المتوسطة </a></li>
-                {% endif %} {% if stage == "PRIMARY"%}
-                <li class="nav-link mx-3"><a href="{% url 'examinerPage'%}" class="nav-link text-light fs-4"> اختبارات المرحلة الابتدائية  </a></li>
-                {% endif %} {% endif %}
-                <li class="nav-link mx-3"><a href="{% url 'index' %} " class="nav-link active text-light fs-4"> الرئيسة </a></li>
-                </ul>
-            </div>-->
-            <!--<ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">الرئيسية</a></li>
-                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'help' %}active{% endif %}" href="{% url 'help' %}">مساعدة</a></li>
-                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" href="{% url 'login' %}">دخول</a></li>
-            </ul>-->
-       <!-- </div>
-    </nav>
-    {% else %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary-color">
-        <div class="container">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">الرئيسية</a></li>
-                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'help' %}active{% endif %}" href="{% url 'help' %}">مساعدة</a></li>
-                <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" href="{% url 'login' %}">دخول</a></li>
-            </ul>
-        </div>
-    </nav>
-    {% endif %} -->
+
+
 
     {% if user.is_authenticated %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary-color">
@@ -302,7 +132,7 @@
     </div>
 </nav>
 {% else %}
-<!--<nav class="navbar navbar-expand-lg navbar-dark bg-primary-color">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary-color">
     <div class="container">
         <ul class="navbar-nav ms-auto">
             <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">الرئيسية</a></li>
@@ -310,7 +140,7 @@
             <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" href="{% url 'login' %}">دخول</a></li>
         </ul>
     </div>
-</nav>-->
+</nav>
 {% endif %}
 
 

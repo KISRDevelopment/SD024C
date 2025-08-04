@@ -41,6 +41,26 @@ TEST_WORDS_secondary_test1 = [
     "اِصْطَدَمَ", "الْاِصْطِناعِيَّةُ", "وَالْاِسْتيعابَ", "التِّسْعينِيّاتْ", "اِنْتَظَرْتُكَ",
     "الْكَفاءاتِ", "فَتًى", "ٱللُّغَوِيُّ", "الْوَحْدَةِ", "مُتَلَأْلِئَةً"
 ]
+
+training_sentences = {
+        1: "التِّلْميذُ مُجْتَهِدٌ",
+        2: "تُشْرِقُ الشَّمْسُ صَباحاً",
+        3: "تَعيشُ الأَسْماكُ فيِ الْماءِ"
+}
+
+primary_test2_sentences = {
+    1: "أُحِبُّ حَديقَةَ الْحَيَواناتِ.",
+    2: "يَشْرَبُ مُحَمَّدٌ الْماءَ.",
+    3: "حَرارَةُ الشَّمْسِ شَديدَةٌ.",
+    4: "نَذْهَبُ إِلى الْـبَحْرِ لِصَيْدِ السَّمَكِ.",
+    5: "فازَ فَريقُ كُرَةِ الْقَدَمِ بِالْجائِزَةِ الأولى لِلْمَرَّةِ الثّانِيَةِ.",
+    6: "بُسْتانُ بَيْتِنا جميلٌ تَمْلَؤُهُ الأَزْهارُ و الأَشْجَارُ.",
+    7: "جَمَعَتْ عَبيرُ مَعَ أَفْرادِ الأُسْرَةِ تُفّاحاً كَثيراً مِنْ شَجَرَةِ التُّفّاحِ",
+    8: "تُهاجِرُ الْكَثيرُ مِنَ الطُّيورِ إِلى جَزيرَةِ الْعَرَبِ وَ تُقيمُ فيها في فَصْلِ الشِّتاءِ.",
+    9: "الْخَيْلُ الْعَرَبِيُّ مِنْ أَجْمَلِ الْحَيَواناتِ، لَهُ رَأْسٌ مُسْتَقيمٌ، وَ صَدْرٌ واسِعٌ، وَ قَوائِمُ رَشيقَةٌ، هُوَ قَوِيٌّ شَهْمٌ، إِنَّهُ أَجْمَلُ جَوادٍ عَلى وَجْهِ الأَرْضِ.",
+    10: "اِنْتَظَرَ فَيْصَلٌ بِصُحْبَةِ الرَّجُلِ الْكَفيفِ في الْمَكانِ الْمُخَصَّصِ لِعُبورِ الْمُشاةِ، وَ عِنْدَما تَوّقَّفَتِ السَّيّاراتُ، عَبَرَ فَيْصَلٌ الشّارِعَ مُمْسِكاً بِيَدِ الرَّجُلِ، فَشَكَرَ الرَّجُلُ فَيْصَلاً وَ دَعا لَهُ."
+}
+
 def index(request):
     return render(request,"index.html")
 
@@ -372,8 +392,10 @@ def testsPageSec (request):
         test1_obj = SecondaryTest1.objects.filter(student_id = request.session['student'])
         if(test1_obj.exists()):
             test1_correct_Ans = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").total_correct
+            test1_time_seconds = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").time_seconds
+            test1_fluency_score = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").fluency_score
             if (test1_correct_Ans != None):
-                context_test1 = {"correctAnswers":(test1_correct_Ans), "status_test1":('منجز '), }
+                context_test1 = {"correctAnswers":(test1_correct_Ans), "status_test1":('منجز '), "time_sec": (test1_time_seconds), "fluency_score": (test1_fluency_score)}
             else:
                 context_test1 = {"status_test1":('غير منجز'), }
         else:
@@ -411,6 +433,7 @@ def primary_test1(request):
 
     # Modal confirmation submit
     if request.method == 'POST' and request.POST.get("form2"):
+        print(request.POST)
         # Get saved values from session
         total_correct = request.session.get('test1_total_correct', 0)
         time_seconds = request.session.get('test1_time_seconds', 0)
@@ -474,8 +497,105 @@ def primary_test1_autosave(request):
         return JsonResponse({"status": "saved"})
 
 @login_required(login_url="/login")
+def primary_test2_training(request):
+    if request.method == 'POST':
+        print(request.POST)
+        selected_words = int(request.POST.get("selected_word_count", 0))
+
+        if selected_words > 0:
+            request.session['test2_passed_training'] = True
+            return redirect('test2')
+        else:
+            return render(request, 'primary_test/test2_training.html', {
+                'training_sentences': training_sentences,
+                'error': 'لم يتم اجتياز التدريب. لا يمكن بدء الاختبار.'
+            })
+
+    return render(request, 'primary_test/test2_training.html', {
+        'training_sentences': training_sentences
+    })
+
+@login_required(login_url="/login")
 def primary_test2(request):
-    return render(request,"primary_test/test2.html")
+    student = Student.objects.get(id=request.session['student'])
+    scores = {}
+    total_score = 0
+
+    # Modal confirmation submit
+    if request.method == 'POST' and request.POST.get("form2"):
+        print(request.POST)
+        # Get saved values from session
+        total_score = request.session.get('test2_total_score', 0)
+        print(total_score)
+        time_taken = request.session.get('test2_time_seconds', 0)
+        print(time_taken)
+        fluency = request.session.get('test2_fluency', 0)
+        print(fluency)
+        reason = request.POST.get("submitTst", "")
+        print(reason)
+        scores = request.session.get('test2_scores', 0)
+        print(scores)
+
+        # Save final test result
+        PrimaryTest2.objects.create(
+            student=student,
+            scores=scores,
+            total_score=total_score,
+            time_seconds=time_taken,
+            fluency_score=fluency,
+            reason=reason,
+            date=datetime.now()
+        )
+
+        # Clear session if you want
+        #if(reason != "الوصول الى الحد السقفي"):
+            #del request.session['test2_total_score']
+            #del request.session['test2_time_seconds']
+            #del request.session['test2_fluency']
+            #del request.session['test2_scores']
+
+        return redirect('testsPage')
+
+    # Main test submission (score & time)
+    if request.method == 'POST' and request.POST.get("form1"):
+        print(request.POST)
+        for i in primary_test2_sentences:
+            score = int(request.POST.get(f'score_{i}', 0))
+            print(score)
+            scores[str(i)] = score
+            total_score += score
+
+        try:
+            time_seconds = float(request.POST.get('time', 1))  # avoid divide-by-zero
+        except:
+            time_seconds = 1
+
+        fluency = (total_score / time_seconds) * 60
+
+        # Store in session for confirmation step
+        request.session['test2_total_score'] = total_score
+        print(request.session['test2_total_score'])
+        request.session['test2_time_seconds'] = time_seconds
+        print(request.session['test2_time_seconds'])
+        request.session['test2_fluency'] = round(fluency, 2)
+        print(request.session['test2_fluency'])
+        request.session['test2_scores'] = scores
+        print(request.session['test2_scores'])
+
+        return render(request, 'primary_test/test2.html', {
+            'test_words': primary_test2_sentences,
+            'result': {
+                'total_score': total_score,
+                'time_seconds': time_seconds,
+                'fluency': round(fluency, 2)
+            }
+        }) 
+       
+    return render(request, 'primary_test/test2.html', {
+        'test_words': primary_test2_sentences
+    })
+    
+
 
 @login_required(login_url="/login")
 def primary_test3(request):

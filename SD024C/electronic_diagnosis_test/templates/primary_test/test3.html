@@ -1,0 +1,259 @@
+
+<script src="https://unpkg.com/htmx.org@1.9.4" crossorigin="anonymous"></script>
+
+<div class="container">
+    <div class="text-lg-purple fs-2 mb-5" style="color: #5E2B8C;">الاختبار الفرعي الأول: دقة قراءة الكلمة وسرعتها</div>
+    <div class="card rounded-card my-3 mx-auto">
+        <div class="container text-center mt-4" style="direction: rtl;">
+            <form hx-post="{% url 'test1' %}" hx-target="#end" hx-swap="innerText" class="form-horizontal col-12" id="questionsForm">
+                {% csrf_token %}
+                <div class="row mt-4 mx-auto text-center w-100">
+                    <!-- Column 1 (1–15) -->
+                    <div class="col-md-6">
+                        <!--<table class="custom-reading-table">
+                            
+                            <tr>
+                              <td class="cell-number">1</td>
+                              <td class="cell-word">أخي</td>
+                              <td class="cell-check" onclick="toggleCorrect(this)">
+                                ✓<input type="hidden" name="test_0" value="0">
+                              </td>
+                            </tr>
+                          </table>-->
+                          
+                        <table class="custom-reading-table">
+                            <thead>
+                                <tr>
+                                    <th >م</th>
+                                    <th >الكلمة</th>
+                                    <th >✓</th>
+                                </tr>
+                            </thead>
+                            <tbody >
+                                {% for word in test_words|slice:":15" %}
+                                <tr>
+                                    <td class="cell-number">{{ forloop.counter }}</td>
+                                    <td class="cell-word"><div style="margin: 0 10px; ">{{ word }}</div></td>
+                                    <td id="cell_{{ forloop.counter0 }}" class="score-cell cell-check" onclick="toggleCorrect({{ forloop.counter0 }})">
+                                        ✓<input type="hidden" name="test_{{ forloop.counter0 }}" id="input_{{ forloop.counter0 }}" value="0">
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Column 2 (16–30) -->
+                    <div class="col-md-6" >
+                        <table class="custom-reading-table">
+                            <thead>
+                                <tr><th>م</th><th>الكلمة</th><th>✓</th></tr>
+                            </thead>
+                            <tbody>
+                                {% for word in test_words|slice:"15:" %}
+                                <tr>
+                                    <td class="cell-number">{{ forloop.counter|add:"15" }}</td>
+                                    <td class="cell-word">{{ word }}</td>
+                                    <td id="cell_{{ forloop.counter0|add:"15" }}" class="score-cell cell-check" onclick="toggleCorrect({{ forloop.counter0|add:'15' }})">
+                                        ✓<input type="hidden" name="test_{{ forloop.counter0|add:'15' }}" id="input_{{ forloop.counter0|add:'15' }}" value="0">
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!--<div class="col-12">
+                    <span class="input-group-text mx-auto d-grid mt-4" style="width:fit-content; background-color:#CC99CC; font-size:20px; font-weight:bolder;">الدرجة الكلية / 30</span>
+                    <label class="input-group-text mx-auto d-grid" id="result" style="width:fit-content; border:2px solid #CC99CC; font-size:20px; font-weight:bolder;"><span id="score-value">0</span></label>
+
+                    <input id="end" type="submit" name="form1" class="btn-light-purple d-grid mx-auto mt-3 mb-4"
+                           value="تسليم الاختبار" data-bs-toggle="modal" data-bs-target="#ModalSubmit"
+                           style="background-color:#CC99CC; color:black; font-weight:bold;">
+                </div>-->
+               <!-- <div class="col-12 mt-4">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap text-center gap-3" >
+-->
+                     <!-- Time (right) -->
+                       <!-- <div class="col-4 text-center">
+                            <span class="d-block bg-purple-score text-white fw-bold py-2 rounded-top">الزمن بالثواني</span>
+                            <input readonly type="text" id="timeDisplay"
+                                   class="d-block border border-purple-score border-2 rounded-bottom text-center fw-bold py-2 fs-5"
+                                   value="0">
+                            <input type="hidden" name="time" id="timeInput">
+                          </div>-->
+                
+                        <!-- Score (left) -->
+                    <!--<div class="col-4 text-center">
+                        <span class="d-block  bg-purple-score text-white fw-bold py-2 rounded-top">الدرجة الكلية / 30</span>
+                        <label class="d-block border border-purple-score  border-2 rounded-bottom py-2 fs-5 fw-bold"
+                               id="result">
+                          <span id="score-value">0</span>
+                        </label>
+                      </div>-->
+                
+                    <!-- Submit button centered below -->
+                   <!--<div class="d-grid mx-auto mt-3 mb-4" style="width: fit-content;">
+                        <input id="end" type="submit" name="form1" class="btn-light-purple"
+                               value="تسليم الاختبار" data-bs-toggle="modal" data-bs-target="#ModalSubmit"
+                               style="background-color: #CC99CC; color: black; font-weight: bold;">
+                    </div>
+                </div>-->
+
+                <div class="col-12 mt-4">
+
+                    <!-- Flex row with Score + Time -->
+                    <div class="d-flex justify-content-between align-items-start flex-wrap text-center gap-3">
+                
+                        <!-- Time -->
+                        <div class="col-4 text-center">
+                            <span class="d-block bg-purple-score text-white fw-bold py-2 rounded-top">الزمن بالثواني</span>
+                            <input readonly type="text" id="timeDisplay"
+                                   class="d-block border border-purple-score border-2 rounded-bottom text-center fw-bold py-2 fs-5"
+                                   value="0" style="min-width: 330px;">
+                            <input type="hidden" name="time" id="timeInput">
+                        </div>
+                
+                        <!-- Score -->
+                        <div class="col-4 text-center">
+                            <span class="d-block bg-purple-score text-white fw-bold py-2 rounded-top">الدرجة الكلية / 30</span>
+                            <label class="d-block border border-purple-score border-2 rounded-bottom py-2 fs-5 fw-bold"
+                                   id="result" style="min-width: 330px;">
+                                <span id="score-value">0</span>
+                            </label>
+                        </div>
+                
+                    </div> <!-- END of flex container -->
+                
+                    <!-- Submit Button BELOW -->
+                    <div class="d-grid mx-auto mt-5 mb-4" style="width: fit-content;">
+                        <input id="end" type="submit" name="form1" class="btn-light-purple px-5 py-3 fs-5"
+                        value="تسليم الاختبار" data-bs-toggle="modal" data-bs-target="#ModalSubmit"
+                        style="background-color: #b48ce6; color: black; font-weight: bold;">
+                    </div>
+                
+                </div>
+                
+
+                
+                
+              </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ModalSubmit" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <form class="form-horizontal" method="POST">
+        {% csrf_token %}
+        <div class="modal-dialog" role="document">
+            <div class="modal-content rounded-3 shadow">
+                <div class="modal-header p-4">
+                    <h5 class="modal-title text-center w-100 fs-2 fw-bold">هل أنت متأكد من تسليم الاختبار؟</h5>
+                </div>
+                <div class="modal-body fs-5" style="direction: rtl;">
+                    <label for="submitTst" class="form-label">يرجى الاختيار من القائمة</label>
+                    <select id="submitTst" name="submitTst" class="form-select fs-5" required>
+                        <option value="تم الانتهاء من بنود الاختبار كلها" selected>انتهي من بنود الاختبار كلها</option>
+                        <option value="توقف لأسباب صحية أو شخصية خاصة بالطالب">توقف لأسباب صحية أو شخصية خاصة بالطالب</option>
+                        <option value="توقف لأسباب صحية أو شخصية خاصة بالفاحص">توقف لأسباب صحية أو شخصية خاصة بالفاحص</option>
+                        <option value="الوصول الى الحد السقفي">الوصول إلى الحد السقفي</option>
+                        <option value="أسباب أخرى">أسباب أخرى</option>
+                    </select>
+                </div>
+                <div class="modal-footer flex-nowrap p-0">
+                    <input id="submitDropDown" type="submit" name="form2" value="تسليم الاختبار"
+                           class="btn btn-danger fs-5 col-12 py-3 m-0 rounded-0"
+                           style="background-color:#720e9e; border-color:#720e9e;">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    let startTime = Date.now();
+
+    function toggleCorrect(index) {
+        const cell = document.getElementById("cell_" + index);
+        const input = document.getElementById("input_" + index);
+
+        if (input.value === "0") {
+            input.value = "1";
+            cell.classList.add("selected");
+        } else {
+            input.value = "0";
+            cell.classList.remove("selected");
+        }
+        updateTotalScore();
+    }
+
+    function updateTotalScore() {
+        let total = 0;
+        document.querySelectorAll("input[id^='input_']").forEach((input) => {
+            if (input.value === "1") total++;
+        });
+        document.getElementById("score-value").innerText = total;
+        checkCeilingReached(); 
+    }
+
+    // Autosave every 15s
+    setInterval(() => {
+        const form = document.getElementById("questionsForm");
+        const formData = new FormData(form);
+
+        fetch("{% url 'primary_test1_autosave' %}", {
+            method: "POST",
+            headers: { 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value },
+            body: formData
+        }).then(response => response.ok && console.log("Autosaved"));
+    }, 15000);
+
+
+    function updateTimeDisplay() {
+        const now = Date.now();
+        const elapsedSeconds = Math.floor((now - startTime) / 1000);
+        document.getElementById('timeDisplay').value = elapsedSeconds;
+        document.getElementById('timeInput').value = elapsedSeconds;
+    }
+
+    // Update every second
+    let timerInterval = setInterval(updateTimeDisplay, 1000);
+    document.getElementById('ModalSubmit').addEventListener('show.bs.modal', () => {
+    clearInterval(timerInterval);
+});
+
+function checkCeilingReached() {
+    let firstFiveIncorrect = true;
+    for (let i = 0; i < 5; i++) {
+        const input = document.getElementById(`input_${i}`);
+        if (input && input.value === "1") {
+            firstFiveIncorrect = false;
+            break;
+        }
+    }
+
+    if (firstFiveIncorrect) {
+        // Preselect dropdown
+        document.getElementById('submitTst').value = "الوصول الى الحد السقفي";
+
+        // Show modal (if not already open)
+        const modal = new bootstrap.Modal(document.getElementById('ModalSubmit'));
+        modal.show();
+
+        // Freeze the timer
+        clearInterval(timerInterval);
+    }
+}
+
+//document.getElementById('ModalSubmit').addEventListener('hidden.bs.modal', () => {
+    // Restart the interval
+  //  timerInterval = setInterval(updateTimeDisplay, 1000);
+//});
+
+
+
+    //setInterval(updateTimeDisplay, 1000);
+</script>
