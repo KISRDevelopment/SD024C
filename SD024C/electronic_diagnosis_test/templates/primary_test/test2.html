@@ -1,127 +1,119 @@
-<!--{% extends 'base.html' %}
+<!-- This is the second test for the primary. This test is Sentence Reading Fluency -->
+{% extends 'base.html' %}
 {% load static %}
 {% block content %}
+
+
 
 <script src="https://unpkg.com/htmx.org@1.9.4" crossorigin="anonymous"></script>
 
 <div class="container">
-    <div class="text-lg-purple fs-2 mb-5">الاختبار الفرعي الأول: دقة قراءة الكلمة وسرعتها</div>-->
-<!--border-color:#568203;-->
-<!--style="width:1250px; "-->
-    <!--<div class="card my-3 mx-auto" >
-        <div class="container text-center mt-4" style="direction: rtl;">
-                        <form hx-post="{% url 'test1' %}" hx-target="#end" hx-swap="innerText" class="form-horizontal col-12" id="questionsForm" style="float:right; direction: rtl;">
+    <div class="text-center">
+        <h2 class="text-lg-purple fs-2 mb-5" style="color: #5E2B8C;">الاختبار الفرعي الثاني</h2>
+        <h4 class=" mb-5 fs-3" style="color: #fd7e14;">الطلاقة في قراءة الجملة - الفقرات التدريبية</h4>
+    </div>
+    
+    <div class="card rounded-card my-3 mx-auto">
+        <div class="container  mt-4" style="direction: rtl;">
+            <form hx-post="{% url 'test2' %}" hx-target="#end" hx-swap="innerText" class="form-horizontal col-12" id="questionsForm">
                 {% csrf_token %}
+                {% if error %}
+    <div class="alert alert-danger text-center fw-bold" role="alert">
+        {{ error }}
+    </div>
+{% endif %}
+                <div class="row mt-4 mx-auto text-center w-100">
+                    
+                    <div class="">
 
-                <div class="row">-->
-                    <!-- Column 1 (1–15) -->
-                    <!--<div class="col-md-6">
-                        <table class="table table-bordered text-center">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>م</th>
-                                    <th>الكلمة</th>
-                                    <th>✓</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for word in test_words|slice:":15" %}
-                                <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{ word }}</td>
-                                    <td id="cell_{{ forloop.counter0 }}" class="score-cell" onclick="toggleCorrect({{ forloop.counter0 }})">
-                                        ✓
-                                        <input type="hidden" name="test_{{ forloop.counter0 }}" id="input_{{ forloop.counter0 }}" value="0">
-                                    </td>
-                                    
 
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>-->
-
-                    <!-- Column 2 (16–30) -->
-                    <!--<div class="col-md-6">
-                        <table class="table table-bordered text-center">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>م</th>
-                                    <th>الكلمة</th>
-                                    <th>✓</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for word in test_words|slice:"15:" %}
-                                <tr>
-                                    <td>{{ forloop.counter|add:"15" }}</td>
-                                    <td>{{ word }}</td>
-                                    <td id="cell_{{ forloop.counter0|add:"15" }}" class="score-cell"
-                                    onclick="toggleCorrect({{ forloop.counter0|add:'15' }})">
-                                        ✓
-                                        <input type="hidden" name="test_{{ forloop.counter0|add:'15' }}" id="input_{{ forloop.counter0|add:'15' }}" value="0">
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                <table class="custom-reading-table">
+                    <thead>
+                        <tr>
+                            <th>م</th>
+                            <th>الجملة</th>
+                            <th>الدرجة ١ / ٠</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i, sentence in test_words.items %}
+                        <tr>
+                            <td class="cell-number">{{ i }}</td>
+                            <td class="cell-word">
+                                <div class="d-flex flex-wrap justify-content-start gap-2">
+                                    {% for word in sentence.split %}
+                                        <span class="word-box" data-sentence="{{ i }}" onclick="toggleWord(this)">
+                                            {{ word }}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td class="score-cell cell-check">
+                                <input type="hidden" name="response_{{ i }}" id="response_{{ i }}" value="0">
+                                <input type="hidden" name="score_{{ i }}" id="score_{{ i }}" value="0">
+                                <span id="status_{{ i }}">0 / {{ sentence.split|length }}</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                          
+                <input type="hidden" name="selected_word_count" id="selected_word_count" value="0">
                     </div>
                 </div>
 
-                <div class="col-12">
-                    <span class="input-group-text mx-auto d-grid mt-4" style="width:fit-content; background-color:#CC99CC; border-radius:0%; font-size:20px; font-weight:bolder;">
-                        الدرجة الكلية / 30
-                    </span>
-                    <label class="input-group-text mx-auto d-grid" id="result" style="width:fit-content; border:2px solid #CC99CC; font-size:20px; font-weight:bolder;"><span id="score-value">0</span></label>
-                    
 
-
-                    <input id="end" type="submit" name="form1" class="btn-light-purple d-grid mx-auto mt-3 mb-4"
-                           value="تسليم الاختبار" data-bs-toggle="modal" data-bs-target="#ModalSubmit"
-                           style="background-color:#CC99CC; color:black; font-weight:bold;">-->
-
-                           <!--<input id="end" type="submit" name="form1" class=" btn-light-purple d-grid mx-auto " value="تسليم الاختبار" data-toggle="modal" data-target="#ModalsubmitTest{{Students.id}}" style="background-color: #CC99CC; color: black; font-weight: bold; margin-top: 18px; margin-bottom: 20px;">-->
+                    <!-- Flex row with Score + Time -->
+                    <div class="d-flex justify-content-between align-items-start flex-wrap text-center gap-3">
                 
-                <!--</div>
-            </form>
+                        <!-- Time -->
+                        <div class="col-4 text-center">
+                            <span class="d-block bg-purple-score text-white fw-bold py-2 rounded-top">الزمن بالثواني</span>
+                            <input readonly type="text" id="timeDisplay"
+                                   class="d-block border border-purple-score border-2 rounded-bottom text-center fw-bold py-2 fs-5"
+                                   value="0" style="min-width: 330px;">
+                            <input type="hidden" name="time" id="timeInput">
+                        </div>
+                
+                        <!-- Score -->
+                        <div class="col-4 text-center">
+                            <span class="d-block bg-purple-score text-white fw-bold py-2 rounded-top">الدرجة الكلية / 101</span>
+                            <label class="d-block border border-purple-score border-2 rounded-bottom py-2 fs-5 fw-bold"
+                                   id="result" style="min-width: 330px;">
+                                   <!--<input type="hidden" name="total_score" id="selected_word_count" value="0">-->
+                                <span id="score-value">0</span>
+                            </label>
+                        </div>
+
+                        <!-- Hidden input to send total to backend -->
+                        <input type="hidden" name="total_score" id="selected_word_count" value="0">
+                
+                    </div> <!-- END of flex container -->
+                
+                    <!-- Submit Button BELOW -->
+                    <div class="d-grid mx-auto mt-5 mb-4" style="width: fit-content;">
+                        <input id="end" type="submit" name="form1" class="btn-light-purple px-5 py-3 fs-5"
+                        value="تسليم الاختبار" data-bs-toggle="modal" data-bs-target="#ModalSubmit"
+                        style="background-color: #b48ce6; color: black; font-weight: bold;">
+                    </div>
+                
+                </div>
+                
+
+                
+                
+              </form>
         </div>
     </div>
-</div>-->
+</div>
 
-<!-- modal for submit tst -->
-<!--<div class="modal fade" id="ModalsubmitTest{{Students.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <form class="form-horizontal" action="" method="POST">
-        {% csrf_token %}
-        <div class="modal-dialog" role="document">
-            <div class="modal-content rounded-3 shadow">
-                <div class="modal-header p-4" id="labelText" style="color: #0059a0">
-                    <h5 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> هل أنت متأكد من تسليم الاختبار؟ </h5>
-                </div>
-                <div class="modal-body fs-5" style="direction: rtl;">
-                    <label for="submitTst" class="form-label">يرجى الاختيار من القائمة </label>
-                    <select id="submitTst" name="submitTst" class="form-select fs-5" Required>
-                        <option value="تم الانتهاء من بنود الاختبار كلها " selected>انتهي من بنود الاختبار كلها </option>
-                        <option value="توقف لأسباب صحية أو شخصية خاصة بالطالب" >توقف لأسباب صحية أو شخصية خاصة بالطالب</option>
-                        <option value="توقف لأسباب صحية أو شخصية خاصة بالفاحص">توقف لأسباب صحية أو شخصية خاصة بالفاحص</option>
-                        <option value="الوصول الى الحد السقفي"> الوصول إلي الحد السقفي </option>
-                        <option value="أسباب أخرى">أسباب أخرى </option>
-                    </select>
-                </div>
-                <div class="modal-footer flex-nowrap p-0">
-                    <input id="submitDropDown" type="submit" name="form2" value=" تسليم الاختبار " class="btn btn-danger fs-5 col-12 py-3 m-0 rounded-0 " style="background-color: #720e9e; border-color: #720e9e; ">
-                </div>
-            </div>
-        </div>
-    </form>
-</div>-->
-
-<!-- Modal for reason -->
-<!--<div class="modal fade" id="ModalSubmit" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<!-- Modal -->
+<div class="modal fade" id="ModalSubmit" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
     <form class="form-horizontal" method="POST">
         {% csrf_token %}
         <div class="modal-dialog" role="document">
             <div class="modal-content rounded-3 shadow">
-                <div class="modal-header p-4 text-purple">
+                <div class="modal-header p-4">
                     <h5 class="modal-title text-center w-100 fs-2 fw-bold">هل أنت متأكد من تسليم الاختبار؟</h5>
                 </div>
                 <div class="modal-body fs-5" style="direction: rtl;">
@@ -145,184 +137,95 @@
 </div>
 
 
-<script>
-    function toggleCorrect(index) {
-        const cell = document.getElementById("cell_" + index);
-        const input = document.getElementById("input_" + index);
-        
-        if (input.value === "0") {
-            input.value = "1";
-            cell.classList.add("selected");
-        } else {
-            input.value = "0";
-            cell.classList.remove("selected");
-        }
-    
-        updateTotalScore();
+<style>
+    .word-box {
+        border: 1px solid #ccc;
+        padding: 4px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        user-select: none;
     }
-    
-    function updateTotalScore() {
-        let total = 0;
-        document.querySelectorAll("input[id^='input_']").forEach((input) => {
-            if (input.value === "1") total++;
-        });
-        document.getElementById("score-value").innerText = total;
+    .word-box.selected {
+        background-color: lightgreen;
+        border-color: green;
     }
-    
-    // Called when "تسليم الاختبار" is clicked
-    function handleSubmit() {
-        const selected = document.querySelectorAll("input[id^='input_'][value='1']");
-        if (selected.length === 0) {
-            alert("الرجاء تحديد الكلمات التي قرأها الطالب أولاً.");
-            return;
-        }
-    
-        // Open modal
-        document.getElementById("modalTrigger").click();
-    }
-    
-    // When modal submit is clicked
-    document.addEventListener("DOMContentLoaded", function () {
-        const confirmBtn = document.getElementById("confirmSubmit");
-        const form = document.getElementById("form1");
-    
-        confirmBtn.addEventListener("click", function () {
-            const reason = document.getElementById("stop_reason").value;
-            if (!reason) {
-                alert("يرجى اختيار سبب التوقف.");
-                return;
-            }
-    
-            // Set selected reason to hidden input
-            document.getElementById("hidden_reason").value = reason;
-    
-            // Submit the form
-            form.submit();
-        });
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        let showModal = "{{ show_modal|default:'false' }}";
-
-        if (showModal === "True") {
-            const modal = new bootstrap.Modal(document.getElementById('resultModal'));
-            modal.show();
-        }
-    });
-    </script>-
-    
-    
-    
-
-{% endblock %}-->
-
-
-<!--<div class="container">
-
-    <h2 class="text-center mb-4">الاختبار: دقة قراءة الكلمة وسرعتها</h2>
-
-    {% if result %}
-    <div class="alert alert-success mt-4">
-        ✅ مجموع الكلمات الصحيحة: {{ result.total_correct }}<br>
-        ⏱️ الزمن بالثواني: {{ result.time_seconds }}<br>
-        📊 الطلاقة: {{ result.fluency }}
-    </div>
-    {% endif %}
-
-    <form method="post" onsubmit="return validateTest()">
-        {% csrf_token %}
-
-        <div class="alert alert-primary text-center mb-4">
-            الرجاء الضغط على الزر لتحديد الكلمات التي قرأها الطالب بشكل صحيح فقط
-        </div>
-
-        <div class="row"> -->
-            <!-- Column 1 (1–15) 
-            <div class="col-md-6">
-                <table class="table table-bordered text-center">
-                    <thead class="table-light">
-                        <tr>
-                            <th>م</th>
-                            <th>الكلمة</th>
-                            <th>✓</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for word in test_words|slice:":15" %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ word }}</td>
-                            <td>
-                                <input type="hidden" name="test_{{ forloop.counter0 }}" id="input_{{ forloop.counter0 }}" value="0">
-                                <button type="button" class="btn btn-outline-secondary score-btn"
-                                        onclick="toggleCorrect({{ forloop.counter0 }}, this)">✓</button>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>-->
-
-            <!-- Column 2 (16–30) 
-            <div class="col-md-6">
-                <table class="table table-bordered text-center">
-                    <thead class="table-light">
-                        <tr>
-                            <th>م</th>
-                            <th>الكلمة</th>
-                            <th>✓</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for word in test_words|slice:"15:" %}
-                        <tr>
-                            <td>{{ forloop.counter|add:"15" }}</td>
-                            <td>{{ word }}</td>
-                            <td>
-                                <input type="hidden" name="test_{{ forloop.counter0|add:'15' }}" id="input_{{ forloop.counter0|add:'15' }}" value="0">
-                                <button type="button" class="btn btn-outline-secondary score-btn"
-                                        onclick="toggleCorrect({{ forloop.counter0|add:'15' }}, this)">✓</button>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>-->
-
-        
-        <!--<div class="mb-3">
-            <label for="time"><strong>الزمن المستغرق (بالثواني)</strong></label>
-            <input type="number" step="0.01" min="0" class="form-control" name="time" id="time" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary">احسب النتيجة</button>
-    </form>
-</div>
+</style>
 
 <script>
-    function toggleCorrect(index, btn) {
-        const input = document.getElementById("input_" + index);
-        const selected = btn.classList.contains("btn-success");
-
-        if (selected) {
-            input.value = 0;
-            btn.classList.remove("btn-success");
-            btn.classList.add("btn-outline-secondary");
-        } else {
-            input.value = 1;
-            btn.classList.remove("btn-outline-secondary");
-            btn.classList.add("btn-success");
-        }
+    function toggleWord(span) {
+        span.classList.toggle("selected");
+        updateSentenceStatus(span.dataset.sentence);
     }
 
-    function validateTest() {
-        const time = document.getElementById("time").value;
-        if (!time || parseFloat(time) <= 0) {
-            alert("يرجى إدخال الزمن المستغرق بالثواني.");
-            return false;
-        }
-        return true;
+    let startTime = Date.now();
+
+function toggleCorrect(index) {
+    const cell = document.getElementById("cell_" + index);
+    const input = document.getElementById("input_" + index);
+
+    if (input.value === "0") {
+        input.value = "1";
+        cell.classList.add("selected");
+    } else {
+        input.value = "0";
+        cell.classList.remove("selected");
     }
+    updateTotalScore();
+}
+
+function updateTotalScore() {
+    let total = 0;
+    document.querySelectorAll("input[id^='input_']").forEach((input) => {
+        if (input.value === "1") total++;
+    });
+    document.getElementById("score-value").innerText = total;
+}
+
+// Autosave every 15s
+setInterval(() => {
+    const form = document.getElementById("questionsForm");
+    const formData = new FormData(form);
+
+    fetch("{% url 'primary_test1_autosave' %}", {
+        method: "POST",
+        headers: { 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value },
+        body: formData
+    }).then(response => response.ok && console.log("Autosaved"));
+}, 15000);
+
+
+function updateTimeDisplay() {
+    const now = Date.now();
+    const elapsedSeconds = Math.floor((now - startTime) / 1000);
+    document.getElementById('timeDisplay').value = elapsedSeconds;
+    document.getElementById('timeInput').value = elapsedSeconds;
+}
+
+// Update every second
+let timerInterval = setInterval(updateTimeDisplay, 1000);
+document.getElementById('ModalSubmit').addEventListener('show.bs.modal', () => {
+clearInterval(timerInterval);
+});
+
+    function updateSentenceStatus(sentenceId) {
+    const words = document.querySelectorAll(`.word-box[data-sentence='${sentenceId}']`);
+    const selectedCount = Array.from(words).filter(word => word.classList.contains('selected')).length;
+    const total = words.length;
+
+    document.getElementById(`status_${sentenceId}`).innerText = `${selectedCount} / ${total}`;
+    document.getElementById(`score_${sentenceId}`).value = selectedCount;
+
+    let totalScore = 0;
+    document.querySelectorAll("input[id^='score_']").forEach((input) => {
+        totalScore += parseInt(input.value || '0');
+    });
+
+    document.getElementById("score-value").innerText = totalScore;
+    document.getElementById("selected_word_count").value = totalScore;
+}
+
+
 </script>
--->
+
+
+{% endblock %}
