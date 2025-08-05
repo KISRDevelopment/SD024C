@@ -70,6 +70,17 @@ primary_test4_words = [
     "", "", "", "", ""
 ]
 
+secondary_test3_words = [
+    "", "", "", "", "",
+    "", "", "", "", "",
+    "", "", "","","",
+    "", "", "", "", "",
+    "", "", "", "","",
+    "", "", "", "", "",
+    "", "", "", "","",
+    "", "", "", ""
+]
+
 def index(request):
     return render(request,"index.html")
 
@@ -392,14 +403,18 @@ def testsPage (request):
 @login_required(login_url="/login")
 def testsPageSec (request):
     test1 = SecondaryTest1.objects.filter(student_id = request.session['student'])
+    test3 = SecondaryTest3.objects.filter(student_id = request.session['student'])
     global context_test1
     context_test1 = {}
+    global context_test3
+    context_test3 = {}
     student = Student.objects.get(id=request.session['student']).studentName
 
     #add it in the if statement
-    if (test1.exists()):
-        test1_obj = SecondaryTest1.objects.filter(student_id = request.session['student'])
-        if(test1_obj.exists()):
+    if (test1.exists() or test3.exists()):
+        #test1_obj = SecondaryTest1.objects.filter(student_id = request.session['student'])
+        #test3_obj = SecondaryTest3.objects.filter(student_id = request.session['student'])
+        if(test1.exists()):
             test1_correct_Ans = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").total_correct
             test1_time_seconds = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").time_seconds
             test1_fluency_score = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").fluency_score
@@ -410,10 +425,27 @@ def testsPageSec (request):
         else:
             context_test1 = {"status_test1":('غير منجز'), }
 
-        return render(request, "secondary_test/testPage.html", { "context_test1": context_test1,"student": student, "examiners": (Examiner.objects.get(user_id=request.user.id))})
+        #return render(request, "secondary_test/testPage.html", { "context_test1": context_test1,"student": student, "examiners": (Examiner.objects.get(user_id=request.user.id))})
+    #else:
+        #context_test1 = { "status_test1":('غير منجز'),}
+
+        if(test3.exists()):
+            test3_correct_Ans = SecondaryTest3.objects.filter(student_id = request.session['student']).latest("id").total_correct
+            #test1_time_seconds = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").time_seconds
+            #test1_fluency_score = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").fluency_score
+            if (test3_correct_Ans != None):
+                context_test3 = {"correctAnswers":(test3_correct_Ans), "status_test3":('منجز ')}
+            else:
+                context_test3 = {"status_test3":('غير منجز'), }
+        else:
+            context_test3 = {"status_test3":('غير منجز'), }
+
+        return render(request, "secondary_test/testPage.html", { "context_test1": context_test1, "context_test3": context_test3,"student": student, "examiners": (Examiner.objects.get(user_id=request.user.id))})
+    
     else:
         context_test1 = { "status_test1":('غير منجز'),}
-        return render(request,"secondary_test/testPage.html", {"context_test1": context_test1,"student":(Student.objects.get(id=request.session['student']).studentName), "examiners": (Examiner.objects.get(user_id=request.user.id)) })
+        context_test3 = { "status_test3":('غير منجز'),}
+        return render(request,"secondary_test/testPage.html", {"context_test1": context_test1, "context_test3": context_test3,"student":(Student.objects.get(id=request.session['student']).studentName), "examiners": (Examiner.objects.get(user_id=request.user.id)) })
 
     
 #Primary test 1
@@ -757,7 +789,57 @@ def secondary_test2(request):
 
 @login_required(login_url="/login")
 def secondary_test3(request):
-    return render(request,"secondary_test/test3.html")
+    student = Student.objects.get(id=request.session['student'])
+
+    # Modal confirmation submit
+    if request.method == 'POST' and request.POST.get("form2"):
+        print(request.POST)
+        # Get saved values from session
+        total_correct = request.session.get('test3_total_correct', 0)
+        raw_scores = request.session.get('test3_raw_scores', [])
+        reason = request.POST.get("submitTst", "")
+
+        # Save final test result
+        SecondaryTest3.objects.create(
+            student=student,
+            raw_scores = raw_scores,
+            total_correct=total_correct,
+            reason=reason,
+            date=datetime.now()
+        )
+
+        # Clear session if you want
+        if reason != "الوصول الى الحد السقفي":
+            request.session.pop('test3_total_correct', None)
+            request.session.pop('test3_raw_scores', None)
+
+
+        return redirect('testsPageSec')
+
+    # Main test submission (score & time)
+    if request.method == 'POST' and request.POST.get("form1"):
+        raw_scores = []
+        for i in range(39):
+            val = request.POST.get(f'score_{i}', "-")
+            raw_scores.append(val)
+
+        #test_scores = [int(request.POST.get(f'score_{i}', 0)) for i in range(30)]
+        total_correct = sum(1 for val in raw_scores if val == "1")
+
+        # Save to session for modal confirmation
+        request.session['test3_total_correct'] = total_correct
+        request.session['test3_raw_scores'] = raw_scores
+
+        return render(request, 'secondary_test/test3.html', {
+            'test_words': secondary_test3_words,
+            'result': {
+                'total_correct': total_correct,
+            }
+        })
+    return render(request,"secondary_test/test3.html", {
+        'test_words': secondary_test3_words
+    })
+    
 
 @login_required(login_url="/login")
 def secondary_test4(request):

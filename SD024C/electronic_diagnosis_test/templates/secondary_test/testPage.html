@@ -35,7 +35,7 @@
                         <td style="text-align: center;">
                             {%if context_test1.correctAnswers != None%} {{context_test1.status_test1}} {% else %} {{context_test1.status_test1}} {%endif%}
                         </td>
-                        <td style="text-align: center;">{%if context_test1.correctAnswers != None%} {{context_test1.status_test1}} {% else %} ------- {%endif%}
+                        <td style="text-align: center;">{%if context_test1.correctAnswers != None%} {{context_test1.correctAnswers}} {% else %} ------- {%endif%}
                         </td>
                         <td style="text-align: center;">{%if context_test1.status_test1 != None%}
                             <a href="#" id="showResult" data-bs-toggle="modal" data-bs-target="#ModalShowTest1" class="btn-t-enabled"> عرض </a> {% else %}
@@ -58,23 +58,23 @@
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
-                    <tr>
+                    <tr>-->
                         <td>
                             <a name="test3" href="{% url 'secondary_test3'%}" id="test3" type="submit" value="التسمية السريعة للحروف" class="btn-t-enabled">إملاء الكلمة</a>
                         </td>
                         <td style="text-align: center;">
-                            {%if context_test3.rpdNLwrongA != None%} {{context_test3.status_test3}} {% else %} {{context_test3.status_test3}} {%endif%}
+                            {%if context_test3.correctAnswers != None%} {{context_test3.status_test3}} {% else %} {{context_test3.status_test3}} {%endif%}
                         </td>
                         <td style="text-align: center;">
-                            {%if context_test3.rpdNLwrongA != None%} {{context_test3.totalScore_test3}} {% else %} ------- {%endif%}
+                            {%if context_test3.correctAnswers != None%} {{context_test3.correctAnswers}} {% else %} ------- {%endif%}
                         </td>
-                        <td style="text-align: center;">{%if context_test3.rpdNLwrongA != None%}
-                            <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowLtrs" class="btn-t-enabled"> عرض </a> {% else %}
+                        <td style="text-align: center;">{%if context_test3.correctAnswers != None%}
+                            <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowTest3" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <!--<td>
                             <a href="{% url 'secondary_test4'%}" id="test4" type="button" class="btn-t-enabled">فهم المقروء (القطعة)</a>
                         </td>
                         <td style="text-align: center;">
