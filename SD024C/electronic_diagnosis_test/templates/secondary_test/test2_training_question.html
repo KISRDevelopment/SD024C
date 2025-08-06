@@ -1,34 +1,5 @@
-<!--<form 
-  method="POST" 
-  
-  hx-target="#question-area" 
-  hx-swap="innerHTML">
-  
-  {% csrf_token %}
-  <input type="hidden" name="index" value="{{ index }}">
 
-  <div class="card p-3 my-3">
-    <div class="mb-2 fw-bold fs-5">
-      {{ index|add:"1" }}. {{ question.text }}
-    </div>
-
-    <div class="row">
-      {% for opt in question.options %}
-      <div class="col-6 mb-2">
-        <button 
-          type="submit" 
-          name="answer" 
-          value="{{ opt.label }}" 
-          class="btn btn-outline-primary w-100 text-end" 
-          style="direction: rtl;">
-          {{ opt.label }}. {{ opt.text }}
-        </button>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</form>-->
-
+<div id="question-area">
 <form 
   method="POST" 
   hx-post="{% url 'test2_training_sec' %}" 
@@ -49,14 +20,15 @@
           <button 
             type="submit" 
             name="answer" 
-            value="{{ opt.label }}" 
+            value="{{ opt.value }}" 
             class="btn btn-outline-primary w-100 text-end" 
+            data-answer = "{{opt.value}}"
             style="direction: rtl;">
-            {{ opt.label }}. {{ opt.text }}
+            {{ opt.label }}- {{ opt.text }}
           </button>
         </div>
       {% endfor %}
     </div>
   </div>
 </form>
-
+</div>

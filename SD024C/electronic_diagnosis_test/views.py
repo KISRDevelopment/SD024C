@@ -831,6 +831,14 @@ def secondary_test2_training(request):
     # --- GET: Load Next Question via HTMX ---
     if request.method == "GET" and request.headers.get("HX-Request") == "true":
         index = int(request.GET.get("index", 0))
+        is_final = request.GET.get("final") == "true"
+
+        if is_final:
+            passed = request.session.get('training_correct', 0) > 0
+            return render(request, 'secondary_test/test2_training_correct_result.html', {
+                'show_final_result': True,
+                'passed': passed
+            })
 
         if index < len(secondary_test2_training_questions):
             return render(request, "secondary_test/test2_training_question.html", {
@@ -838,41 +846,37 @@ def secondary_test2_training(request):
                 "index": index
             })
 
-        # End of questions
-        passed = request.session.get('training_correct', 0) > 0
-        if passed:
-            request.session['training_passed'] = True
-            return redirect('secondary_test2')
-        else:
-            return render(request, 'secondary_test/test2_training.html', {
-                'error': 'لم يتم اجتياز التدريب. لا يمكن المتابعة.'
-            })
-
-    # --- POST: Answer Clicked OR Auto "التالي" ---
+    # --- POST: Answer Clicked OR "التالي" ---
     if request.method == "POST":
         index = int(request.POST.get("index", 0))
         selected = request.POST.get("answer")
+        question = secondary_test2_training_questions[index]
+        correct = question["correct"]
+        next_index = index + 1
+        total = len(secondary_test2_training_questions)
+        is_last = next_index >= total
+        passed = request.session.get('training_correct', 0) > 0 if is_last else None
 
-        if selected is None:
-            # Auto next request (no answer, just next)
-            return render(request, "secondary_test/test2_training_question.html", {
-                "question": secondary_test2_training_questions[index],
-                "index": index
-            })
-
-        correct = secondary_test2_training_questions[index]["correct"]
-
+    if selected:
         if 'training_correct' not in request.session:
             request.session['training_correct'] = 0
 
         if selected == correct:
             request.session['training_correct'] += 1
 
-        return render(request, "secondary_test/test2_training_correct_result.html", {
-            "is_correct": selected == correct,
-            "correct": correct,
-            "index": index + 1  # 👈 next question index
-        })
+
+
+    return render(request, "secondary_test/test2_training_correct_result.html", {
+        "is_correct": selected == correct,
+        "correct": correct,
+        "selected": selected,
+        "index": next_index,
+        "question": question,
+        "total_questions": total,
+        "passed": passed
+    })
+
+
 
 
 
