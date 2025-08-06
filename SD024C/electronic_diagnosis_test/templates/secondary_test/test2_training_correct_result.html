@@ -1,0 +1,55 @@
+<!--<div class="card p-3 my-3">
+    {% if is_correct %}
+      <div class="alert alert-success text-center fs-5">
+        أحسنت! إجابتك صحيحة.
+      </div>
+    {% else %}
+      <div class="alert alert-warning text-center fs-5">
+        الإجابة الصحيحة هي: <strong>{{ correct }}</strong>
+      </div>
+    {% endif %}
+  </div>
+  
+  <form 
+    hx-post="{% url 'test2_training_sec' %}" 
+    hx-target="#question-area" 
+    hx-swap="innerHTML">
+    
+    {% csrf_token %}
+    <input type="hidden" name="index" value="{{ index|add:"1" }}">
+
+  
+    <button id="autoNextBtn" type="submit" class="d-none">التالي</button>
+  </form>
+  
+  <script>
+    setTimeout(() => {
+      document.querySelector('#autoNextBtn').click();
+    }, 1000);  
+  </script>-->
+
+  <div class="card p-3 my-3">
+    {% if is_correct %}
+      <div class="alert alert-success text-center fs-5">أحسنت! إجابتك صحيحة.</div>
+    {% else %}
+      <div class="alert alert-danger text-center fs-5">الإجابة الصحيحة هي: <strong>{{ correct }}</strong></div>
+    {% endif %}
+  </div>
+  
+  <form 
+    hx-post="{% url 'test2_training_sec' %}" 
+    hx-target="#question-area" 
+    hx-swap="innerHTML">
+    
+    {% csrf_token %}
+    <input type="hidden" name="index" value="{{ index }}">
+    <button id="autoNextBtn" type="submit" class="d-none">التالي</button>
+  </form>
+  
+  <script>
+    setTimeout(() => {
+      document.querySelector('#autoNextBtn').click();
+    }, 1000);
+  </script>
+  
+  

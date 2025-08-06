@@ -42,9 +42,9 @@
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
-                    <!--<tr>
+                    <tr>
                         <td>
-                            <a id="test2" href="{% url 'secondary_test2'%}" type="button" class="btn-t-enabled">الطلاقة في فهم المقروه</a>
+                            <a id="test2" href="{% url 'test2_training_sec'%}" type="button" class="btn-t-enabled">الطلاقة في فهم المقروه</a>
                         </td>
                         <td style="text-align: center;">
                             {%if context_test2.correctAnswers != None%} {{context_test2.status_test2}} {% else %} {{context_test2.status_test2}} {%endif%}
@@ -58,7 +58,7 @@
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
-                    <tr>-->
+                    <tr>
                         <td>
                             <a name="test3" href="{% url 'secondary_test3'%}" id="test3" type="submit" value="التسمية السريعة للحروف" class="btn-t-enabled">إملاء الكلمة</a>
                         </td>

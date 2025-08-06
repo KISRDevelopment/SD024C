@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<script src="https://unpkg.com/htmx.org@1.9.4"></script>
+
+<div class="container mt-5" dir="rtl">
+  <h3 class="mb-4 text-center" style="color: #5E2B8C;">الفقرات التدريبية: اختبار الطلاقة في فهم المقروء</h3>
+  {% if error %}
+  <div class="alert alert-danger text-center fw-bold" role="alert">
+      {{ error }}
+  </div>
+    {% else %}
+
+  <div id="question-area">
+    {% include 'secondary_test/test2_training_question.html' %}
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}
