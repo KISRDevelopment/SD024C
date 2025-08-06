@@ -84,7 +84,7 @@ secondary_test3_words = [
 
 secondary_test2_training_questions = [
     {
-        "text": "خَرَجَ مُحَمَّدٌ لِيَلْعَبَ مَعَ ..........",
+        "text": "خَرَجَ مُحَمّدُُ لِيَلْعَبَ مَعَ ..........",
         "options": [
             {"label": "أ", "text": "السّيّاراتِ", "value": "أ"},
             {"label": "ب", "text": "رِفاقِهِ", "value": "ب"},
@@ -94,24 +94,24 @@ secondary_test2_training_questions = [
         "correct": "ب"
     },
     {
-        "text": "خَرَجَ مُحَمَّدٌ لِيَلْعَبَ مَعَ ..........",
+        "text": "الطّائِرةُ تَطيرُ في  ..........",
         "options": [
-            {"label": "أ", "text": "رِفاقِهِ", "value": "أ"},
-            {"label": "ب", "text": "كُتُبِهِ", "value": "ب"},
-            {"label": "ج", "text": "أَلْعَابِهِ", "value": "ج"},
-            {"label": "د", "text": "مِقْعَدِهِ", "value": "د"},
+            {"label": "أ", "text": "الْبَحْرِ", "value": "أ"},
+            {"label": "ب", "text": "الْبَرّ", "value": "ب"},
+            {"label": "ج", "text": "الْجَوّ", "value": "ج"},
+            {"label": "د", "text": "التّرابِ", "value": "د"},
         ],
-        "correct": "أ"
+        "correct": "ج"
     },
     {
-        "text": "خَرَجَ مُحَمَّدٌ لِيَلْعَبَ مَعَ ..........",
+        "text": "أَغْسِلُ أَسْناني بِ   ..........",
         "options": [
-            {"label": "أ", "text": "رِفاقِهِ", "value": "أ"},
-            {"label": "ب", "text": "كُتُبِهِ", "value": "ب"},
-            {"label": "ج", "text": "أَلْعَابِهِ", "value": "ج"},
-            {"label": "د", "text": "مِقْعَدِهِ", "value": "د"},
+            {"label": "أ", "text": "الْقَلَمِ", "value": "أ"},
+            {"label": "ب", "text": "الْفُرْشاةِ", "value": "ب"},
+            {"label": "ج", "text": "الْمِلْعَقَةِ", "value": "ج"},
+            {"label": "د", "text": "الْمَنْديلِ", "value": "د"},
         ],
-        "correct": "أ"
+        "correct": "ب"
     },
 ]
 
@@ -818,124 +818,6 @@ def secondary_test1(request):
         'test_words': TEST_WORDS_secondary_test1
     })
 
-'''def secondary_test2_training(request):
-
-    if request.method == "POST":
-        index = int(request.POST.get("index", 0))
-        selected = request.POST.get("answer", "")
-        correct = secondary_test2_training_questions[index]["correct"]
-
-        if 'training_correct' not in request.session:
-            request.session['training_correct'] = 0
-
-        if selected == correct:
-            request.session['training_correct'] += 1
-
-        html = render_to_string("secondary_test/test2_training_correct_result.html", {
-            "is_correct": selected == correct,
-            "correct": correct,
-            "index": index + 1  # next question index
-        }, request=request)
-        return HttpResponse(html)
-
-    elif request.method == "GET" and request.headers.get("HX-Request") == "true":
-        # Called by HTMX after delay
-        index = int(request.GET.get("index", 0))
-
-        if index < len(secondary_test2_training_questions):
-            html = render_to_string("secondary_test/test2_training_question.html", {
-                "question": secondary_test2_training_questions[index],
-                "index": index
-            }, request=request)
-            return HttpResponse(html)
-
-        # End of questions
-        passed = request.session.get('training_correct', 0) > 0
-        if passed:
-            request.session['training_passed'] = True
-            return redirect('secondary_test2')
-        else:
-            return render(request, 'secondary_test/test2_training.html', {
-                'error': 'لم يتم اجتياز التدريب. لا يمكن المتابعة.'
-            })
-    else:
-        # First GET request
-        request.session['training_correct'] = 0
-        return render(request, "secondary_test/test2_training.html", {
-            "question": secondary_test2_training_questions[0],
-            "index": 0,
-            "htmx": False
-        })'''
-
-'''def secondary_test2_training(request):
-    
-    if request.method == "POST":
-        index = int(request.POST.get("index", 0))
-        selected = request.POST.get("answer")
-
-        # This means it's the auto "التالي" request (no answer)
-        if selected is None:
-            if index < len(secondary_test2_training_questions):
-                html = render_to_string("secondary_test/test2_training_question.html", {
-                    "question": secondary_test2_training_questions[index],
-                    "index": index
-                }, request=request)
-                return HttpResponse(html)
-
-            # End of training questions
-            passed = request.session.get('training_correct', 0) > 0
-            if passed:
-                request.session['training_passed'] = True
-                return redirect('secondary_test2')
-            else:
-                return render(request, 'secondary_test/test2_training.html', {
-                    'error': 'لم يتم اجتياز التدريب. لا يمكن المتابعة.'
-                })
-
-        # Otherwise: it's an answer from the user
-        correct = secondary_test2_training_questions[index]["correct"]
-
-        if 'training_correct' not in request.session:
-            request.session['training_correct'] = 0
-
-        if selected == correct:
-            request.session['training_correct'] += 1
-
-        html = render_to_string("secondary_test/test2_training_correct_result.html", {
-            "is_correct": selected == correct,
-            "correct": correct,
-            "index": index
-        }, request=request)
-        return HttpResponse(html)
-
-    elif request.method == "GET" and request.headers.get("HX-Request") == "true":
-        # Called by HTMX after delay
-        index = int(request.GET.get("index", 0))
-
-        if index < len(secondary_test2_training_questions):
-            html = render_to_string("secondary_test/test2_training_question.html", {
-                "question": secondary_test2_training_questions[index],
-                "index": index 
-            }, request=request)
-            return HttpResponse(html)
-
-        # End of questions
-        passed = request.session.get('training_correct', 0) > 0
-        if passed:
-            request.session['training_passed'] = True
-            return redirect('secondary_test2')
-        else:
-            return render(request, 'secondary_test/test2_training.html', {
-                'error': 'لم يتم اجتياز التدريب. لا يمكن المتابعة.'
-            })
-    else:
-        # First GET request
-        request.session['training_correct'] = 0
-        return render(request, "secondary_test/test2_training.html", {
-            "question": secondary_test2_training_questions[0],
-            "index": 0,
-            "htmx": False
-        })'''
 
 def secondary_test2_training(request):
     # --- First Visit ---
