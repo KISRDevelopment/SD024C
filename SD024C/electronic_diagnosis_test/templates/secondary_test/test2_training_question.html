@@ -10,21 +10,21 @@
   <input type="hidden" name="index" value="{{ index }}">
 
   <div class="card p-3 my-3">
-    <div class="mb-2 fw-bold fs-5">
-      {{ index|add:"1" }}. {{ question.text }}
+    <div class="mb-4 fw-bold fs-5 text-end">
+      {{ index|add:"1" }}- {{ question.text|safe }}
     </div>
 
     <div class="row">
       {% for opt in question.options %}
-        <div class="col-6 mb-2">
+        <div class="col-md-6 mb-3 text-end">
           <button 
             type="submit" 
             name="answer" 
             value="{{ opt.value }}" 
-            class="btn btn-outline-primary w-100 text-end" 
+            class="btn btn-outline-secondary w-100 text-end" 
             data-answer = "{{opt.value}}"
             style="direction: rtl;">
-            {{ opt.label }}- {{ opt.text }}
+            <strong>{{ opt.label }} - </strong>{{ opt.text }}
           </button>
         </div>
       {% endfor %}
