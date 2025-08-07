@@ -165,7 +165,7 @@ main_questions = [
             {"label": "أ", "text": "تَغْرُبُ", "value": "أ"},
             {"label": "ب", "text": "تُشْرِقُ", "value": "ب"},
             {"label": "ج", "text": "تَعْصِفُ", "value": "ج"},
-            {"label": "د", "text": "تُمْطرُ", "value": "د"},
+            {"label": "د", "text": "تُمْطِرُ", "value": "د"},
         ],
         "correct": "ب"
     },
