@@ -790,9 +790,32 @@ def secondary_test2_training(request):
 
 @login_required(login_url="/login")
 def secondary_test2(request):
-    return render(request,"secondary_test/test2.html", {
-        "questions": main_questions
-    })
+    # --- First Visit ---
+    if request.method == "GET" and not request.headers.get("HX-Request"):
+        return render(request, "secondary_test/test2.html", {
+            "question": main_questions[0],
+            "index": 0
+        })
+    
+        # --- GET: Load Next Question via HTMX ---
+    if request.method == "GET" and request.headers.get("HX-Request") == "true":
+        index = int(request.GET.get("index", 0))
+        is_final = request.GET.get("final") == "true"
+
+        if is_final:
+            return render(request, 'secondary_test/testPage.html', {
+                'show_final_result': True,
+            })
+
+        if index < len(main_questions):
+            return render(request, "secondary_test/test2_question.html", {
+                "question": main_questions[index],
+                "index": index
+            })
+
+    else:
+        return render(request, "secondary_test/testPage.html") 
+
 
 @login_required(login_url="/login")
 def secondary_test3(request):

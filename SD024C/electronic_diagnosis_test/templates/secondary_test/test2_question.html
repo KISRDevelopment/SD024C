@@ -1,0 +1,22 @@
+<div class="fs-4 mb-3" style="text-align: right;">
+    <strong>{{ index|add:"1" }}.</strong> {{ question.text }}
+  </div>
+  
+  <div class="row">
+    {% for opt in question.options %}
+      <div class="col-6 mb-2">
+        <button class="btn btn-outline-dark w-100 fs-5">
+          {{ opt.label }}. {{ opt.text }}
+        </button>
+      </div>
+    {% endfor %}
+  </div>
+  
+  <!-- Hidden auto-next trigger -->
+  <button id="auto-next"
+          hx-get="{% url 'secondary_test2' %}?index={{ index|add:1 }}"
+          hx-target="#question-area"
+          hx-swap="innerHTML"
+          style="display: none;">
+  </button>
+  
