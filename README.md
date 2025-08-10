@@ -36,7 +36,6 @@ Representative subtests implemented/in progress:
 ```bash
 git clone git@github.com:KISRDevelopment/SD024C.git
 cd SD024C
-cd SD024C (again)
 ```
 
 ### 2. Create & activate a virtual environment
