@@ -3,6 +3,7 @@ from django.shortcuts import *
 from django.contrib.auth import *
 from django.contrib import *
 from django.http import *
+from django.urls import reverse
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from .data.secondary.test2 import secondary_test2_training_questions, main_questions
@@ -20,6 +21,7 @@ from django.template.loader import render_to_string
 #import json
 #from django.core.mail import send_mail
 #from django.conf import settings
+import time
 
 
 
@@ -345,18 +347,21 @@ def testsPage (request):
 
 @login_required(login_url="/login")
 def testsPageSec (request):
+    student = Student.objects.get(id=request.session['student']).studentName
     test1 = SecondaryTest1.objects.filter(student_id = request.session['student'])
+    test2 = SecondaryTest2.objects.filter(student_id = request.session['student'])
     test3 = SecondaryTest3.objects.filter(student_id = request.session['student'])
     global context_test1
     context_test1 = {}
+    global context_test2
+    context_test2 = {}
     global context_test3
     context_test3 = {}
-    student = Student.objects.get(id=request.session['student']).studentName
+    
 
     #add it in the if statement
-    if (test1.exists() or test3.exists()):
-        #test1_obj = SecondaryTest1.objects.filter(student_id = request.session['student'])
-        #test3_obj = SecondaryTest3.objects.filter(student_id = request.session['student'])
+    if (test1.exists() or test1.exists() or test3.exists()):
+
         if(test1.exists()):
             test1_correct_Ans = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").total_correct
             test1_time_seconds = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").time_seconds
@@ -368,9 +373,17 @@ def testsPageSec (request):
         else:
             context_test1 = {"status_test1":('غير منجز'), }
 
-        #return render(request, "secondary_test/testPage.html", { "context_test1": context_test1,"student": student, "examiners": (Examiner.objects.get(user_id=request.user.id))})
-    #else:
-        #context_test1 = { "status_test1":('غير منجز'),}
+        if(test2.exists()):
+            test2_correct_Ans = SecondaryTest2.objects.filter(student_id = request.session['student']).latest("id").total_correct
+            #test1_time_seconds = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").time_seconds
+            #test1_fluency_score = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").fluency_score
+            if (test2_correct_Ans != None):
+                context_test2 = {"correctAnswers":(test2_correct_Ans), "status_test2":('منجز ')}
+            else:
+                context_test2 = {"status_test2":('غير منجز'), }
+        else:
+            context_test2 = {"status_test3":('غير منجز'), }
+
 
         if(test3.exists()):
             test3_correct_Ans = SecondaryTest3.objects.filter(student_id = request.session['student']).latest("id").total_correct
@@ -383,12 +396,13 @@ def testsPageSec (request):
         else:
             context_test3 = {"status_test3":('غير منجز'), }
 
-        return render(request, "secondary_test/testPage.html", { "context_test1": context_test1, "context_test3": context_test3,"student": student, "examiners": (Examiner.objects.get(user_id=request.user.id))})
+        return render(request, "secondary_test/testPage.html", { "context_test1": context_test1, "context_test2": context_test2, "context_test3": context_test3,"student": student, "examiners": (Examiner.objects.get(user_id=request.user.id))})
     
     else:
         context_test1 = { "status_test1":('غير منجز'),}
+        context_test2 = { "status_test2":('غير منجز'),}
         context_test3 = { "status_test3":('غير منجز'),}
-        return render(request,"secondary_test/testPage.html", {"context_test1": context_test1, "context_test3": context_test3,"student":(Student.objects.get(id=request.session['student']).studentName), "examiners": (Examiner.objects.get(user_id=request.user.id)) })
+        return render(request,"secondary_test/testPage.html", {"context_test1": context_test1, "context_test2": context_test2, "context_test3": context_test3,"student":(Student.objects.get(id=request.session['student']).studentName), "examiners": (Examiner.objects.get(user_id=request.user.id)) })
 
     
 #Primary test 1
@@ -786,35 +800,156 @@ def secondary_test2_training(request):
 
 
 
-
+def _test2_init(request):
+    s = request.session
+    s['t2_index'] = 0
+    s['t2_answers'] = []
+    s['t2_scores']  = []
+    s['t2_durations'] = []
+    s['t2_started_at'] = time.time()
+    s['t2_qstart_at']  = time.time()
+    s.modified = True
 
 @login_required(login_url="/login")
 def secondary_test2(request):
-    # --- First Visit ---
+    student = Student.objects.get(id=request.session['student'])
+
+    # First test page load (Q1)
     if request.method == "GET" and not request.headers.get("HX-Request"):
+        _test2_init(request)
         return render(request, "secondary_test/test2.html", {
             "question": main_questions[0],
             "index": 0
         })
-    
-        # --- GET: Load Next Question via HTMX ---
-    if request.method == "GET" and request.headers.get("HX-Request") == "true":
-        index = int(request.GET.get("index", 0))
-        is_final = request.GET.get("final") == "true"
 
-        if is_final:
-            return render(request, 'secondary_test/testPage.html', {
-                'show_final_result': True,
-            })
+    # HTMX POST: when a button is clicked (answer / skip / stop)
+    if request.method == "POST" and request.headers.get("HX-Request") == "true":
+        s = request.session
+        idx = s.get('t2_index', 0)
+        answers = s.get('t2_answers', [])
+        scores  = s.get('t2_scores', [])
+        durs    = s.get('t2_durations', [])
+        qstart  = s.get('t2_qstart_at', time.time())
 
-        if index < len(main_questions):
-            return render(request, "secondary_test/test2_question.html", {
-                "question": main_questions[index],
-                "index": index
-            })
+        action   = request.POST.get("action")
+        selected = request.POST.get("answer")
+        stop_reason = request.POST.get("stop_reason", "").strip()
 
-    else:
-        return render(request, "secondary_test/testPage.html") 
+        # computation time
+        elapsed = round(time.time() - qstart, 3)
+
+        # STOP (the examsiner stopped the test)
+        if action == "stop":
+
+            # Mark current question duration as "-" since stopped in modal
+            durs.append("-")
+            answers.append("-")
+            scores.append("-")
+
+            # Fill rest of unanswered questions with "-"
+            remaining = len(main_questions) - (idx + 1)
+            if remaining > 0:
+                answers.extend(["-"] * remaining)
+                scores.extend(["-"] * remaining)
+                durs.extend(["-"] * remaining)
+
+            
+            stop_reason = request.POST.get("stop_reason", "").strip()
+
+            
+
+            # Count only actual numeric scores
+            total_correct = sum(1 for x in scores if x == 1)
+
+            total_time_secs = round(sum(d for d in durs if isinstance(d, (int, float))), 3)  # elapsed seconds
+                
+            SecondaryTest2.objects.create(
+                student=student,
+                raw_scores = scores,
+                total_correct=total_correct,
+                durations = durs, #per question duration
+                reason=stop_reason,
+                total_time_secs = total_time_secs,
+                date=datetime.now()
+            )
+
+
+            test_profile_url = reverse('testsPageSec')  # adjust to your URL
+            resp = HttpResponse('')
+            resp['HX-Redirect'] = test_profile_url
+            return resp
+
+        # ANSWER / SKIP branch
+        elapsed = round(time.time() - qstart, 3)
+
+        # Normalize to exactly 4.000 for auto-skip
+        if 3.9 <= elapsed <= 4.2:
+            elapsed = 4.000
+
+        durs.append(elapsed)
+
+        if selected in [None, ""]:
+            answers.append("-")
+            scores.append("-")
+        else:
+            answers.append(selected)
+            correct = main_questions[idx]["correct"]
+            scores.append(1 if selected == correct else 0)
+
+        # advance index
+        idx += 1
+        s['t2_index'] = idx
+        s['t2_answers'] = answers
+        s['t2_scores']  = scores
+        s['t2_durations'] = durs
+        s['t2_qstart_at'] = time.time()
+        s.modified = True
+
+        # next question or finish
+        if idx < len(main_questions):
+            html = render_to_string("secondary_test/test2_question.html", {
+                "question": main_questions[idx],
+                "index": idx
+            }, request=request)
+            return HttpResponse(html)
+
+        # finished
+        total_correct = sum(1 for s_ in scores if s_ == 1)
+        # save to DB
+        answers  = s.get('t2_answers', [])
+        scores   = s.get('t2_scores', [])
+        durations = s.get('t2_durations', [])
+        total_correct = sum(1 for x in scores if x == 1)
+        # calculate started_at datetime and total_time_secs
+        started_at = None
+        total_time_secs = None
+        if s.get('t2_started_at'):
+            start_ts = s['t2_started_at']
+            #started_at = timezone.datetime.fromtimestamp(start_ts, tz=timezone.get_current_timezone())
+            total_time_secs = round(time.time() - start_ts, 3)  # total duration in seconds
+        
+        SecondaryTest2.objects.create(
+            student=student,
+            raw_scores = scores,
+            total_correct=total_correct,
+            durations = durations, #per question duration
+            reason=stop_reason,
+            total_time_secs = total_time_secs,
+            date=datetime.now()
+        )
+
+        # redirect or inline result
+        test_profile_url = reverse('testsPageSec')  # adjust to your URL
+        resp = HttpResponse('')
+        resp['HX-Redirect'] = test_profile_url
+        return resp
+
+    # fallback
+    _test2_init(request)
+    return render(request, "secondary_test/test2.html", {
+        "question": main_questions[0],
+        "index": 0
+    })
 
 
 @login_required(login_url="/login")
