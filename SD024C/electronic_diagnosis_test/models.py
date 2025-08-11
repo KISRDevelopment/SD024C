@@ -70,6 +70,18 @@ class SecondaryTest1(models.Model):
     def __str__(self):
         return f"{self.student} - {self.date.strftime('%Y-%m-%d %H:%M:%S')}"
     
+class SecondaryTest2(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    raw_scores = models.JSONField()
+    total_correct = models.PositiveIntegerField()
+    durations = models.JSONField()
+    reason = models.CharField(max_length=255, blank=True, null=True)
+    total_time_secs = models.FloatField(null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.student} - {self.date.strftime('%Y-%m-%d %H:%M:%S')}"
+    
 class SecondaryTest3(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     raw_scores = models.JSONField()
