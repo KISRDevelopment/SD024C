@@ -7,6 +7,7 @@ from django.urls import reverse
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from .data.secondary.test2 import secondary_test2_training_questions, main_questions
+from .data.secondary.test4 import test4_training_questions, test4_main_questions
 #from .models import Student
 #from .models import Score
 #from .models import *
@@ -1008,5 +1009,8 @@ def secondary_test3(request):
 
 @login_required(login_url="/login")
 def secondary_test4(request):
-    return render(request,"secondary_test/test4.html")
+    return render(request,"secondary_test/test4.html", 
+                  {
+                      "paragraphs": test4_main_questions
+                  })
 
