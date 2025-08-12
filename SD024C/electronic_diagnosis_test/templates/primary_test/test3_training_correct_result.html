@@ -1,0 +1,46 @@
+{% if show_final_result %}
+<div class="text-center mt-4">
+  {% if passed %}
+    <div class="alert alert-success fs-5">تم اجتياز التدريب! يمكنك الآن بدء الاختبار.</div>
+    <a href="{% url 'test3' %}" class="btn btn-success px-5 mt-3">ابدأ الاختبار</a>
+  {% else %}
+    <div class="alert alert-danger fs-5">لم يتم اجتياز التدريب. حاول مرة أخرى.</div>
+    <a href="{% url 'test3_training' %}" class="btn btn-danger px-5 mt-3">إعادة المحاولة</a>
+  {% endif %}
+</div>
+{% else %}
+<div class="card p-3 my-3">
+<div class="fs-5 fw-bold mb-4 text-end">{{ index }}- {{ question.text }}</div>
+
+<div class="row">
+  {% for opt in question.options %}
+  <div class="col-md-6 mb-2 text-end">
+    {% if opt.value == selected and selected != correct %}
+      
+        <button class="btn btn-danger w-100 text-end" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
+      <!--</div>-->
+    {% elif opt.value == correct %}
+      <!--<div class="col-md-6 mb-2">-->
+        <button class="btn btn-success w-100 text-end" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
+      <!--</div>-->
+    {% else %}
+      <!--<div class="col-md-6 mb-2">-->
+        <button class="btn btn-outline-secondary w-100 text-end" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
+      <!--</div>-->
+    {% endif %}
+    </div>
+  {% endfor %}
+</div>
+
+<div class="text-center mt-4">
+  <button class="btn btn-primary"
+          hx-get="{% url 'test3_training' %}?index={{ index }}{% if index == total_questions %}&final=true{% endif %}"
+          hx-target="#question-area"
+          hx-swap="innerHTML">
+    التالي
+  </button>
+</div>
+</div>
+{% endif %}
+
+

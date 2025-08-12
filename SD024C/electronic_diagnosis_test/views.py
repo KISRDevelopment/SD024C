@@ -6,6 +6,10 @@ from django.http import *
 from django.urls import reverse
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
+from .data.primary.test1 import TEST_WORDS, TRAINING_WORDS
+from .data.primary.test2 import training_sentences, primary_test2_sentences
+from .data.primary.test3 import primary_test3_training_questions, primary_test3_main_questions
+from .data.primary.test4 import primary_test4_words
 from .data.secondary.test2 import secondary_test2_training_questions, main_questions
 #from .models import Student
 #from .models import Score
@@ -323,16 +327,24 @@ def requestPage (request):
 
 @login_required(login_url="/login")
 def testsPage (request):
+    student = Student.objects.get(id=request.session['student']).studentName
     test1 = PrimaryTest1.objects.filter(student_id = request.session['student'])
+    test2 = PrimaryTest2.objects.filter(student_id = request.session['student'])
+    test3 = PrimaryTest3.objects.filter(student_id = request.session['student'])
+    test4 = PrimaryTest4.objects.filter(student_id = request.session['student'])
+    #test5 = PrimaryTest5.objects.filter(student_id = request.session['student'])
+    #test6 = PrimaryTest6.objects.filter(student_id = request.session['student'])
     global context_test1
     context_test1 = {}
-    student = Student.objects.get(id=request.session['student']).studentName
-
-    #add it in the if statement
-    if (test1.exists()):
-        test1_obj = PrimaryTest1.objects.filter(student_id = request.session['student'])
-        if(test1_obj.exists()):
-            test1_correct_Ans = PrimaryTest1.objects.filter(student_id = request.session['student']).latest("id").total_correct
+    global context_test2
+    context_test2 = {}
+    global context_test4
+    context_test4 = {}
+    
+    
+    if (test1.exists() or test2.exists() or test4.exists()):
+        if(test1.exists()):
+            test1_correct_Ans = test1.latest("id").total_correct
             if (test1_correct_Ans != None):
                 context_test1 = {"correctAnswers":(test1_correct_Ans), "status_test1":('منجز '), }
             else:
@@ -340,10 +352,40 @@ def testsPage (request):
         else:
             context_test1 = {"status_test1":('غير منجز'), }
 
-        return render(request, "primary_test/testPage.html", { "context_test1": context_test1,"student": student, "examiners": (Examiner.objects.get(user_id=request.user.id))})
+        if(test2.exists()):
+            test2_correct_Ans = test2.latest("id").total_score
+            if (test2_correct_Ans != None):
+                context_test2 = {"correctAnswers":(test2_correct_Ans), "status_test2":('منجز '), }
+            else:
+                context_test2 = {"status_test2":('غير منجز'), }
+        else:
+            context_test2 = {"status_test2":('غير منجز'), }
+        
+        if(test3.exists()):
+            test3_correct_Ans = test3.latest("id").total_correct
+            if (test3_correct_Ans != None):
+                context_test3 = {"correctAnswers":(test3_correct_Ans), "status_test3":('منجز '), }
+            else:
+                context_test3 = {"status_test3":('غير منجز'), }
+        else:
+            context_test3 = {"status_test3":('غير منجز'), }
+
+        if(test4.exists()):
+            test4_correct_Ans = test4.latest("id").total_correct
+            if (test4_correct_Ans != None):
+                context_test4 = {"correctAnswers":(test4_correct_Ans), "status_test4":('منجز '), }
+            else:
+                context_test4 = {"status_test4":('غير منجز'), }
+        else:
+            context_test4 = {"status_test4":('غير منجز'), }
+
+        return render(request, "primary_test/testPage.html", { "context_test1": context_test1, "context_test2": context_test2, "context_test3": context_test3,"context_test4": context_test4,"student": student, "examiners": (Examiner.objects.get(user_id=request.user.id))})
     else:
         context_test1 = { "status_test1":('غير منجز'),}
-        return render(request,"primary_test/testPage.html", {"context_test1": context_test1,"student":(Student.objects.get(id=request.session['student']).studentName), "examiners": (Examiner.objects.get(user_id=request.user.id)) })
+        context_test2 = { "status_test2":('غير منجز'),}
+        context_test3 = { "status_test3":('غير منجز'),}
+        context_test4 = { "status_test4":('غير منجز'),}
+        return render(request,"primary_test/testPage.html", {"context_test1": context_test1, "context_test2": context_test2, "context_test3": context_test3,"context_test4": context_test4, "student":(Student.objects.get(id=request.session['student']).studentName), "examiners": (Examiner.objects.get(user_id=request.user.id)) })
 
 @login_required(login_url="/login")
 def testsPageSec (request):
@@ -359,13 +401,13 @@ def testsPageSec (request):
     context_test3 = {}
     
 
-    #add it in the if statement
+   
     if (test1.exists() or test1.exists() or test3.exists()):
 
         if(test1.exists()):
-            test1_correct_Ans = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").total_correct
-            test1_time_seconds = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").time_seconds
-            test1_fluency_score = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").fluency_score
+            test1_correct_Ans = test1.latest("id").total_correct
+            test1_time_seconds = test1.latest("id").time_seconds
+            test1_fluency_score = test1.latest("id").fluency_score
             if (test1_correct_Ans != None):
                 context_test1 = {"correctAnswers":(test1_correct_Ans), "status_test1":('منجز '), "time_sec": (test1_time_seconds), "fluency_score": (test1_fluency_score)}
             else:
@@ -592,12 +634,222 @@ def primary_test2(request):
     return render(request, 'primary_test/test2.html', {
         'test_words': primary_test2_sentences
     })
-    
 
+def primary_test3_training(request):
+    # --- First Visit ---
+    if request.method == "GET" and not request.headers.get("HX-Request"):
+        request.session['training_correct'] = 0
+        return render(request, "primary_test/test3_training.html", {
+            "question": primary_test3_training_questions[0],
+            "index": 0
+        })
+
+    # --- GET: Load Next Question via HTMX ---
+    if request.method == "GET" and request.headers.get("HX-Request") == "true":
+        index = int(request.GET.get("index", 0))
+        is_final = request.GET.get("final") == "true"
+
+        if is_final:
+            passed = request.session.get('training_correct', 0) > 0
+            return render(request, 'primary_test/test3_training_correct_result.html', {
+                'show_final_result': True,
+                'passed': passed
+            })
+
+        if index < len(primary_test3_training_questions):
+            return render(request, "primary_test/test3_training_question.html", {
+                "question": primary_test3_training_questions[index],
+                "index": index
+            })
+
+    # --- POST: Answer Clicked OR "التالي" ---
+    if request.method == "POST":
+        index = int(request.POST.get("index", 0))
+        selected = request.POST.get("answer")
+        question = primary_test3_training_questions[index]
+        correct = question["correct"]
+        next_index = index + 1
+        total = len(primary_test3_training_questions)
+        is_last = next_index >= total
+        passed = request.session.get('training_correct', 0) > 0 if is_last else None
+
+    if selected:
+        if 'training_correct' not in request.session:
+            request.session['training_correct'] = 0
+
+        if selected == correct:
+            request.session['training_correct'] += 1
+
+
+
+    return render(request, "primary_test/test3_training_correct_result.html", {
+        "is_correct": selected == correct,
+        "correct": correct,
+        "selected": selected,
+        "index": next_index,
+        "question": question,
+        "total_questions": total,
+        "passed": passed
+    })
+
+
+def _test3_init(request):
+    s = request.session
+    s['t3_index'] = 0
+    s['t3_answers'] = []
+    s['t3_scores']  = []
+    s['t3_durations'] = []
+    s['t3_started_at'] = time.time()
+    s['t3_qstart_at']  = time.time()
+    s.modified = True
 
 @login_required(login_url="/login")
 def primary_test3(request):
-    return render(request,"primary_test/test3.html")
+    print('inside primary_test3')
+    student = Student.objects.get(id=request.session['student'])
+
+    # First test page load (Q1)
+    if request.method == "GET" and not request.headers.get("HX-Request"):
+        print('first test display')
+        _test3_init(request)
+        return render(request, "primary_test/test3.html", {
+            "question": main_questions[0],
+            "index": 0
+        })
+
+    # HTMX POST: when a button is clicked (answer / skip / stop)
+    if request.method == "POST" and request.headers.get("HX-Request") == "true":
+        print('when answering button click')
+        s = request.session
+        idx = s.get('t3_index', 0)
+        answers = s.get('t3_answers', [])
+        scores  = s.get('t3_scores', [])
+        durs    = s.get('t3_durations', [])
+        qstart  = s.get('t3_qstart_at', time.time())
+
+        action   = request.POST.get("action")
+        selected = request.POST.get("answer")
+        stop_reason = request.POST.get("stop_reason", "").strip()
+
+        # computation time
+        elapsed = round(time.time() - qstart, 3)
+
+        # STOP (the examsiner stopped the test)
+        if action == "stop":
+            print('stop button clicked')
+
+            # Mark current question duration as "-" since stopped in modal
+            durs.append("-")
+            answers.append("-")
+            scores.append("-")
+
+            # Fill rest of unanswered questions with "-"
+            remaining = len(main_questions) - (idx + 1)
+            if remaining > 0:
+                answers.extend(["-"] * remaining)
+                scores.extend(["-"] * remaining)
+                durs.extend(["-"] * remaining)
+
+            
+            stop_reason = request.POST.get("stop_reason", "").strip()
+
+            
+
+            # Count only actual numeric scores
+            total_correct = sum(1 for x in scores if x == 1)
+
+            total_time_secs = round(sum(d for d in durs if isinstance(d, (int, float))), 3)  # elapsed seconds
+
+            # save to DB    
+            PrimaryTest3.objects.create(
+                student=student,
+                raw_scores = scores,
+                total_correct=total_correct,
+                durations = durs, #per question duration
+                reason=stop_reason,
+                total_time_secs = total_time_secs,
+                date=datetime.now()
+            )
+
+
+            test_profile_url = reverse('testsPage') 
+            resp = HttpResponse('')
+            resp['HX-Redirect'] = test_profile_url
+            return resp
+
+        # ANSWER / SKIP branch
+        elapsed = round(time.time() - qstart, 3)
+
+        # Normalize to exactly 4.000 for auto-skip
+        if 3.9 <= elapsed <= 4.2:
+            elapsed = 4.000
+
+        durs.append(elapsed)
+
+        if selected in [None, ""]:
+            answers.append("-")
+            scores.append("-")
+        else:
+            answers.append(selected)
+            correct = main_questions[idx]["correct"]
+            scores.append(1 if selected == correct else 0)
+
+        # advance index
+        idx += 1
+        s['t3_index'] = idx
+        s['t3_answers'] = answers
+        s['t3_scores']  = scores
+        s['t3_durations'] = durs
+        s['t3_qstart_at'] = time.time()
+        s.modified = True
+
+        # next question or finish
+        if idx < len(main_questions):
+            print('next question or finished')
+            html = render_to_string("primary_test/test3_question.html", {
+                "question": main_questions[idx],
+                "index": idx
+            }, request=request)
+            return HttpResponse(html)
+
+        # finished
+        total_correct = sum(1 for s_ in scores if s_ == 1)
+        
+        answers  = s.get('t3_answers', [])
+        scores   = s.get('t3_scores', [])
+        durations = s.get('t3_durations', [])
+        total_correct = sum(1 for x in scores if x == 1)
+        # calculate started_at datetime and total_time_secs
+        started_at = None
+        total_time_secs = None
+        if s.get('t3_started_at'):
+            start_ts = s['t3_started_at']
+            #started_at = timezone.datetime.fromtimestamp(start_ts, tz=timezone.get_current_timezone())
+            total_time_secs = round(time.time() - start_ts, 3)  # total duration in seconds
+        
+        # save to DB
+        PrimaryTest3.objects.create(
+            student=student,
+            raw_scores = scores,
+            total_correct=total_correct,
+            durations = durations, #per question duration
+            reason=stop_reason,
+            total_time_secs = total_time_secs,
+            date=datetime.now()
+        )
+
+        # redirect 
+        test_profile_url = reverse('testsPage') 
+        resp = HttpResponse('')
+        resp['HX-Redirect'] = test_profile_url
+        return resp
+
+    # fallback
+    _test3_init(request)
+    return render(request, "primary_test/test3.html", {
+        "question": main_questions[0],
+        "index": 0
+    })
 
 @login_required(login_url="/login")
 def primary_test4(request):
@@ -812,10 +1064,12 @@ def _test2_init(request):
 
 @login_required(login_url="/login")
 def secondary_test2(request):
+    print('inside secondary_test2')
     student = Student.objects.get(id=request.session['student'])
 
     # First test page load (Q1)
     if request.method == "GET" and not request.headers.get("HX-Request"):
+        print('first test display')
         _test2_init(request)
         return render(request, "secondary_test/test2.html", {
             "question": main_questions[0],
@@ -824,6 +1078,7 @@ def secondary_test2(request):
 
     # HTMX POST: when a button is clicked (answer / skip / stop)
     if request.method == "POST" and request.headers.get("HX-Request") == "true":
+        print('when answering button click')
         s = request.session
         idx = s.get('t2_index', 0)
         answers = s.get('t2_answers', [])
@@ -840,6 +1095,7 @@ def secondary_test2(request):
 
         # STOP (the examsiner stopped the test)
         if action == "stop":
+            print('stop button clicked')
 
             # Mark current question duration as "-" since stopped in modal
             durs.append("-")
@@ -907,6 +1163,7 @@ def secondary_test2(request):
 
         # next question or finish
         if idx < len(main_questions):
+            print('next question or finished')
             html = render_to_string("secondary_test/test2_question.html", {
                 "question": main_questions[idx],
                 "index": idx
