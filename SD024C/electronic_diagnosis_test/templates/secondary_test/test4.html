@@ -2,6 +2,22 @@
 {% load static %}
 {% block content %}
 
+{% for para in training %}
+    <p>{{ para.paragraph }}</p>
+    {% for q in para.questions %}
+        <div class="question">
+            <p>{{ q.id }}- {{ q.question }}</p>
+
+            {% for key, val in q.answers.items %}
+                <label>
+                    <input type="radio" name="q{{ q.id }}" value="{{ key }}">
+                    {{ key }} - {{ val}}
+                </label><br>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endfor %}
+
 {% for para in paragraphs %}
     <p>{{ para.paragraph }}</p>
     {% for q in para.questions %}
