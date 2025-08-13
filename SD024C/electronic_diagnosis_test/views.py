@@ -10,7 +10,9 @@ from .data.primary.test1 import TEST_WORDS, TRAINING_WORDS
 from .data.primary.test2 import training_sentences, primary_test2_sentences
 from .data.primary.test3 import primary_test3_training_questions, primary_test3_main_questions
 from .data.primary.test4 import primary_test4_words
+from .data.secondary.test1 import TRAINING_WORDSـSEC, TEST_WORDS_secondary_test1
 from .data.secondary.test2 import secondary_test2_training_questions, main_questions
+from .data.secondary.test3 import secondary_test3_words
 #from .models import Student
 #from .models import Score
 #from .models import *
