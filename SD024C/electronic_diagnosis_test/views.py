@@ -1011,6 +1011,7 @@ def secondary_test3(request):
 def secondary_test4(request):
     return render(request,"secondary_test/test4.html", 
                   {
+                      "training": test4_training_questions,
                       "paragraphs": test4_main_questions
                   })
 
