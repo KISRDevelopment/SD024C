@@ -19,7 +19,7 @@ primary_test5_training_questions = [
             {"label": "ب", "text": "يَزْرعو", "value": "ب"},
             {"label": "ج", "text": "يازْرَعُ", "value": "ج"},
         ],
-        "correct": "ج"
+        "correct": "أ"
     },
     {
         "id": 3,
@@ -29,7 +29,7 @@ primary_test5_training_questions = [
             {"label": "ب", "text": "كَثْرةٌ", "value": "ب"},
             {"label": "ج", "text": "كثيرةٌ", "value": "ج"},
         ],
-        "correct": "ب"
+        "correct": "ج"
     },
 ]
 
@@ -42,7 +42,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "أنتمو", "value": "ب"},
             {"label": "ج", "text": "أنتموا", "value": "ج"},
         ],
-        "correct": "ب"
+        "correct": "أ"
     },
     {
         "id": 2,
@@ -52,7 +52,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "كَأَننّا", "value": "ب"},
             {"label": "ج", "text": " كَاأننّا", "value": "ج"},
         ],
-        "correct": "ج"
+        "correct": "ب"
     },
     {
         "id": 3,
@@ -62,7 +62,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "معلمَهُ", "value": "ب"},
             {"label": "ج", "text": " معلمهو", "value": "ج"},
         ],
-        "correct": "د"
+        "correct": "أ"
     },
 
 
@@ -75,7 +75,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "بعقلي", "value": "ب"},
             {"label": "ج", "text": "بعقليا", "value": "ج"},
         ],
-        "correct": "د"
+        "correct": "ب"
     },
     {
         "id": 5,
@@ -85,7 +85,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "مُتعاونونَ", "value": "ب"},
             {"label": "ج", "text": "متعاونُ", "value": "ج"},
         ],
-        "correct": "أ"
+        "correct": "ب"
     },
     {
         "id": 6,
@@ -95,7 +95,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "ذالَك", "value": "ب"},
             {"label": "ج", "text": "ذالِكا", "value": "ج"},
         ],
-        "correct": "د"
+        "correct": "أ"
     },
     {
         "id": 7,
@@ -105,7 +105,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "دُنْيا", "value": "ب"},
             {"label": "ج", "text": "دُنيي", "value": "ج"},
         ],
-        "correct": "د"
+        "correct": "ب"
     },
     {
         "id": 8,
@@ -115,7 +115,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "المُستاقِمُ", "value": "ب"},
             {"label": "ج", "text": "المُسْتقيمُ", "value": "ج"},
         ],
-        "correct": "أ"
+        "correct": "ج"
     },
     {
         "id": 9,
@@ -125,7 +125,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "الظُّهرِ", "value": "ب"},
             {"label": "ج", "text": "الذهرِ", "value": "ج"},
         ],
-        "correct": "ج"
+        "correct": "ب"
     },
     {
         "id": 10,
@@ -135,7 +135,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "يُسافِرونَ", "value": "ب"},
             {"label": "ج", "text": "يسافِرنَ", "value": "ج"},
         ],
-        "correct": "أ"
+        "correct": "ب"
     },
     {
         "id": 11,
@@ -145,7 +145,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "هاذِهي", "value": "ب"},
             {"label": "ج", "text": "هذِهِ", "value": "ج"},
         ],
-        "correct": "د"
+        "correct": "ج"
     },
     {
         "id": 12,
@@ -155,7 +155,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "سأفارِسُ", "value": "ب"},
             {"label": "ج", "text": "سأسافِرُ", "value": "ج"},
         ],
-        "correct": "ب"
+        "correct": "ج"
     },
     {
         "id": 13,
@@ -165,7 +165,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "أيْضاً", "value": "ب"},
             {"label": "ج", "text": "أيْضَنْ", "value": "ج"},
         ],
-        "correct": "ج"
+        "correct": "ب"
     },
     {
         "id": 14,
@@ -175,7 +175,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "غَذالT", "value": "ب"},
             {"label": "ج", "text": "غَزالٌ", "value": "ج"},
         ],
-        "correct": "ب"
+        "correct": "ج"
     },
     {
         "id": 15,
@@ -185,7 +185,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "الجُرْءَةُ", "value": "ب"},
             {"label": "ج", "text": "الجُرْئةُ", "value": "ج"},
         ],
-        "correct": "ب"
+        "correct": "أ"
     },
     {
         "id": 16,
@@ -205,7 +205,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "لكِنَّ", "value": "ب"},
             {"label": "ج", "text": "لاكينْ", "value": "ج"},
         ],
-        "correct": "ج"
+        "correct": "ب"
     },
     {
         "id": 18,
@@ -215,7 +215,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "ذهبةُ", "value": "ب"},
             {"label": "ج", "text": "ذَهبْتُ", "value": "ج"},
         ],
-        "correct": "ب"
+        "correct": "ج"
     },
     {
         "id": 19,
@@ -225,7 +225,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "لِلشَّمالِ", "value": "ب"},
             {"label": "ج", "text": "لِشَّمالِ", "value": "ج"},
         ],
-        "correct": "ج"
+        "correct": "ب"
     },
     {
         "id": 20,
@@ -245,7 +245,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "الساهِرةُ", "value": "ب"},
             {"label": "ج", "text": "السهرتو", "value": "ج"},
         ],
-        "correct": "ج"
+        "correct": "ب"
     },
     {
         "id": 22,
@@ -265,7 +265,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "سَاكْتُبُ", "value": "ب"},
             {"label": "ج", "text": "سَأَكتُبُ", "value": "ج"},
         ],
-        "correct": "د"
+        "correct": "ج"
     },
     {
         "id": 24,
@@ -275,7 +275,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "اللذاني", "value": "ب"},
             {"label": "ج", "text": "اللذانِ", "value": "ج"},
         ],
-        "correct": "ب"
+        "correct": "ج"
     },
     {
         "id": 25,
@@ -285,7 +285,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "كَلْ الوردِ", "value": "ب"},
             {"label": "ج", "text": "كَالوردِ", "value": "ج"},
         ],
-        "correct": "أ"
+        "correct": "ج"
     },
     {
         "id": 26,
@@ -295,7 +295,7 @@ primary_test5_main_questions = [
             {"label": "ب", "text": "اسْتغل ها", "value": "ب"},
             {"label": "ج", "text": "اِسْتغلها", "value": "ج"},
         ],
-        "correct": "د"
+        "correct": "ج"
     },
     {
         "id": 27,
