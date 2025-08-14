@@ -12,7 +12,7 @@
 <div class="card p-3 my-3">
 <div class="fs-5 fw-bold mb-4 text-end">{{ index }}- {{ question.text }}</div>
 
-<div class="row">
+<!--<div class="row">-->
   {% for opt in question.options %}
   <div class="col-md-6 mb-2 text-end">
     {% if opt.value == selected and selected != correct %}
@@ -30,7 +30,7 @@
     {% endif %}
     </div>
   {% endfor %}
-</div>
+<!--</div>-->
 
 <div class="text-center mt-4">
   <button class="btn btn-primary"

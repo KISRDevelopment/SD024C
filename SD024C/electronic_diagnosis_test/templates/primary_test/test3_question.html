@@ -15,7 +15,7 @@ hx-swap="innerHTML">
     {{ index|add:"1" }}. {{ question.text }}
   </div>
 
-  <div class="row">
+  <!--<div class="row">-->
     {% for opt in question.options %}
     <div class="col-6 mb-2">
       <button
@@ -28,7 +28,7 @@ hx-swap="innerHTML">
       </button>
     </div>
     {% endfor %}
-  </div>
+  <!--</div>-->
 
   <!-- hidden skip submit (no response) -->
   <button id="skip-{{ index }}" type="submit" name="answer" value="" class="d-none">skip</button>

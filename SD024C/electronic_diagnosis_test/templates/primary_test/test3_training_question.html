@@ -14,7 +14,7 @@
           {{ index|add:"1" }}- {{ question.text|safe }}
         </div>
     
-        <div class="row">
+        <!--<div class="row">-->
           {% for opt in question.options %}
             <div class="col-md-6 mb-3 text-end">
               <button 
@@ -28,7 +28,7 @@
               </button>
             </div>
           {% endfor %}
-        </div>
+        <!--</div>-->
       </div>
     </form>
     </div>
