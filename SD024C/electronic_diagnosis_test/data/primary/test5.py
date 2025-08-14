@@ -171,8 +171,8 @@ primary_test5_main_questions = [
         "id": 14,
         "text": "",
         "options": [
-            {"label": "أ", "text": "قَزالٌ", "value": "أ"},
-            {"label": "ب", "text": "غَذالٌ", "value": "ب"},
+            {"label": "أ", "text": "قَزالT", "value": "أ"},
+            {"label": "ب", "text": "غَذالT", "value": "ب"},
             {"label": "ج", "text": "غَزالٌ", "value": "ج"},
         ],
         "correct": "ب"
@@ -211,9 +211,9 @@ primary_test5_main_questions = [
         "id": 18,
         "text": "",
         "options": [
-            {"label": "أ", "text": "ذهبْتو", "value": "أ"},
+            {"label": "أ", "text": "ذَهَبْتو", "value": "أ"},
             {"label": "ب", "text": "ذهبةُ", "value": "ب"},
-            {"label": "ج", "text": "ذهبْتُ", "value": "ج"},
+            {"label": "ج", "text": "ذَهبْتُ", "value": "ج"},
         ],
         "correct": "ب"
     },
@@ -221,8 +221,8 @@ primary_test5_main_questions = [
         "id": 19,
         "text": "",
         "options": [
-            {"label": "أ", "text": "للِشَّمالي", "value": "أ"},
-            {"label": "ب", "text": "للِشَّمالِ", "value": "ب"},
+            {"label": "أ", "text": "لِلشَّمالي", "value": "أ"},
+            {"label": "ب", "text": "لِلشَّمالِ", "value": "ب"},
             {"label": "ج", "text": "لِشَّمالِ", "value": "ج"},
         ],
         "correct": "ج"
@@ -231,7 +231,7 @@ primary_test5_main_questions = [
         "id": 20,
         "text": "",
         "options": [
-            {"label": "أ", "text": "المُأَذّنِ", "value": "أ"},
+            {"label": "أ", "text": "الْمُأَذّنِ", "value": "أ"},
             {"label": "ب", "text": "المُؤَذّنِ", "value": "ب"},
             {"label": "ج", "text": "الموأَذّنِ", "value": "ج"},
         ],
