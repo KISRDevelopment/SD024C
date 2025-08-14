@@ -7,6 +7,7 @@ from django.urls import reverse
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from .data.secondary.test2 import secondary_test2_training_questions, main_questions
+from .data.primary.test5 import primary_test5_training_questions, primary_test5_main_questions
 #from .models import Student
 #from .models import Score
 #from .models import *
@@ -652,9 +653,216 @@ def primary_test4(request):
         'test_words': primary_test4_words
     })
 
+def primary_test5_training(request):
+    # --- First Visit ---
+    if request.method == "GET" and not request.headers.get("HX-Request"):
+        request.session['training_correct'] = 0
+        return render(request, "primary_test/test5_training.html", {
+            "question": primary_test5_training_questions[0],
+            "index": 0
+        })
+
+    # --- GET: Load Next Question via HTMX ---
+    if request.method == "GET" and request.headers.get("HX-Request") == "true":
+        index = int(request.GET.get("index", 0))
+        is_final = request.GET.get("final") == "true"
+
+        if is_final:
+            passed = request.session.get('training_correct', 0) > 0
+            return render(request, 'primary_test/test5_training_correct_result.html', {
+                'show_final_result': True,
+                'passed': passed
+            })
+
+        if index < len(primary_test5_training_questions):
+            return render(request, "primary_test/test5_training_question.html", {
+                "question": primary_test5_training_questions[index],
+                "index": index
+            })
+
+    # --- POST: Answer Clicked OR "التالي" ---
+    if request.method == "POST":
+        index = int(request.POST.get("index", 0))
+        selected = request.POST.get("answer")
+        question = primary_test5_training_questions[index]
+        correct = question["correct"]
+        next_index = index + 1
+        total = len(primary_test5_training_questions)
+        is_last = next_index >= total
+        passed = request.session.get('training_correct', 0) > 0 if is_last else None
+
+    if selected:
+        if 'training_correct' not in request.session:
+            request.session['training_correct'] = 0
+
+        if selected == correct:
+            request.session['training_correct'] += 1
+
+
+
+    return render(request, "primary_test/test5_training_correct_result.html", {
+        "is_correct": selected == correct,
+        "correct": correct,
+        "selected": selected,
+        "index": next_index,
+        "question": question,
+        "total_questions": total,
+        "passed": passed
+    })
+
+
+
+def _test5_init(request):
+    s = request.session
+    s['t5_index'] = 0
+    s['t5_answers'] = []
+    s['t5_scores']  = []
+    s['t5_durations'] = []
+    s['t5_started_at'] = time.time()
+    s['t5_qstart_at']  = time.time()
+    s.modified = True
+
 @login_required(login_url="/login")
 def primary_test5(request):
-    return render(request,"primary_test/test5.html")
+    student = Student.objects.get(id=request.session['student'])
+
+    # First test page load (Q1)
+    if request.method == "GET" and not request.headers.get("HX-Request"):
+        _test5_init(request)
+        return render(request, "primary_test/test5.html", {
+            "question": primary_test5_main_questions[0],
+            "index": 0
+        })
+
+    # HTMX POST: when a button is clicked (answer / skip / stop)
+    if request.method == "POST" and request.headers.get("HX-Request") == "true":
+        s = request.session
+        idx = s.get('t5_index', 0)
+        answers = s.get('t5_answers', [])
+        scores  = s.get('t5_scores', [])
+        durs    = s.get('t5_durations', [])
+        qstart  = s.get('t5_qstart_at', time.time())
+
+        action   = request.POST.get("action")
+        selected = request.POST.get("answer")
+        stop_reason = request.POST.get("stop_reason", "").strip()
+
+        # computation time
+        elapsed = round(time.time() - qstart, 3)
+
+        # STOP (the examsiner stopped the test)
+        if action == "stop":
+
+            # Mark current question duration as "-" since stopped in modal
+            durs.append("-")
+            answers.append("-")
+            scores.append("-")
+
+            # Fill rest of unanswered questions with "-"
+            remaining = len(main_questions) - (idx + 1)
+            if remaining > 0:
+                answers.extend(["-"] * remaining)
+                scores.extend(["-"] * remaining)
+                durs.extend(["-"] * remaining)
+
+            
+            stop_reason = request.POST.get("stop_reason", "").strip()
+
+            
+
+            # Count only actual numeric scores
+            total_correct = sum(1 for x in scores if x == 1)
+
+            total_time_secs = round(sum(d for d in durs if isinstance(d, (int, float))), 3)  # elapsed seconds
+                
+            PrimaryTest5.objects.create(
+                student=student,
+                raw_scores = scores,
+                total_correct=total_correct,
+                durations = durs, #per question duration
+                reason=stop_reason,
+                total_time_secs = total_time_secs,
+                date=datetime.now()
+            )
+
+
+            test_profile_url = reverse('testsPage') 
+            resp = HttpResponse('')
+            resp['HX-Redirect'] = test_profile_url
+            return resp
+
+        # ANSWER / SKIP branch
+        elapsed = round(time.time() - qstart, 3)
+
+        # Normalize to exactly 5.000 for auto-skip
+        if 4.9 <= elapsed <= 5.2:
+            elapsed = 5.000
+
+        durs.append(elapsed)
+
+        if selected in [None, ""]:
+            answers.append("-")
+            scores.append("-")
+        else:
+            answers.append(selected)
+            correct = primary_test5_main_questions[idx]["correct"]
+            scores.append(1 if selected == correct else 0)
+
+        # advance index
+        idx += 1
+        s['t5_index'] = idx
+        s['t5_answers'] = answers
+        s['t5_scores']  = scores
+        s['t5_durations'] = durs
+        s['t5_qstart_at'] = time.time()
+        s.modified = True
+
+        # next question or finish
+        if idx < len(primary_test5_main_questions):
+            html = render_to_string("primary_test/test5_question.html", {
+                "question": primary_test5_main_questions[idx],
+                "index": idx
+            }, request=request)
+            return HttpResponse(html)
+
+        # finished
+        total_correct = sum(1 for s_ in scores if s_ == 1)
+
+        answers  = s.get('t5_answers', [])
+        scores   = s.get('t5_scores', [])
+        durations = s.get('t5_durations', [])
+        total_correct = sum(1 for x in scores if x == 1)
+        # calculate started_at datetime and total_time_secs
+        started_at = None
+        total_time_secs = None
+        if s.get('t5_started_at'):
+            start_ts = s['t5_started_at']
+            #started_at = timezone.datetime.fromtimestamp(start_ts, tz=timezone.get_current_timezone())
+            total_time_secs = round(time.time() - start_ts, 3)  # total duration in seconds
+        
+        PrimaryTest5.objects.create(
+            student=student,
+            raw_scores = scores,
+            total_correct=total_correct,
+            durations = durations, #per question duration
+            reason=stop_reason,
+            total_time_secs = total_time_secs,
+            date=datetime.now()
+        )
+
+        # redirect
+        test_profile_url = reverse('testsPage')  # adjust to your URL
+        resp = HttpResponse('')
+        resp['HX-Redirect'] = test_profile_url
+        return resp
+
+    # fallback
+    _test5_init(request)
+    return render(request, "primary_test/test5.html", {
+        "question": primary_test5_main_questions[0],
+        "index": 0
+    })
+
 
 @login_required(login_url="/login")
 def primary_test6(request):
