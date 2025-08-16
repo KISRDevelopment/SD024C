@@ -1,0 +1,47 @@
+
+
+
+
+<div id="question-area">
+<form 
+  method="POST" 
+  hx-post="{% url 'test4_training_sec' %}" 
+  hx-target="#question-area" 
+  hx-swap="innerHTML">
+
+  {% csrf_token %}
+  <input type="hidden" name="index" value="{{ index }}">
+
+  <div class="card p-3 my-3">
+    <div class="mb-4 fw-bold fs-5 text-end">
+       {{ paragraph|safe }}
+    </div>
+
+    <div class="mb-4 fw-bold fs-5 text-end">
+      {{ index|add:"1" }}- {{ question_text|safe }}
+    </div>
+        <div class="row">
+      {% for letter, text in answers.items %}
+        <div class="col-md-6 mb-3 text-end">
+          <button 
+            type="submit" 
+            name="answer" 
+            value="{{ letter }}" 
+            class="btn btn-outline-secondary w-100 text-end" 
+            data-answer = "{{letter}}"
+            style="direction: rtl;">
+            <strong>{{ letter }} - </strong>{{ text }}
+          </button>
+        </div>
+      {% endfor %}
+    </div>
+
+
+
+  </div>
+</form>
+</div>
+
+
+
+

@@ -40,6 +40,7 @@ urlpatterns = [
     path('test2_training_sec/', views.secondary_test2_training, name='test2_training_sec'),
     path('test2_sec', views.secondary_test2, name='secondary_test2'),
     path('test3_sec', views.secondary_test3, name='secondary_test3'),
+    path('test4_training_sec/', views.secondary_test4_training, name='test4_training_sec'),
     path('test4_sec', views.secondary_test4, name='secondary_test4'),
     path('studentProfile/<int:id>', views.studentProfile, name='studentProfile'),
     path('search/results', views.search_results, name='search-results'),
