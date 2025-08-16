@@ -30,6 +30,7 @@ urlpatterns = [
     path('test1/autosave/', views.primary_test1_autosave, name='primary_test1_autosave'),
     path('test2_training/', views.primary_test2_training, name='test2_training'),  
     path('test2', views.primary_test2, name='test2'),
+    path('test3_training/', views.primary_test3_training, name='test3_training'), 
     path('test3', views.primary_test3, name='test3'),
     path('test4', views.primary_test4, name='test4'),
     path('test5', views.primary_test5, name='test5'),
