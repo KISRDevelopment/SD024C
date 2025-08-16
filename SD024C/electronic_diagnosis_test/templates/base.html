@@ -135,9 +135,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary-color">
     <div class="container">
         <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">الرئيسية</a></li>
-            <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'help' %}active{% endif %}" href="{% url 'help' %}">مساعدة</a></li>
-            <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" href="{% url 'login' %}">دخول</a></li>
+            <li class="nav-item mx-2"><a class="nav-link text-light fs-4 {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">الرئيسية</a></li>
+            <li class="nav-item mx-2"><a class="nav-link text-light fs-4 {% if request.resolver_match.url_name == 'help' %}active{% endif %}" href="{% url 'help' %}">مساعدة</a></li>
+            <li class="nav-item mx-2"><a class="nav-link text-light fs-4 {% if request.resolver_match.url_name == 'login' %}active{% endif %}" href="{% url 'login' %}">دخول</a></li>
         </ul>
     </div>
 </nav>
@@ -161,13 +161,14 @@
     <footer class="py-4 mt-auto bg-primary-color">
         <div class="container">
             <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-                <li class="nav-item"><a href="{% url 'about' %}" class="nav-link px-2 text-light">من نحن</a></li>
-                <li class="nav-item"><a href="{% url 'contact' %}" class="nav-link px-2 text-light">تواصل معنا</a></li>
+                <li class="nav-item mx-2"><a href="{% url 'about' %}" class="nav-link px-2 text-light fs-6">من نحن</a></li>
+                <li class="nav-item mx-2"><a href="{% url 'contact' %}" class="nav-link px-2 text-light fs-6">تواصل معنا</a></li>
             </ul>
-            <p class="text-center text-light mb-0">© 2025 معهد الكويت للأبحاث العلمية</p>
+            <p class="text-center text-light mb-0 fs-6">© 2025 معهد الكويت للأبحاث العلمية</p>
         </div>
     </footer>
 
+    
 </body>
 
 </html>

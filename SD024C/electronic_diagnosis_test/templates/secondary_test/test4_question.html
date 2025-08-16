@@ -3,28 +3,28 @@
   <form
   id="qform-{{ index }}"
   method="POST"
-  hx-post="{% url 'secondary_test2' %}"
+  hx-post="{% url 'secondary_test4' %}"
   hx-target="#question-area"
   hx-swap="innerHTML">
 
   {% csrf_token %}
   <input type="hidden" name="index" value="{{ index }}">
-
   <div class="card p-3 my-3">
-    <div class="mb-2 fw-bold fs-5">
-      {{ index|add:"1" }}. {{ question.text }}
+    <div class="mb-2 fw-bold fs-4">
+      {{ question.paragraph }}
     </div>
+    <p class="mb-2">{{ question.id }} - {{ question.question }}</p>
 
     <div class="row">
-      {% for opt in question.options %}
+      {% for key, value in question.answers.items %}
       <div class="col-6 mb-2">
         <button
           type="submit"
           name="answer"
-          value="{{ opt.label }}"
+          value="{{ key }}"
           class="btn btn-outline-primary w-100 text-end"
           style="direction: rtl;">
-          {{ opt.label }}. {{ opt.text }}
+          {{ key }}. {{ value }}
         </button>
       </div>
       {% endfor %}
@@ -33,7 +33,7 @@
     <!-- hidden skip submit (no response) -->
     <button id="skip-{{ index }}" type="submit" name="answer" value="" class="d-none">skip</button>
 
-    <!-- Stop test  -->
+    <!-- Stop test (inline reveal) -->
     <div class="mt-3 text-center">
       <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#stopModal">
         إيقاف الاختبار
@@ -52,7 +52,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="stopModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
-    <form class="form-horizontal" hx-post = "{% url 'secondary_test2' %}" hx-target = "#question-area" hx-swap = "innerHTML" onsubmit="window.isFrozen = true; if (window.autoSkipTimer) clearTimeout(window.autoSkipTimer);">
+    <form class="form-horizontal" hx-post = "{% url 'secondary_test4' %}" hx-target = "#question-area" hx-swap = "innerHTML" onsubmit="window.isFrozen = true; if (window.autoSkipTimer) clearTimeout(window.autoSkipTimer);">
         {% csrf_token %}
         <div class="modal-dialog" role="document">
             <div class="modal-content rounded-3 shadow">
@@ -94,7 +94,7 @@
           const skipBtn = document.getElementById('skip-{{ index }}');
           let fired = false;
         
-          // Start the 4s auto-skip timer
+          // Start the 10s auto-skip timer
           function startAutoSkip(ms) {
             if (window.autoSkipTimer) clearTimeout(window.autoSkipTimer);
             window.autoSkipTimer = setTimeout(() => {
@@ -112,7 +112,7 @@
               }
             }, ms);
           }
-          startAutoSkip(4000);
+          startAutoSkip(10000);
         
           // If any answer is clicked, cancel timer and prevent double submit
           form.querySelectorAll('button[name="answer"]').forEach(btn => {
@@ -136,5 +136,7 @@
           }
         })();
         </script>
+        
+
         
   

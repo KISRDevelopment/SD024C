@@ -10,7 +10,7 @@
     </div>
     <div class="container" style="direction: rtl;">
         <p class="text-m-b fs-3" style="margin-bottom: 10px;">الطالب : {{student}}</p>
-        {% if context_test1.status_test1 != "منجز " %}
+        {% if context_test1.status_test1 != "منجز " and context_test2.status_test2 != "منجز " and context_test3.status_test3 != "منجز " %}
         <a href="" style="font-weight: bold;" type="submit" class="btn-outline-p"> عرض النتائج والتوصيات </a>
         {% elif context_test1.status_test1 == "توقف " or context_ltrs.status_ltrs == "توقف "%}
         <a href="" style="font-weight: bold;" type="submit" class="btn-outline-p"> عرض النتائج والتوصيات </a>
@@ -74,8 +74,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <!--<td>
-                            <a href="{% url 'secondary_test4'%}" id="test4" type="button" class="btn-t-enabled">فهم المقروء (القطعة)</a>
+                        <td>
+                            <a href="{% url 'test4_training_sec'%}" id="test4" type="button" class="btn-t-enabled">فهم المقروء (القطعة)</a>
                         </td>
                         <td style="text-align: center;">
                             {%if context_test4.correctAnswers != None%} {{context_test4.status_test4}} {% else %} {{context_test4.status_test4}} {%endif%}
@@ -88,7 +88,7 @@
                             <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowRep" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
-                    </tr>-->
+                    </tr>
 
                 </tbody>
             </table>

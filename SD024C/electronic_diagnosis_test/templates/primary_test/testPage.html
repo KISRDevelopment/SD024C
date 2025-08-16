@@ -10,7 +10,7 @@
     </div>
     <div class="container" style="direction: rtl;">
         <p class="text-m-b fs-3" style="margin-bottom: 10px;">الطالب : {{student}}</p>
-        {% if context_test1.status_obj == "منجز" %}
+        {% if context_test1.status_obj == "منجز" and context_test2.status_test2 != "منجز " and context_test4.status_test4 != "منجز " %}
         <a href="" style="font-weight: bold;" type="submit" class="btn-outline-p"> عرض النتائج والتوصيات </a>
         {% elif context_test1.status_obj == "توقف" or context_test1.status_ltrs == "توقف"%}
         <a href="" style="font-weight: bold;" type="submit" class="btn-outline-p"> عرض النتائج والتوصيات </a>
@@ -33,11 +33,11 @@
                             <a name="test1" href="{% url 'test1_training'%}" id="test1" type="submit" value="التسمية السريعة للأشكال" class="btn-t-enabled">دقة قراءة الكلمة المفردة</a>
                         </td>
                         <td style="text-align: center;">
-                            {%if context_test1.total_correct != None%} {{context_test1.status_obj}} {% else %} {{context_test1.status_obj}} {%endif%}
+                            {%if context_test1.correctAnswers != None%} {{context_test1.status_test1}} {% else %} {{context_test1.status_test1}} {%endif%}
                         </td>
-                        <td style="text-align: center;">{%if context_test1.total_correct != None%} {{context_test1.totalScore_obj}} {% else %} ------- {%endif%}
+                        <td style="text-align: center;">{%if context_test1.correctAnswers != None%} {{context_test1.correctAnswers}} {% else %} ------- {%endif%}
                         </td>
-                        <td style="text-align: center;">{%if context_test1.total_correct != None%}
+                        <td style="text-align: center;">{%if context_test1.correctAnswers != None%}
                             <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowObj" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
@@ -59,34 +59,34 @@
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
-                   <!-- 
+                    
                     <tr>
                         <td>
-                            <a id="phonemeDeletion" href="{% url 'test3'%}" type="button" class="btn-t-enabled">الطلاقة في فهم المقروه</a>
+                            <a id="test3" href="{% url 'test3_training'%}" type="button" class="btn-t-enabled">الطلاقة في فهم المقروء</a>
                         </td>
                         <td style="text-align: center;">
-                            {%if context_phoneme.correctAnswers != None%} {{context_phoneme.status_phoneme}} {% else %} {{context_phoneme.status_phoneme}} {%endif%}
+                            {%if context_test3.correctAnswers != None%} {{context_test3.status_test3}} {% else %} {{context_test3.status_test3}} {%endif%}
                         </td>
                         <td style="text-align: center;">
-                            {%if context_phoneme.correctAnswers != None%} {{context_phoneme.correctAnswers}} {% else %} ------- {%endif%}
+                            {%if context_test3.correctAnswers != None%} {{context_test3.correctAnswers}} {% else %} ------- {%endif%}
                         </td>
                         <td style="text-align: center;">
-                            {%if context_phoneme.correctAnswers != None%}
+                            {%if context_test3.correctAnswers != None%}
                             <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowPhoneme" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
-                    </tr>-->
+                    </tr>
                     <tr>
                         <td>
                             <a name="test4" href="{% url 'test4'%}" id="test4" type="submit" value="إملاء الكلمة" class="btn-t-enabled">إملاء الكلمة</a>
                         </td>
                         <td style="text-align: center;">
-                            {%if context_ltrs.rpdNLwrongA != None%} {{context_ltrs.status_ltrs}} {% else %} {{context_ltrs.status_ltrs}} {%endif%}
+                            {%if context_test4.correctAnswers != None%} {{context_test4.status_test4}} {% else %} {{context_test4.status_test4}} {%endif%}
                         </td>
                         <td style="text-align: center;">
-                            {%if context_ltrs.rpdNLwrongA != None%} {{context_ltrs.totalScore_ltr}} {% else %} ------- {%endif%}
+                            {%if context_test4.correctAnswers != None%} {{context_test4.correctAnswers}} {% else %} ------- {%endif%}
                         </td>
-                        <td style="text-align: center;">{%if context_ltrs.rpdNLwrongA != None%}
+                        <td style="text-align: center;">{%if context_test4.correctAnswers != None%}
                             <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowLtrs" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
