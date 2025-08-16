@@ -15,7 +15,7 @@ test4_training_questions = [
                     "ج": "الْمَلْعَبِ",
                     "د": "الْمَدْرَسةِ"
                 },
-                "correct": None
+                "correct": 'ج'
             }
         ]
     },
@@ -33,7 +33,7 @@ test4_training_questions = [
                     "ج": "الْبَحْرِ",
                     "د": "الْحَديقَةِ"
                 },
-                "correct": None
+                "correct": 'ب'
             }
         ]
     }

@@ -75,7 +75,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <a href="{% url 'secondary_test4'%}" id="test4" type="button" class="btn-t-enabled">فهم المقروء (القطعة)</a>
+                            <a href="{% url 'test4_training_sec'%}" id="test4" type="button" class="btn-t-enabled">فهم المقروء (القطعة)</a>
                         </td>
                         <td style="text-align: center;">
                             {%if context_test4.correctAnswers != None%} {{context_test4.status_test4}} {% else %} {{context_test4.status_test4}} {%endif%}
