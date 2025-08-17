@@ -15,6 +15,7 @@ from .data.secondary.test2 import secondary_test2_training_questions, main_quest
 from .data.primary.test5 import primary_test5_training_questions, primary_test5_main_questions
 from .data.secondary.test4 import test4_training_questions, test4_main_questions
 from .data.secondary.test3 import secondary_test3_words
+from .data.primary.test6 import test6_training_questions, test6_main_questions
 #from .models import Student
 #from .models import Score
 #from .models import *
@@ -336,17 +337,23 @@ def testsPage (request):
     test2 = PrimaryTest2.objects.filter(student_id = request.session['student'])
     test3 = PrimaryTest3.objects.filter(student_id = request.session['student'])
     test4 = PrimaryTest4.objects.filter(student_id = request.session['student'])
-    #test5 = PrimaryTest5.objects.filter(student_id = request.session['student'])
-    #test6 = PrimaryTest6.objects.filter(student_id = request.session['student'])
+    test5 = PrimaryTest5.objects.filter(student_id = request.session['student'])
+    test6 = PrimaryTest6.objects.filter(student_id = request.session['student'])
     global context_test1
     context_test1 = {}
     global context_test2
     context_test2 = {}
+    global context_test3
+    context_test3 = {}
     global context_test4
+    context_test4 = {}
+    global context_test5
+    context_test4 = {}
+    global context_test6
     context_test4 = {}
     
     
-    if (test1.exists() or test2.exists() or test4.exists()):
+    if (test1.exists() or test2.exists() or test3.exists() or test4.exists() or test5.exists() or test6.exists()):
         if(test1.exists()):
             test1_correct_Ans = test1.latest("id").total_correct
             if (test1_correct_Ans != None):
@@ -383,13 +390,33 @@ def testsPage (request):
         else:
             context_test4 = {"status_test4":('غير منجز'), }
 
-        return render(request, "primary_test/testPage.html", { "context_test1": context_test1, "context_test2": context_test2, "context_test3": context_test3,"context_test4": context_test4,"student": student, "examiners": (Examiner.objects.get(user_id=request.user.id))})
+        if(test5.exists()):
+            test5_correct_Ans = test5.latest("id").total_correct
+            if (test5_correct_Ans != None):
+                context_test5 = {"correctAnswers":(test5_correct_Ans), "status_test5":('منجز '), }
+            else:
+                context_test5 = {"status_test5":('غير منجز'), }
+        else:
+            context_test5 = {"status_test5":('غير منجز'), }
+
+        if(test6.exists()):
+            test6_correct_Ans = test6.latest("id").total_correct
+            if (test6_correct_Ans != None):
+                context_test6 = {"correctAnswers":(test6_correct_Ans), "status_test6":('منجز '), }
+            else:
+                context_test6 = {"status_test6":('غير منجز'), }
+        else:
+            context_test6 = {"status_test6":('غير منجز'), }
+
+        return render(request, "primary_test/testPage.html", { "context_test1": context_test1, "context_test2": context_test2, "context_test3": context_test3,"context_test4": context_test4, "context_test5": context_test5, "context_test6": context_test6,"student": student, "examiners": (Examiner.objects.get(user_id=request.user.id))})
     else:
         context_test1 = { "status_test1":('غير منجز'),}
         context_test2 = { "status_test2":('غير منجز'),}
         context_test3 = { "status_test3":('غير منجز'),}
         context_test4 = { "status_test4":('غير منجز'),}
-        return render(request,"primary_test/testPage.html", {"context_test1": context_test1, "context_test2": context_test2, "context_test3": context_test3,"context_test4": context_test4, "student":(Student.objects.get(id=request.session['student']).studentName), "examiners": (Examiner.objects.get(user_id=request.user.id)) })
+        context_test5 = { "status_test5":('غير منجز'),}
+        context_test6 = { "status_test6":('غير منجز'),}
+        return render(request,"primary_test/testPage.html", {"context_test1": context_test1, "context_test2": context_test2, "context_test3": context_test3,"context_test4": context_test4, "context_test5": context_test5, "context_test6": context_test6, "student":(Student.objects.get(id=request.session['student']).studentName), "examiners": (Examiner.objects.get(user_id=request.user.id)) })
 
 @login_required(login_url="/login")
 def testsPageSec (request):
@@ -1138,9 +1165,254 @@ def primary_test5(request):
     })
 
 
+def primary_test6_training(request):
+    # --- First Visit ---
+    if request.method == "GET" and not request.headers.get("HX-Request"):
+        para = test6_training_questions[0]
+        paragraph_text = para["paragraph"]
+        question = para["questions"][0]
+        question_text = question["question"]
+        answers = question["answers"]
+        request.session['training_correct'] = 0
+        return render(request, "primary_test/test6_training.html", {
+            "paragraph": paragraph_text,
+            "question": question,
+            "question_text": question_text,
+            "answers": answers,
+            "index": 0
+        })
+
+    # --- GET: Load Next Question via HTMX ---
+    if request.method == "GET" and request.headers.get("HX-Request") == "true":
+        index = int(request.GET.get("index", 0))
+        is_final = request.GET.get("final") == "true"
+
+        if is_final:
+            passed = request.session.get('training_correct', 0) > 0
+            return render(request, 'primary_test/test6_training_correct_result.html', {
+                'show_final_result': True,
+                'passed': passed
+            })
+
+        if index < len(test6_training_questions):
+            para = test6_training_questions[index]
+            paragraph_text = para["paragraph"]
+            question = para["questions"][0]
+            question_text = question["question"]
+            answers = question["answers"]
+            return render(request, "primary_test/test6_training_question.html", {
+                "paragraph": paragraph_text,
+                "question": question,
+                "question_text": question_text,
+                "answers": answers,
+                "index": index
+            })
+
+    # --- POST: Answer Clicked OR "التالي" ---
+    if request.method == "POST":
+        index = int(request.POST.get("index", 0))
+        selected = request.POST.get("answer")
+        question = test6_training_questions[index]
+        correct = question["questions"][0]["correct"]
+        paragraph_text = question["paragraph"]
+        question_first = question["questions"][0]
+        question_text = question_first["question"]
+        answers = question_first["answers"]
+        next_index = index + 1
+        total = len(test6_training_questions)
+        is_last = next_index >= total
+        passed = request.session.get('training_correct', 0) > 0 if is_last else None
+
+    if selected:
+        if 'training_correct' not in request.session:
+            request.session['training_correct'] = 0
+
+        if selected == correct:
+            request.session['training_correct'] += 1
+
+
+
+    return render(request, "primary_test/test6_training_correct_result.html", {
+        "is_correct": selected == correct,
+        "correct": correct,
+        "selected": selected,
+        "index": next_index,
+        "question": question,
+        "paragraph_text": paragraph_text,
+        "question_first": question_first,
+        "question_text": question_text,
+        "answers": answers,
+
+        "total_questions": total,
+        "passed": passed
+    })
+
+
+def _test6_init(request):
+    s = request.session
+    s['t6_index'] = 0
+    s['t6_answers'] = []
+    s['t6_scores']  = []
+    s['t6_durations'] = []
+    s['t6_started_at'] = time.time()
+    s['t6_qstart_at']  = time.time()
+    s['t6_total'] = sum(len(p["questions"]) for p in test6_main_questions)
+    s.modified = True
+
+    
+
 @login_required(login_url="/login")
 def primary_test6(request):
-    return render(request,"primary_test/test6.html")
+    student = Student.objects.get(id=request.session['student'])
+
+    data = test6_main_questions
+    total = sum(len(p["questions"]) for p in data)
+
+    # First test page load (Q1)
+    if request.method == "GET" and not request.headers.get("HX-Request"):
+        _test6_init(request)
+        para, q = get_linear_question(data, 0)
+        return render(request, "primary_test/test6.html", {
+            "question": {
+                "id": q["id"],
+                "question": q["question"],
+                "answers": q["answers"],
+                "correct": q.get("correct"),
+                "paragraph": para["paragraph"],
+                "paragraph_id": para.get("paragraph_id"),
+            },
+            "index": 0,
+            "total": total,
+        })
+
+    # HTMX POST: when a button is clicked (answer / skip / stop)
+    if request.method == "POST" and request.headers.get("HX-Request") == "true":
+        s = request.session
+        idx      = s.get('t6_index', 0)
+        answers  = s.get('t6_answers', [])
+        scores   = s.get('t6_scores', [])
+        durs     = s.get('t6_durations', [])
+        qstart   = s.get('t6_qstart_at', time.time())
+        started  = s.get('t6_started_at', time.time())
+
+        action      = request.POST.get("action")
+        selected    = request.POST.get("answer")
+        stop_reason = request.POST.get("stop_reason", "").strip()
+
+        # computation time
+        elapsed = round(time.time() - qstart, 3)
+
+        # STOP (the examiner stopped the test)
+        if action == "stop":
+            # Mark current question duration as "-" since stopped in modal
+            durs.append("-")
+            answers.append("-")
+            scores.append("-")
+
+            # Fill rest with "-"
+            remaining = total - (idx + 1)
+            if remaining > 0:
+                answers.extend(["-"] * remaining)
+                scores.extend(["-"] * remaining)
+                durs.extend(["-"] * remaining)
+
+            # Count only actual numeric scores
+            total_correct = sum(1 for x in scores if x == 1)
+            total_time_secs = round(sum(d for d in durs if isinstance(d, (int, float))), 3)
+
+            PrimaryTest6.objects.create(
+                student=student,
+                raw_scores=scores,
+                total_correct=total_correct,
+                durations=durs,
+                reason=stop_reason,
+                total_time_secs=total_time_secs,
+                date=datetime.now()
+            )
+
+            test_profile_url = reverse('testsPage')
+            resp = HttpResponse('')
+            resp['HX-Redirect'] = test_profile_url
+            return resp
+
+        # ANSWER / SKIP branch
+        # Normalize to exactly 4.000 for auto-skip (keep same behavior as test2, if you use it)
+        if 9.9 <= elapsed <= 10.2:
+            elapsed = 10.000
+        durs.append(elapsed)
+
+        # record answer & score
+        para_now, q_now = get_linear_question(data, idx)
+        if selected in [None, ""]:
+            answers.append("-")
+            scores.append("-")
+        else:
+            answers.append(selected)
+            correct = q_now.get("correct")
+            scores.append(1 if (selected == correct) else 0)
+
+        # advance index
+        idx += 1
+        s['t6_index'] = idx
+        s['t6_answers'] = answers
+        s['t6_scores']  = scores
+        s['t6_durations'] = durs
+        s['t6_qstart_at'] = time.time()
+        s.modified = True
+
+        # next question or finish
+        if idx < total:
+            para_next, q_next = get_linear_question(data, idx)
+            html = render_to_string("primary_test/test6_question.html", {
+                "question": {
+                    "id": q_next["id"],
+                    "question": q_next["question"],
+                    "answers": q_next["answers"],
+                    "correct": q_next.get("correct"),
+                    "paragraph": para_next["paragraph"],
+                    "paragraph_id": para_next.get("paragraph_id"),
+                },
+                "index": idx,
+                "total": total,
+            }, request=request)
+            return HttpResponse(html)
+
+        # finished — compute totals & save
+        scores_ = s.get('t6_scores', [])
+        durations_ = s.get('t6_durations', [])
+        total_correct = sum(1 for x in scores_ if x == 1)  # only numeric 1's
+        total_time_secs = round(time.time() - started, 3) if started else None
+
+        PrimaryTest6.objects.create(
+            student=student,
+            raw_scores=scores_,
+            total_correct=total_correct,
+            durations=durations_,
+            reason=stop_reason,
+            total_time_secs=total_time_secs,
+            date=datetime.now()
+        )
+
+        test_profile_url = reverse('testsPage')
+        resp = HttpResponse('')
+        resp['HX-Redirect'] = test_profile_url
+        return resp
+
+    # fallback (fresh start)
+    _test6_init(request)
+    para, q = get_linear_question(data, 0)
+    return render(request, "primary_test/test6.html", {
+        "question": {
+            "id": q["id"],
+            "question": q["question"],
+            "answers": q["answers"],
+            "correct": q.get("correct"),
+            "paragraph": para["paragraph"],
+            "paragraph_id": para.get("paragraph_id"),
+        },
+        "index": 0,
+        "total": total,
+    })
 
 #Secondary test 1
 @login_required(login_url="/login")
@@ -1577,7 +1849,7 @@ def secondary_test4_training(request):
         "passed": passed
     })
 
-def _t4_linear_to_pq(data, idx):
+def linear_to_pq(data, idx):
     """
     Convert linear index (0..N-1) -> (p_idx, q_idx).
     """
@@ -1589,11 +1861,11 @@ def _t4_linear_to_pq(data, idx):
         running += qn
     return None, None  # finished
 
-def _t4_get_linear_question(data, idx):
+def get_linear_question(data, idx):
     """
     Return (paragraph_dict, question_dict) for linear idx.
     """
-    p_idx, q_idx = _t4_linear_to_pq(data, idx)
+    p_idx, q_idx = linear_to_pq(data, idx)
     if p_idx is None:
         return None, None
     para = data[p_idx]
@@ -1623,7 +1895,7 @@ def secondary_test4(request):
     # First test page load (Q1)
     if request.method == "GET" and not request.headers.get("HX-Request"):
         _test4_init(request)
-        para, q = _t4_get_linear_question(data, 0)
+        para, q = get_linear_question(data, 0)
         return render(request, "secondary_test/test4.html", {
             "question": {
                 "id": q["id"],
@@ -1694,7 +1966,7 @@ def secondary_test4(request):
         durs.append(elapsed)
 
         # record answer & score
-        para_now, q_now = _t4_get_linear_question(data, idx)
+        para_now, q_now = get_linear_question(data, idx)
         if selected in [None, ""]:
             answers.append("-")
             scores.append("-")
@@ -1714,7 +1986,7 @@ def secondary_test4(request):
 
         # next question or finish
         if idx < total:
-            para_next, q_next = _t4_get_linear_question(data, idx)
+            para_next, q_next = get_linear_question(data, idx)
             html = render_to_string("secondary_test/test4_question.html", {
                 "question": {
                     "id": q_next["id"],
@@ -1752,7 +2024,7 @@ def secondary_test4(request):
 
     # fallback (fresh start)
     _test4_init(request)
-    para, q = _t4_get_linear_question(data, 0)
+    para, q = get_linear_question(data, 0)
     return render(request, "secondary_test/test4.html", {
         "question": {
             "id": q["id"],

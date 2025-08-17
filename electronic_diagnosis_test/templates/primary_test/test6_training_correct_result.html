@@ -1,0 +1,69 @@
+
+
+    {% if show_final_result %}
+    <div class="text-center mt-4">
+      {% if passed %}
+        <div class="alert alert-success fs-5">تم اجتياز التدريب! يمكنك الآن بدء الاختبار.</div>
+        <a href="{% url 'test6' %}" class="btn btn-success px-5 mt-3">ابدأ الاختبار</a>
+      {% else %}
+        <div class="alert alert-danger fs-5">لم يتم اجتياز التدريب. حاول مرة أخرى.</div>
+        <a href="{% url 'test6_training' %}" class="btn btn-danger px-5 mt-3">إعادة المحاولة</a>
+      {% endif %}
+    </div>
+  {% else %}
+
+<div id="question-area">
+<form 
+  method="POST" 
+  hx-post="{% url 'test6_training' %}" 
+  hx-target="#question-area" 
+  hx-swap="innerHTML">
+
+  {% csrf_token %}
+  <input type="hidden" name="index" value="{{ index }}">
+
+  <div class="card p-3 my-3">
+    <div class="mb-4 fw-bold fs-5 text-end">
+       {{ paragraph_text|safe }}
+    </div>
+
+    <div class="mb-4 fw-bold fs-5 text-end">
+      {{ index }}- {{ question_text|safe }}
+    </div>
+        <div class="row">
+      {% for letter, text in answers.items %}
+        <div class="col-md-6 mb-3 text-end">
+            {% if letter == selected and selected != correct %}
+            <button class="btn btn-danger w-100 text-end" disabled><strong>{{letter}} - </strong>{{ text }}</button>
+            {% elif letter == correct %}
+          <!--<div class="col-md-6 mb-2">-->
+            <button class="btn btn-success w-100 text-end" disabled><strong>{{letter}} - </strong>{{ text }}</button>
+          <!--</div>-->
+        {% else %}
+          <!--<div class="col-md-6 mb-2">-->
+            <button class="btn btn-outline-secondary w-100 text-end" disabled><strong>{{letter}} - </strong>{{ text }}</button>
+          <!--</div>-->
+        {% endif %}
+        </div>
+      {% endfor %}
+          <div class="text-center mt-4">
+      <button class="btn btn-primary"
+              hx-get="{% url 'test6_training' %}?index={{ index }}{% if index == total_questions %}&final=true{% endif %}"
+              hx-target="#question-area"
+              hx-swap="innerHTML">
+        التالي
+      </button>
+    </div>
+    </div>
+
+
+
+  </div>
+</form>
+</div>
+
+  {% endif %}
+
+  
+    
+  
