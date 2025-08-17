@@ -38,7 +38,7 @@
                         <td style="text-align: center;">{%if context_test1.correctAnswers != None%} {{context_test1.correctAnswers}} {% else %} ------- {%endif%}
                         </td>
                         <td style="text-align: center;">{%if context_test1.correctAnswers != None%}
-                            <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowObj" class="btn-t-enabled"> عرض </a> {% else %}
+                            <a href="#" id="showResult" data-bs-toggle="modal" data-bs-target="#ModalShowTest1" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
@@ -55,7 +55,7 @@
                         </td>
                         <td style="text-align: center;">
                             {%if context_test2.correctAnswers != None%}
-                            <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowPhoneme" class="btn-t-enabled"> عرض </a> {% else %}
+                            <a href="#" id="showResult" data-bs-toggle="modal" data-bs-target="#ModalShowTest2" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
@@ -72,7 +72,7 @@
                         </td>
                         <td style="text-align: center;">
                             {%if context_test3.correctAnswers != None%}
-                            <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowPhoneme" class="btn-t-enabled"> عرض </a> {% else %}
+                            <a href="#" id="showResult" data-bs-toggle="modal" data-bs-target="#ModalShowTest3" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
@@ -87,7 +87,7 @@
                             {%if context_test4.correctAnswers != None%} {{context_test4.correctAnswers}} {% else %} ------- {%endif%}
                         </td>
                         <td style="text-align: center;">{%if context_test4.correctAnswers != None%}
-                            <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowLtrs" class="btn-t-enabled"> عرض </a> {% else %}
+                            <a href="#" id="showResult" data-bs-toggle="modal" data-bs-target="#ModalShowTest4" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
@@ -102,7 +102,7 @@
                             {%if context_test5.correctAnswers != None%} {{context_test5.correctAnswers}} {% else %} ------- {%endif%}
                         </td>
                         <td style="text-align: center;">{%if context_test5.correctAnswers != None%}
-                            <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowLtrs" class="btn-t-enabled"> عرض </a> {% else %}
+                            <a href="#" id="showResult" data-bs-toggle="modal" data-bs-target="#ModalShowTest5" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
@@ -118,7 +118,7 @@
                         </td>
                         <td style="text-align: center;">
                             {%if context_test6.correctAnswers != None%}
-                            <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowRep" class="btn-t-enabled"> عرض </a> {% else %}
+                            <a href="#" id="showResult" data-bs-toggle="modal" data-bs-target="#ModalShowTest6" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
@@ -130,120 +130,24 @@
 </div>
 </div>
 
-<!--modal for the show OBJ result-->
-<div class="modal fade" id="ModalShowObj" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+<!--modal for the 1st test word reading: Accuracy and speed-->
+<div class="modal fade" id="ModalShowTest1" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <form action="{% url 'testsPage' %}" method="POST">
         {% csrf_token %}
         <div class="modal-dialog" role="document">
             <div class="modal-content rounded-3 shadow">
                 <div class="modal-header p-4">
-                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتائج اختبار التسمية السريعة للأشكال</h2>
-                </div>
-                <div class="modal-body" style="text-align: right;">
-                    <div class="mx-auto" style="width: 400px;">
-                        <label class="text-m-b color-purple"> نموذج (أ) </label>
-                        <div class="form-group mb-3">
-                            <label class="text-m-b">الزمن </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {%if context_obj.rpdNOwrongA != None%}{{context_obj.durationA}} ث {%endif%}</label>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="text-m-b">عدد الأخطاء </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff">{{context_obj.rpdNOwrongA}}</label>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="text-m-b">الزمن مع الأخطاء  </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;">{{context_obj.scoreA}} ثانيه</label>
-                        </div>
-                        <br></br>
-                        <label class="text-m-b color-purple"> نموذج (ب) </label>
-                        <div class="form-group mb-3">
-                            <label class="text-m-b">الزمن </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff;direction: rtl;">{%if context_obj.rpdNOwrongB != None%} {{context_obj.durationB}} ث {%else%} ---- {%endif%}</label>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="text-m-b">عدد الأخطاء </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff">{%if context_obj.rpdNOwrongB != None%} {{context_obj.rpdNOwrongB}} {%else%} ---- {%endif%}</label>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="text-m-b">الزمن مع الأخطاء  </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;">{%if context_obj.rpdNOwrongB != None%} {{context_obj.scoreB}} ثانيه {%else%} ---- {%endif%}</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer flex-nowrap p-0">
-                    <button class="btn btn-danger fs-5 col-12 py-3 m-0 rounded-0 " type="submit" style="background-color: #720e9e; border-color: #720e9e; ">اغلاق</button>
-                </div>
-
-            </div>
-        </div>
-
-    </form>
-</div>
-
-<!--modal for the show Letters result-->
-<div class="modal fade" id="ModalShowLtrs" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-    <form action="{% url 'testsPage' %}" method="POST">
-        {% csrf_token %}
-        <div class="modal-dialog" role="document">
-            <div class="modal-content rounded-3 shadow">
-                <div class="modal-header p-4">
-                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتائج اختبار التسمية السريعة للحروف</h2>
-                </div>
-                <div class="modal-body" style="text-align: right;">
-                    <div class="mx-auto" style="width: 400px;">
-                        <label class="text-m-b color-purple"> نموذج (أ) </label>
-                        <div class="form-group mb-3">
-                            <label class="text-m-b">الزمن </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_ltrs.durationTstA}} ث</label>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="text-m-b">عدد الأخطاء </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff">{{context_ltrs.rpdNLwrongA}}</label>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="text-m-b">الزمن مع الأخطاء  </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;">{{context_ltrs.scoreTstA}} ثانيه</label>
-                        </div>
-                        <br></br>
-                        <label class="text-m-b color-purple"> نموذج (ب) </label>
-                        <div class="form-group mb-3">
-                            <label class="text-m-b">الزمن </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff;direction: rtl;"> {%if context_ltrs.rpdNLwrongB != None%} {{context_ltrs.durationTstB}} ث {%else%} ---- {%endif%}</label>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="text-m-b">عدد الأخطاء </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff"> {%if context_ltrs.rpdNLwrongB != None%} {{context_ltrs.rpdNLwrongB}} {%else%} ---- {%endif%}</label>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="text-m-b">الزمن مع الأخطاء  </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;">{%if context_ltrs.rpdNLwrongB != None%} {{context_ltrs.scoreTstB}} ثانيه {%else%} ---- {%endif%}</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer flex-nowrap p-0">
-                    <button class="btn btn-danger fs-5 col-12 py-3 m-0 rounded-0 " type="submit" style="background-color: #720e9e; border-color: #720e9e; ">اغلاق</button>
-                </div>
-
-            </div>
-        </div>
-
-    </form>
-</div>
-
-<!--modal for the show Phoneme test result-->
-<div class="modal fade" id="ModalShowPhoneme" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-    <form action="{% url 'testsPage' %}" method="POST">
-        {% csrf_token %}
-        <div class="modal-dialog" role="document">
-            <div class="modal-content rounded-3 shadow">
-                <div class="modal-header p-4">
-                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتيجة اختبار حذف المقاطع والأصوات</h2>
+                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتيجة اختبار دقة قراءة الكلمة المفردة</h2>
                 </div>
                 <div class="modal-body" style="text-align: right;">
                     <div class="mx-auto" style="width: 400px;">
                         <div class="form-group mb-3">
                             <label class="text-m-b">الدرجة الكلية </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_phoneme.correctAnswers}} /20</label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test1.correctAnswers}} / 30</label>
+                            <label class="text-m-b">الزمن </label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test1.time_sec }} </label>
+                            <label class="text-m-b">fluency </label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test1.fluency_score }}</label>
                         </div>
                     </div>
                 </div>
@@ -256,20 +160,24 @@
     </form>
 </div>
 
-<!--modal for the show non word repetitions test result-->
-<div class="modal fade" id="ModalShowRep" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+<!--modal for the 2nd test Sentence Reading Fluency-->
+<div class="modal fade" id="ModalShowTest2" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <form action="{% url 'testsPage' %}" method="POST">
         {% csrf_token %}
         <div class="modal-dialog" role="document">
             <div class="modal-content rounded-3 shadow">
                 <div class="modal-header p-4">
-                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتيجة اختبار تكرار الكلمات غير الحقيقية </h2>
+                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتيجة اختبار الطلاقة في قراءة الجملة</h2>
                 </div>
                 <div class="modal-body" style="text-align: right;">
                     <div class="mx-auto" style="width: 400px;">
                         <div class="form-group mb-3">
                             <label class="text-m-b">الدرجة الكلية </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_nonWrdRep.correctAnswers}} /20</label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test2.correctAnswers}} / 101</label>
+                            <label class="text-m-b">الزمن </label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test2.time_sec }} </label>
+                            <label class="text-m-b">fluency </label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test2.fluency_score }}</label>
                         </div>
                     </div>
                 </div>
@@ -282,20 +190,100 @@
     </form>
 </div>
 
-<!--modal for the show non word reading accuracy test result-->
-<div class="modal fade" id="ModalShowReading" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+<!--modal for the 3rd test Reading Comprehension fluency-->
+<div class="modal fade" id="ModalShowTest3" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <form action="{% url 'testsPage' %}" method="POST">
         {% csrf_token %}
         <div class="modal-dialog" role="document">
             <div class="modal-content rounded-3 shadow">
                 <div class="modal-header p-4">
-                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتيجة اختبار دقة قراءة الكلمات غير الحقيقية </h2>
+                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتيجة اختبار الطلاقة في قراءة الجملة</h2>
                 </div>
                 <div class="modal-body" style="text-align: right;">
                     <div class="mx-auto" style="width: 400px;">
                         <div class="form-group mb-3">
                             <label class="text-m-b">الدرجة الكلية </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_nonWrdReading.correctAnswers}} /25</label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test3.correctAnswers}} / 50</label>
+                            <label class="text-m-b">الزمن </label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test3.time_sec }} </label>
+                            <!--<label class="text-m-b">fluency </label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test3.fluency_score }}</label>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer flex-nowrap p-0">
+                    <button class="btn btn-danger fs-5 col-12 py-3 m-0 rounded-0 " type="submit" style="background-color: #720e9e; border-color: #720e9e; ">اغلاق</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<!--modal for the 4th test Word Spelling result-->
+<div class="modal fade" id="ModalShowTest4" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <form action="{% url 'testsPage' %}" method="POST">
+        {% csrf_token %}
+        <div class="modal-dialog" role="document">
+            <div class="modal-content rounded-3 shadow">
+                <div class="modal-header p-4">
+                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتيجة اختبار الإملاء الكلمة  </h2>
+                </div>
+                <div class="modal-body" style="text-align: right;">
+                    <div class="mx-auto" style="width: 400px;">
+                        <div class="form-group mb-3">
+                            <label class="text-m-b">الدرجة الكلية </label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test4.correctAnswers}} / 30</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer flex-nowrap p-0">
+                    <button class="btn btn-danger fs-5 col-12 py-3 m-0 rounded-0 " type="submit" style="background-color: #720e9e; border-color: #720e9e; ">اغلاق</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--modal for the 5th test Spelling choice result-->
+<div class="modal fade" id="ModalShowTest5" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <form action="{% url 'testsPage' %}" method="POST">
+        {% csrf_token %}
+        <div class="modal-dialog" role="document">
+            <div class="modal-content rounded-3 shadow">
+                <div class="modal-header p-4">
+                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتيجة اختبار الإملاء الصحيح  </h2>
+                </div>
+                <div class="modal-body" style="text-align: right;">
+                    <div class="mx-auto" style="width: 400px;">
+                        <div class="form-group mb-3">
+                            <label class="text-m-b">الدرجة الكلية </label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test5.correctAnswers}} / 28</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer flex-nowrap p-0">
+                    <button class="btn btn-danger fs-5 col-12 py-3 m-0 rounded-0 " type="submit" style="background-color: #720e9e; border-color: #720e9e; ">اغلاق</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--modal for the 6th test Reading comprehension result-->
+<div class="modal fade" id="ModalShowTest6" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <form action="{% url 'testsPage' %}" method="POST">
+        {% csrf_token %}
+        <div class="modal-dialog" role="document">
+            <div class="modal-content rounded-3 shadow">
+                <div class="modal-header p-4">
+                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتيجة اختبار فهم المقروء (القطعة) </h2>
+                </div>
+                <div class="modal-body" style="text-align: right;">
+                    <div class="mx-auto" style="width: 400px;">
+                        <div class="form-group mb-3">
+                            <label class="text-m-b">الدرجة الكلية </label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test6.correctAnswers}} / 32</label>
                         </div>
                     </div>
                 </div>
