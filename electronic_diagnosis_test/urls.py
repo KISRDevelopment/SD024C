@@ -8,10 +8,7 @@ urlpatterns = [
     path("contact",views.contact, name="contact"),
     path("login",views.login, name="login"),
     path("admin",views.admin, name="admin"),
-
     path("requestPage",views.requestPage, name="requestPage"),
-    #path("adminPage",views.adminPage, name="adminPage"),
-    
     path("signupSuperUser",views.signupSuperUser, name="signupSuperUser"),
     path('delete/<int:id>', views.delete, name='delete'),
     path('edit/<int:id>', views.edit, name='edit'),
@@ -35,6 +32,7 @@ urlpatterns = [
     path('test4', views.primary_test4, name='test4'),
     path('test5_training', views.primary_test5_training, name='test5_training'),
     path('test5', views.primary_test5, name='test5'),
+    path('test6_training/', views.primary_test6_training, name='test6_training'),
     path('test6', views.primary_test6, name='test6'),
     path('test1_training_sec/', views.secondary_test1_training, name='test1_training_sec'),
     path('test1_sec', views.secondary_test1, name='secondary_test1'),

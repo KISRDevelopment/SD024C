@@ -106,23 +106,23 @@
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
-                    <!--<tr>
+                    <tr>
                         <td>
-                            <a href="{% url 'test6'%}" id="nonWordRepetition" type="button" class="btn-t-enabled">فهم المقروء (القطعة)</a>
+                            <a href="{% url 'test6_training'%}" id="test6" type="button" class="btn-t-enabled">فهم المقروء (القطعة)</a>
                         </td>
                         <td style="text-align: center;">
-                            {%if context_nonWrdRep.correctAnswers != None%} {{context_nonWrdRep.status_nonWrdRep}} {% else %} {{context_nonWrdRep.status_nonWrdRep}} {%endif%}
+                            {%if context_test6.correctAnswers != None%} {{context_test6.status_test6}} {% else %} {{context_test6.status_test6}} {%endif%}
                         </td>
                         <td style="text-align: center;">
-                            {%if context_nonWrdRep.correctAnswers != None%} {{context_nonWrdRep.correctAnswers}} {% else %} ------- {%endif%}
+                            {%if context_test6.correctAnswers != None%} {{context_test6.correctAnswers}} {% else %} ------- {%endif%}
                         </td>
                         <td style="text-align: center;">
-                            {%if context_nonWrdRep.correctAnswers != None%}
+                            {%if context_test6.correctAnswers != None%}
                             <a href="#" id="showResult" data-toggle="modal" data-target="#ModalShowRep" class="btn-t-enabled"> عرض </a> {% else %}
                             <button disabled="disabled" name="showRslt" href="" id="showResult" type="submit" value="عرض" class="btn-t-disabled"> عرض </button> {%endif%}
                         </td>
                     </tr>
-                -->
+
                 </tbody>
             </table>
         </div>
