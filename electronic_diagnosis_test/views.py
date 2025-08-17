@@ -356,8 +356,10 @@ def testsPage (request):
     if (test1.exists() or test2.exists() or test3.exists() or test4.exists() or test5.exists() or test6.exists()):
         if(test1.exists()):
             test1_correct_Ans = test1.latest("id").total_correct
+            test1_time_seconds = test1.latest("id").time_seconds
+            test1_fluency_score = test1.latest("id").fluency_score
             if (test1_correct_Ans != None):
-                context_test1 = {"correctAnswers":(test1_correct_Ans), "status_test1":('منجز '), }
+                context_test1 = {"correctAnswers":(test1_correct_Ans), "status_test1":('منجز '),  "time_sec": (test1_time_seconds), "fluency_score": (test1_fluency_score)}
             else:
                 context_test1 = {"status_test1":('غير منجز'), }
         else:
@@ -365,8 +367,10 @@ def testsPage (request):
 
         if(test2.exists()):
             test2_correct_Ans = test2.latest("id").total_score
+            test2_time_seconds = test2.latest("id").time_seconds
+            test2_fluency_score = test2.latest("id").fluency_score
             if (test2_correct_Ans != None):
-                context_test2 = {"correctAnswers":(test2_correct_Ans), "status_test2":('منجز '), }
+                context_test2 = {"correctAnswers":(test2_correct_Ans), "status_test2":('منجز '), "time_sec": (test2_time_seconds), "fluency_score": (test2_fluency_score)}
             else:
                 context_test2 = {"status_test2":('غير منجز'), }
         else:
@@ -374,8 +378,11 @@ def testsPage (request):
         
         if(test3.exists()):
             test3_correct_Ans = test3.latest("id").total_correct
+            test3_time_seconds = test3.latest("id").total_time_secs
+            #test3_fluency_score = test3.latest("id")
+            
             if (test3_correct_Ans != None):
-                context_test3 = {"correctAnswers":(test3_correct_Ans), "status_test3":('منجز '), }
+                context_test3 = {"correctAnswers":(test3_correct_Ans), "status_test3":('منجز '), "time_sec": (test3_time_seconds), } #"fluency_score": (test3_fluency_score)
             else:
                 context_test3 = {"status_test3":('غير منجز'), }
         else:
@@ -454,11 +461,11 @@ def testsPageSec (request):
             context_test1 = {"status_test1":('غير منجز'), }
 
         if(test2.exists()):
-            test2_correct_Ans = SecondaryTest2.objects.filter(student_id = request.session['student']).latest("id").total_correct
-            #test1_time_seconds = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").time_seconds
-            #test1_fluency_score = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").fluency_score
+            test2_correct_Ans = test2.latest("id").total_correct
+            test2_time_seconds = test2.latest("id").total_time_secs 
+            #test2_fluency_score = test2.latest("id")
             if (test2_correct_Ans != None):
-                context_test2 = {"correctAnswers":(test2_correct_Ans), "status_test2":('منجز ')}
+                context_test2 = {"correctAnswers":(test2_correct_Ans), "status_test2":('منجز '), "time_sec": (test2_time_seconds), } #"fluency_score": (test1_fluency_score)
             else:
                 context_test2 = {"status_test2":('غير منجز'), }
         else:
