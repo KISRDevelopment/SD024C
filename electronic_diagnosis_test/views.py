@@ -348,9 +348,9 @@ def testsPage (request):
     global context_test4
     context_test4 = {}
     global context_test5
-    context_test4 = {}
+    context_test5 = {}
     global context_test6
-    context_test4 = {}
+    context_test6 = {}
     
     
     if (test1.exists() or test2.exists() or test3.exists() or test4.exists() or test5.exists() or test6.exists()):
@@ -1420,6 +1420,9 @@ def primary_test6(request):
         "index": 0,
         "total": total,
     })
+
+def primary_result(request):
+    return render(request,"primary_test/result.html")
 
 #Secondary test 1
 @login_required(login_url="/login")
