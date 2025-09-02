@@ -1,1 +1,139 @@
-<p> result page</p>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+<!--user result-->
+
+<div class="container my-4" lang="ar" dir="rtl" id="result-root">
+
+  <!-- Top ribbon -->
+  <div class="d-flex gap-2 mb-3 d-print-none">
+    <button class="btn btn-outline-secondary" onclick="window.print()">
+      <i class="bi bi-printer"></i> طباعة
+    </button>
+  </div>
+
+  <!-- ====== الجزء (أ): البيانات الشخصية ====== -->
+  <section class="sheet mb-4">
+    <div class="ribbon">
+      <span class="tag tag-orange">كرّاسة النتائج والتوصيات</span>
+      <span class="tag tag-purple">اختبار القراءة والإملاء المقنّن للأطفال</span>
+    </div>
+
+    <div class="notebooks">
+      <h2 class="section-title">الجزء (أ): البيانات الشخصية</h2>
+      <div class="row g-3">
+        <div class="col-12 col-md-6">
+          <div class="field"><label>اسم المفحوص رباعياً:</label> <span>{{ student.name }}</span></div>
+          <div class="field"><label>اسم المدرسة:</label> <span>{{ student.school }}</span></div>
+          <div class="field fieldoneline"><label>المنطقة التعليمية:</label> <span>{{ student.District }}</span></div>
+          <div class="field fieldoneline"><label>جنسية الفحوص:</label> <span>{{ student.nationality }}</span></div>
+        <!--<div class="col-md-6">-->
+
+                        <div class="d-grid mx-auto">
+                    <table class="table-style">
+                        <tr>
+                            <th id="style-th"> </th>
+                            <th id="style-th" style="text-align: center;">اليوم</th>
+                            <th id="style-th" style="text-align: center;">الشهر</th>
+                            <th id="style-th" style="text-align: center;">السنة</th>
+                        </tr>
+                        <tr>
+                            <td>تاريخ إجراء الاختبار:</td>
+                            <td class="td-style">{{examDate|date:'d'}}</td>
+                            <td class="td-style">{{examDate|date:'m'}}</td>
+                            <td class="td-style">{{examDate|date:'Y'}}</td>
+                        </tr>
+                        <tr>
+                            <td>تاريخ ميلاد المفحوص:</td>
+                            <td class="td-style">{{birthDate|date:'d'}}</td>
+                            <td class="td-style">{{birthDate|date:'m'}}</td>
+                            <td class="td-style">{{birthDate|date:'Y'}}</td>
+                        </tr>
+                        <tr>
+                            <td>العمر:</td>
+                            <td class="td-style">{{student_age_day}}</td>
+                            <td class="td-style">{{student_age_month}}</td>
+                            <td class="td-style">{{student_age_year}}</td>
+                        </tr>
+                    </table>
+                </div>
+      <!--</div>-->
+        </div>
+        <div class="col-12 col-md-6">
+                <div class=" field col-md-6 d-flex align-items-center gap-2">
+        <label class="">جنس المفحوص:</label>
+        <label class="ms-2">
+          <input type="checkbox" {% if student.gender == 'male' %}checked{% endif %} disabled> ذكر
+        </label>
+        <label class="ms-3">
+          <input type="checkbox" {% if student.gender == 'female' %}checked{% endif %} disabled> أنثى
+        </label>
+      </div>
+          
+          <div class="field"><label>السنة الدراسية:</label> <span>{{ student.grade }}</span></div>
+
+        </div>
+      </div>
+
+      <!--<div class="row g-3 mt-2">-->
+<div class="row g-3 mt-2">
+  <div class="col-12 d-flex">
+    <div class="field flex-fill me-4">
+      <label>اسم الفاحص:</label>
+      <span>{{ student.examiner }}</span>
+    </div>
+    <div class="field flex-fill">
+      <label>التخصص:</label>
+      <span>{{ student.specalist }}</span>
+    </div>
+  </div>
+</div>
+
+
+      </div>
+    <!--</div>-->
+  </section>
+
+</div>
+
+<style>
+  /* colors */
+  .text-orange{color:#F29F05;}
+  .text-red{color:#C41E3A;}
+  .tag{padding:.4rem .8rem;border-radius:.5rem;color:#fff;font-weight:600}
+  .tag-purple{background:#5E2B8C}
+  .tag-orange{background:#F29F05}
+  .ribbon{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem}
+
+  
+
+  .field label{min-width:180px;font-weight:600}
+  .field span{display:inline-block;min-width:180px;border-bottom:1px solid #ddd}
+
+  .date-grid{display:grid;grid-template-columns:repeat(3,60px);gap:.4rem}
+  .date-grid span{display:block;border:1px solid #ddd;border-radius:.4rem;height:36px}
+
+  .result-table th, .result-table td{vertical-align:middle}
+  .tiny-cells td, .tiny-cells th{height:28px}
+
+  .chart-placeholder{height:220px;border:2px solid #c33;border-radius:.5rem}
+
+  .notebook{border:2px solid #cc5500;border-radius:.5rem;padding:16px}
+  .line-title{color:#1b6ac9;font-weight:700}
+  .dotted-block{min-height:70px;border-bottom:1px dotted #888}
+  .dotted-list{min-height:100px}
+  .dotted-list li{min-height:22px}
+
+  /* Print to A4 */
+  @media print{
+    @page{size:A4;margin:12mm}
+    .d-print-none{display:none!important}
+    .sheet{break-inside:avoid}
+  }
+</style>
+<!--end of user result-->
+
+
+{% endblock %}
