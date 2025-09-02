@@ -1421,8 +1421,17 @@ def primary_test6(request):
         "total": total,
     })
 
+@login_required(login_url="/login")
 def primary_result(request):
-    return render(request,"primary_test/result.html")
+    student = Student.objects.get(id=request.session['student'])
+    examiner = Examiner.objects.get(user_id = request.user.id)
+    context = {
+        "student": {"name": student.studentName, "gender": student.gender, "school": student.schoolName, "grade": student.grade, "District": student.eduDistrict, "nationality": student.nationality,  "examDate": student.examDate, "birthDate": student.birthDate, "age": student.age, "examiner": examiner.name, "specalist": examiner.speciality},
+
+
+    }
+    return render(request, "primary_test/result.html", context)
+
 
 #Secondary test 1
 @login_required(login_url="/login")
