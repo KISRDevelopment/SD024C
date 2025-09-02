@@ -27,6 +27,7 @@ Representative subtests implemented/in progress:
 * **Backend:** Django 5.2.3 (python 3.13)
 * **DB:** SQLite for local dev
 * **Frontend:** Bootstrap 5
+*  **Note:** Please make sure you have the latest python version.
 
 
 ## Getting Started
