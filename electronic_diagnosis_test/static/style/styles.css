@@ -380,6 +380,18 @@ margin: auto;
     text-align: center;
 }
 
+.td-style-border {
+    border: 2px solid #e2d9f3; 
+    background-color: white; 
+    text-align: center;
+}
+
+.td-style-result {
+    background: linear-gradient(to left, #e2d9f3 5%, #e4e2e4 5%); /* dark to light purple */
+  color: black !important; /* Light lavender-like purple */
+  border: 4px solid white; 
+  padding-right: 15px;
+  }
 .section-title {
     color:#F29F05;
 }
