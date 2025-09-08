@@ -16,6 +16,8 @@ from .data.primary.test5 import primary_test5_training_questions, primary_test5_
 from .data.secondary.test4 import test4_training_questions, test4_main_questions
 from .data.secondary.test3 import secondary_test3_words
 from .data.primary.test6 import test6_training_questions, test6_main_questions
+from .percentile_lookup import lookup_scores_primary
+#import pandas as pd
 #from .models import Student
 #from .models import Score
 #from .models import *
@@ -1425,8 +1427,55 @@ def primary_test6(request):
 def primary_result(request):
     student = Student.objects.get(id=request.session['student'])
     examiner = Examiner.objects.get(user_id = request.user.id)
+    student_age_year = student.age.split('/')[0]
+    student_age_month = student.age.split('/')[1]
+    student_age_day = student.age.split('/')[2]
+    test1 = PrimaryTest1.objects.filter(student_id = request.session['student']).latest("id")
+    test2 = PrimaryTest2.objects.filter(student_id = request.session['student']).latest("id")
+    test3 = PrimaryTest3.objects.filter(student_id = request.session['student']).latest("id")
+    test4 = PrimaryTest4.objects.filter(student_id = request.session['student']).latest("id")
+    test5 = PrimaryTest5.objects.filter(student_id = request.session['student']).latest("id")
+    test6 = PrimaryTest6.objects.filter(student_id = request.session['student']).latest("id")
+
+    # Pull raw scores
+    raw_scores = {
+        "test1": test1.total_correct,
+        "test2": test2.total_score,
+        "test3": test3.total_correct,
+        "test4": test4.total_correct,
+        "test5": test5.total_correct,
+        "test6": test6.total_correct,
+    }
+
+    # Run lookup
+    results = lookup_scores_primary(
+        grade=str(student.grade),
+        test1_raw=raw_scores["test1"],
+        test2_raw=raw_scores["test2"],
+        test3_raw=raw_scores["test3"],
+        test4_raw=raw_scores["test4"],
+        test5_raw=raw_scores["test5"],
+        test6_raw=raw_scores["test6"],
+    )
+
+    
+    total_raw_score = raw_scores["test1"] + raw_scores["test2"] + raw_scores["test3"] + raw_scores["test4"] + raw_scores["test5"] + raw_scores["test6"]
+    total_percentile = results["test1"]["percentile"] + results["test2"]["percentile"] + results["test3"]["percentile"] + results["test4"]["percentile"] + results["test5"]["percentile"] + results["test6"]["percentile"]
+    total_std = results["test1"]["std"] + results["test2"]["std"] + results["test3"]["std"] + results["test4"]["std"] + results["test5"]["std"] + results["test6"]["std"]
+
+    #send prepare data to send to the html
     context = {
-        "student": {"name": student.studentName, "gender": student.gender, "school": student.schoolName, "grade": student.grade, "District": student.eduDistrict, "nationality": student.nationality,  "examDate": student.examDate, "birthDate": student.birthDate, "age": student.age, "examiner": examiner.name, "specalist": examiner.speciality},
+        "student": {"name": student.studentName, "gender": student.gender, "school": student.schoolName, "grade": student.grade, "District": student.eduDistrict, "nationality": student.nationality,  "examDate": student.examDate, "birthDate": student.birthDate, "age": student.age, "age_year": student_age_year, "age_month": student_age_month, "age_day": student_age_day, "examiner": examiner.name, "specalist": examiner.speciality},
+        "test1": {"raw_score": test1.total_correct, "time_sec": test1.time_seconds},
+        "test2": {"raw_score": test2.total_score, "time_sec": test2.time_seconds},
+        "test3": {"raw_score": test3.total_correct, "time_sec": test3.total_time_secs},
+        "test4": {"raw_score": test4.total_correct},
+        "test5": {"raw_score": test5.total_correct, "time_sec": test5.total_time_secs},
+        "test6": {"raw_score": test6.total_correct, "time_sec": test6.total_time_secs},
+        "results": results,
+        "total_raw_score": total_raw_score,
+        "total_percentile" : total_percentile,
+        "total_std": total_std
 
 
     }
