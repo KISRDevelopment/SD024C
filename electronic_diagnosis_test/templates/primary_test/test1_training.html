@@ -3,17 +3,19 @@
 {% block content %}
 
 <div class="container">
+    <div class="text-center">
     <div class="text-lg-purple fs-2 mb-5" style="color: #5E2B8C;">الاختبار الفرعي الأول: دقة قراءة الكلمة المفردة</div>
     
     <div class="card rounded-card my-3 mx-auto">
         <div class="container  mt-4" style="direction: rtl;">
             <form method="post" action="{% url 'test1_training' %}">
                 {% csrf_token %}
-                <div class="text-lg-purple fs-2 mb-5" style="color: #5E2B8C;">الفقرات التدريبية</div>
+                <div class="text-lg-purple fs-2 mb-5" style="color: #5E2B8C;"></div>
                 {% if error %}
     <div class="alert alert-danger text-center fw-bold" role="alert">
         {{ error }}
     </div>
+    </form>
 {% endif %}
                 <div class="row mt-4 mx-auto text-center w-100">
                     

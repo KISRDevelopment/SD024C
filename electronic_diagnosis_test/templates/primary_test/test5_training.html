@@ -5,10 +5,13 @@
 <script src="https://unpkg.com/htmx.org@1.9.4"></script>
 
 <div class="container mt-5" dir="rtl">
-  <h3 class="mb-4 text-center" style="color: #5E2B8C;">الفقرات التدريبية: اختبار الإملاء الصحيح   </h3>
+  <div class="text-center">
+
+  <div class="text-lg-purple fs-2 mb-5" style="color: #5E2B8C;">الفقرات التدريبية: اختبار الاملاء الصحيح</div>
   {% if error %}
   <div class="alert alert-danger text-center fw-bold" role="alert">
       {{ error }}
+  </div>
   </div>
     {% else %}
 

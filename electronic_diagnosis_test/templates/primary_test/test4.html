@@ -5,7 +5,10 @@
 <script src="https://unpkg.com/htmx.org@1.9.4" crossorigin="anonymous"></script>
 
 <div class="container">
+    <div class="text-center">
+
     <div class="text-lg-purple fs-2 mb-5" style="color: #5E2B8C;">الاختبار الفرعي الرابع: إملاء الكلمة</div>
+ </div>
     <div class="card rounded-card my-3 mx-auto">
         <div class="container text-center mt-4" style="direction: rtl;">
             <form hx-post="{% url 'test4' %}" hx-target="#end" hx-swap="innerText" class="form-horizontal col-12" id="questionsForm">
