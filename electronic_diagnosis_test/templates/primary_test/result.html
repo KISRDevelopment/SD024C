@@ -41,21 +41,21 @@
                         </tr>
                         <tr>
                             <td>تاريخ إجراء الاختبار:</td>
-                            <td class="td-style">{{examDate|date:'d'}}</td>
-                            <td class="td-style">{{examDate|date:'m'}}</td>
-                            <td class="td-style">{{examDate|date:'Y'}}</td>
+                            <td class="td-style">{{student.examDate|date:'d'}}</td>
+                            <td class="td-style">{{student.examDate|date:'m'}}</td>
+                            <td class="td-style">{{student.examDate|date:'Y'}}</td>
                         </tr>
                         <tr>
                             <td>تاريخ ميلاد المفحوص:</td>
-                            <td class="td-style">{{birthDate|date:'d'}}</td>
-                            <td class="td-style">{{birthDate|date:'m'}}</td>
-                            <td class="td-style">{{birthDate|date:'Y'}}</td>
+                            <td class="td-style">{{student.birthDate|date:'d'}}</td>
+                            <td class="td-style">{{student.birthDate|date:'m'}}</td>
+                            <td class="td-style">{{student.birthDate|date:'Y'}}</td>
                         </tr>
                         <tr>
                             <td>العمر:</td>
-                            <td class="td-style">{{student_age_day}}</td>
-                            <td class="td-style">{{student_age_month}}</td>
-                            <td class="td-style">{{student_age_year}}</td>
+                            <td class="td-style">{{student.age_day}}</td>
+                            <td class="td-style">{{student.age_month}}</td>
+                            <td class="td-style">{{student.age_year}}</td>
                         </tr>
                     </table>
                 </div>
@@ -95,6 +95,94 @@
       </div>
     <!--</div>-->
   </section>
+
+    <!-- ====== الجزء (ب): تدوين الدرجات ====== -->
+  <section class="sheet mb-4">
+
+
+    <div class="notebooks">
+      <h2 class="section-title">الجزء (ب): تدوين الدرجات</h2>
+          <div class="table-responsive">
+      <table class="table-style">
+        <thead class="table-light">
+          <tr>
+            <th class="text-center">اسم الاختبار</th>
+            <th class="text-center">الزمن (ث)</th>
+            <th class="text-center">الدرجة الخام</th>
+            <th class="text-center">الرتبة المئينية</th>
+            <th class="text-center">الدرجة المعيارية المعدلة</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td class="td-style-result">١ - اختبار دقة قراءة الكلمة المفردة</td>
+            <td class="td-style-border">{{ test1.time_sec }}</td>
+            <td class="td-style-border">{{ test1.raw_score }}</td>
+            <td class="td-style-border">{{ results.test1.percentile }}</td>
+            <td class="td-style-border">{{ results.test1.std  }}</td>
+
+          </tr>
+          <tr>
+            <td class="td-style-result">٢ - اختبار الطلاقة في قراءة الجملة </td>
+            <td class="td-style-border">{{ test2.time_sec }}</td>
+            <td class="td-style-border">{{ test2.raw_score }}</td>
+            <td class="td-style-border">{{ results.test2.percentile }}</td>
+            <td class="td-style-border">{{ results.test2.std }}</td>
+
+          </tr>
+          <tr>
+            <td class="td-style-result">٣ - اختبار الطلاقة في فهم المقروء </td>
+            <td class="td-style-border">{{ test3.time_sec }}</td>
+            <td class="td-style-border">{{ test3.raw_score }}</td>
+            <td class="td-style-border">{{ results.test3.percentile }}</td>
+            <td class="td-style-border">{{ results.test3.std }}</td>
+
+          </tr>
+          <tr>
+            <td class="td-style-result">٤ - اختبار إملاء الكلمة  </td>
+            <td class="td-style-border">{{ test4.time_sec }}</td>
+            <td class="td-style-border">{{ test4.raw_score }}</td>
+            <td class="td-style-border">{{ results.test4.percentile }}</td>
+            <td class="td-style-border">{{ results.test4.std }}</td>
+
+          </tr>
+          <tr>
+            <td class="td-style-result">٥ - اختبار اختيار الإملاء الصحيح  </td>
+            <td class="td-style"></td>
+            <td class="td-style-border">{{ test5.raw_score }}</td>
+            <td class="td-style-border">{{ results.test5.percentile }}</td>
+            <td class="td-style-border">{{ results.test5.std }}</td>
+
+          </tr>
+          <tr>
+            <td class="td-style-result">٦ - اختبار فهم المقروء القطعة  </td>
+            <td class="text-center td-style"></td>
+            <td class="td-style-border">{{ test6.raw_score }}</td>
+            <td class="td-style-border">{{ results.test6.percentile }}</td>
+            <td class="td-style-border">{{ results.test6.std }}</td>
+
+          </tr>
+
+          <tr class="fw-bold">
+            <td class="td-style">الزمن الكلي والدرجة الكلية:</td>
+            <td class="text-center td-style"></td>
+            <td class="td-style-border">{{ total_raw_score }}</td>
+            <td class="td-style-border">{{ total_percentile}}</td>
+            <td class="td-style-border">{{ total_std }}</td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+
+
+      </div>
+  </section>
+
+
 
 </div>
 
