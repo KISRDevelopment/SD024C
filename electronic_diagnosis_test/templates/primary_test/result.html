@@ -182,7 +182,51 @@
       </div>
   </section>
 
+    <!-- ====== الجزء (ج): ====== -->
+  <section class="sheet mb-4">
 
+
+    <div class="notebooks">
+      <h2 class="section-title">الجزء (ج): تمثيل الدرجات المعيارية المعدلة للاختبارات الفرعية تمثيلاً بيانياً</h2>
+      <div class="table-responsive mb-3">
+    <table class="table table-bordered align-middle tiny-cells mb-0 std-grid">
+      <thead>
+        <tr>
+          <th class="text-center">الدرجة<br>المعيارية</th>
+          <th class="text-center"> الدرجة المعيارية <br> المعدلة</th>
+          {% for row in chart_rows_std %}
+          <th class="text-center">{{ row.std_label }}</th>
+          {% endfor %}
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for labels, percentile_labels in chart_data %}
+        <tr>
+          <td class="text-center fw-semibold">{{ labels }}</td>
+          <td class="text-center fw-semibold">{{percentile_labels}}</td>
+        {% for test in chart_rows_std %}
+          <td class="text-center {% if test.hit_index == forloop.parentloop.counter0 %}hit{% endif %}"></td>
+        {% endfor %}
+          {% for v in chart_rows_std.cells %}
+            <td class="text-center {% if v == 1 %}hit{% endif %}"></td>
+          {% endfor %}
+        </tr>
+        </tr>
+        {% empty %}
+        <tr><td colspan="16" class="text-center text-muted">لا توجد بيانات</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+
+
+
+    </div>
+  </section>
+
+  
 
 </div>
 

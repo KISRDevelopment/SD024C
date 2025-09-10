@@ -396,6 +396,12 @@ margin: auto;
     color:#F29F05;
 }
 
+.tiny-cells td, .tiny-cells th { height: 28px; }
+.std-grid td { width: 38px; padding: 0; }
+.std-grid td.hit::after { content: "X"; font-weight: 700; }
+
+
+
   
 
   
