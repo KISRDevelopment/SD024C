@@ -432,14 +432,14 @@ def testsPageSec (request):
     test2 = SecondaryTest2.objects.filter(student_id = request.session['student'])
     test3 = SecondaryTest3.objects.filter(student_id = request.session['student'])
     test4 = SecondaryTest4.objects.filter(student_id = request.session['student'])
-    global context_test1
-    context_test1 = {}
-    global context_test2
-    context_test2 = {}
-    global context_test3
-    context_test3 = {}
-    global context_test4
-    context_test4 = {}
+    global sec_context_test1
+    sec_context_test1 = {}
+    global sec_context_test2
+    sec_context_test2 = {}
+    global sec_context_test3
+    sec_context_test3 = {}
+    global sec_context_test4
+    sec_context_test4 = {}
     
 
 
@@ -454,22 +454,22 @@ def testsPageSec (request):
             test1_time_seconds = test1.latest("id").time_seconds
             test1_fluency_score = test1.latest("id").fluency_score
             if (test1_correct_Ans != None):
-                context_test1 = {"correctAnswers":(test1_correct_Ans), "status_test1":('منجز '), "time_sec": (test1_time_seconds), "fluency_score": (test1_fluency_score)}
+                sec_context_test1 = {"correctAnswers":(test1_correct_Ans), "status_test1":('منجز '), "time_sec": (test1_time_seconds), "fluency_score": (test1_fluency_score)}
             else:
-                context_test1 = {"status_test1":('غير منجز'), }
+                sec_context_test1 = {"status_test1":('غير منجز'), }
         else:
-            context_test1 = {"status_test1":('غير منجز'), }
+            sec_context_test1 = {"status_test1":('غير منجز'), }
 
         if(test2.exists()):
             test2_correct_Ans = test2.latest("id").total_correct
             test2_time_seconds = test2.latest("id").total_time_secs 
             #test2_fluency_score = test2.latest("id")
             if (test2_correct_Ans != None):
-                context_test2 = {"correctAnswers":(test2_correct_Ans), "status_test2":('منجز '), "time_sec": (test2_time_seconds), } #"fluency_score": (test1_fluency_score)
+                sec_context_test2 = {"correctAnswers":(test2_correct_Ans), "status_test2":('منجز '), "time_sec": (test2_time_seconds), } #"fluency_score": (test1_fluency_score)
             else:
-                context_test2 = {"status_test2":('غير منجز'), }
+                sec_context_test2 = {"status_test2":('غير منجز'), }
         else:
-            context_test2 = {"status_test3":('غير منجز'), }
+            sec_context_test2 = {"status_test3":('غير منجز'), }
 
 
         if(test3.exists()):
@@ -477,31 +477,31 @@ def testsPageSec (request):
             #test1_time_seconds = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").time_seconds
             #test1_fluency_score = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").fluency_score
             if (test3_correct_Ans != None):
-                context_test3 = {"correctAnswers":(test3_correct_Ans), "status_test3":('منجز ')}
+                sec_context_test3 = {"correctAnswers":(test3_correct_Ans), "status_test3":('منجز ')}
             else:
-                context_test3 = {"status_test3":('غير منجز'), }
+                sec_context_test3 = {"status_test3":('غير منجز'), }
         else:
-            context_test3 = {"status_test3":('غير منجز'), }
+            sec_context_test3 = {"status_test3":('غير منجز'), }
         
         if(test4.exists()):
             test4_correct_Ans = SecondaryTest4.objects.filter(student_id = request.session['student']).latest("id").total_correct
             #test1_time_seconds = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").time_seconds
             #test1_fluency_score = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").fluency_score
             if (test4_correct_Ans != None):
-                context_test4 = {"correctAnswers":(test4_correct_Ans), "status_test4":('منجز ')}
+                sec_context_test4 = {"correctAnswers":(test4_correct_Ans), "status_test4":('منجز ')}
             else:
-                context_test4 = {"status_test4":('غير منجز'), }
+                sec_context_test4 = {"status_test4":('غير منجز'), }
         else:
-            context_test4 = {"status_test4":('غير منجز'), }
+            sec_context_test4 = {"status_test4":('غير منجز'), }
 
-        return render(request, "secondary_test/testPage.html", { "context_test1": context_test1, "context_test2": context_test2, "context_test3": context_test3, "context_test4": context_test4,"student": student, "examiners": (Examiner.objects.get(user_id=request.user.id))})
+        return render(request, "secondary_test/testPage.html", { "sec_context_test1": sec_context_test1, "sec_context_test2": sec_context_test2, "sec_context_test3": sec_context_test3, "sec_context_test4": sec_context_test4,"student": student, "examiners": (Examiner.objects.get(user_id=request.user.id))})
     
     else:
-        context_test1 = { "status_test1":('غير منجز'),}
-        context_test2 = { "status_test2":('غير منجز'),}
-        context_test3 = { "status_test3":('غير منجز'),}
-        context_test4 = { "status_test4":('غير منجز'),}
-        return render(request,"secondary_test/testPage.html", {"context_test1": context_test1, "context_test2": context_test2, "context_test3": context_test3, "context_test4": context_test4,"student":(Student.objects.get(id=request.session['student']).studentName), "examiners": (Examiner.objects.get(user_id=request.user.id)) })
+        sec_context_test1 = { "status_test1":('غير منجز'),}
+        sec_context_test2 = { "status_test2":('غير منجز'),}
+        sec_context_test3 = { "status_test3":('غير منجز'),}
+        sec_context_test4 = { "status_test4":('غير منجز'),}
+        return render(request,"secondary_test/testPage.html", {"sec_context_test1": sec_context_test1, "sec_context_test2": sec_context_test2, "sec_context_test3": sec_context_test3, "sec_context_test4": sec_context_test4,"student":(Student.objects.get(id=request.session['student']).studentName), "examiners": (Examiner.objects.get(user_id=request.user.id)) })
 
     
 #Primary test 1
