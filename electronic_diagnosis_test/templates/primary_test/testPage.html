@@ -10,8 +10,8 @@
     </div>
     <div class="container" style="direction: rtl;">
         <p class="text-m-b fs-3" style="margin-bottom: 10px;">الطالب : {{student}}</p>
-        {% if context_test1.status_obj == "منجز" and context_test2.status_test2 != "منجز " and context_test4.status_test4 != "منجز " %}
-        <a href="" style="font-weight: bold;" type="submit" class="btn-outline-p"> عرض النتائج والتوصيات </a>
+        {% if context_test1.status_test1 == "منجز " and context_test2.status_test2 == "منجز " and context_test3.status_test3 == "منجز " and context_test4.status_test4 == "منجز " and context_test5.status_test5 == "منجز " and context_test6.status_test6 == "منجز " %}
+        <a href="{% url 'primary_result'%}"  style="font-weight: bold;" type="submit" class="btn btn-primary-color"> عرض النتائج والتوصيات </a>
         {% elif context_test1.status_obj == "توقف" or context_test1.status_ltrs == "توقف"%}
         <a href="" style="font-weight: bold;" type="submit" class="btn-outline-p"> عرض النتائج والتوصيات </a>
         {% else %}

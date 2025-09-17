@@ -34,6 +34,7 @@ urlpatterns = [
     path('test5', views.primary_test5, name='test5'),
     path('test6_training/', views.primary_test6_training, name='test6_training'),
     path('test6', views.primary_test6, name='test6'),
+    path('primary_result', views.primary_result, name='primary_result'),
     path('test1_training_sec/', views.secondary_test1_training, name='test1_training_sec'),
     path('test1_sec', views.secondary_test1, name='secondary_test1'),
     path('test2_training_sec/', views.secondary_test2_training, name='test2_training_sec'),

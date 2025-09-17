@@ -16,6 +16,11 @@ from .data.primary.test5 import primary_test5_training_questions, primary_test5_
 from .data.secondary.test4 import test4_training_questions, test4_main_questions
 from .data.secondary.test3 import secondary_test3_words
 from .data.primary.test6 import test6_training_questions, test6_main_questions
+from .percentile_lookup import lookup_scores_primary
+import math
+import json
+
+#import pandas as pd
 #from .models import Student
 #from .models import Score
 #from .models import *
@@ -31,6 +36,7 @@ from django.template.loader import render_to_string
 #from django.core.mail import send_mail
 #from django.conf import settings
 import time
+from django.http import JsonResponse
 
 
 
@@ -348,9 +354,9 @@ def testsPage (request):
     global context_test4
     context_test4 = {}
     global context_test5
-    context_test4 = {}
+    context_test5 = {}
     global context_test6
-    context_test4 = {}
+    context_test6 = {}
     
     
     if (test1.exists() or test2.exists() or test3.exists() or test4.exists() or test5.exists() or test6.exists()):
@@ -1420,6 +1426,221 @@ def primary_test6(request):
         "index": 0,
         "total": total,
     })
+
+
+
+@login_required(login_url="/login")
+def primary_result(request):
+    student = Student.objects.get(id=request.session['student'])
+    examiner = Examiner.objects.get(user_id = request.user.id)
+    student_age_year = student.age.split('/')[0]
+    student_age_month = student.age.split('/')[1]
+    student_age_day = student.age.split('/')[2]
+    test1 = PrimaryTest1.objects.filter(student_id = request.session['student']).latest("id")
+    test2 = PrimaryTest2.objects.filter(student_id = request.session['student']).latest("id")
+    test3 = PrimaryTest3.objects.filter(student_id = request.session['student']).latest("id")
+    test4 = PrimaryTest4.objects.filter(student_id = request.session['student']).latest("id")
+    test5 = PrimaryTest5.objects.filter(student_id = request.session['student']).latest("id")
+    test6 = PrimaryTest6.objects.filter(student_id = request.session['student']).latest("id")
+
+    # Pull raw scores
+    raw_scores = {
+        "test1": test1.total_correct,
+        "test2": test2.total_score,
+        "test3": test3.total_correct,
+        "test4": test4.total_correct,
+        "test5": test5.total_correct,
+        "test6": test6.total_correct,
+    }
+
+    # Run lookup
+    results = lookup_scores_primary(
+        grade=str(student.grade),
+        test1_raw=raw_scores["test1"],
+        test2_raw=raw_scores["test2"],
+        test3_raw=raw_scores["test3"],
+        test4_raw=raw_scores["test4"],
+        test5_raw=raw_scores["test5"],
+        test6_raw=raw_scores["test6"],
+    )
+
+    
+    total_raw_score = raw_scores["test1"] + raw_scores["test2"] + raw_scores["test3"] + raw_scores["test4"] + raw_scores["test5"] + raw_scores["test6"]
+    total_percentile = results["test1"]["percentile"] + results["test2"]["percentile"] + results["test3"]["percentile"] + results["test4"]["percentile"] + results["test5"]["percentile"] + results["test6"]["percentile"]
+    total_std = results["test1"]["std"] + results["test2"]["std"] + results["test3"]["std"] + results["test4"]["std"] + results["test5"]["std"] + results["test6"]["std"]
+
+    # pull the Modified Standard per test (std)
+    std_values_by_test = {
+        "(ق ك م)": results["test1"]["std"],  # ← use your real abbreviations
+        "(ط ق ج)":  results["test2"]["std"],
+        "(ط ف م)": results["test3"]["std"],
+        "(إ ك)": results["test4"]["std"],
+        "(ا إ ص)": results["test5"]["std"],
+        "(ف م ق)": results["test6"]["std"],
+    }
+
+    data = []
+    labels = []
+
+    data.append(int(results["test1"]["percentile"]))
+    labels.append("(ق ك م)")
+    data.append(int(results["test2"]["percentile"]))
+    labels.append("(ط ق ج)")
+    data.append(int(results["test3"]["percentile"]))
+    labels.append("(ط ف م)")
+    data.append(int(results["test4"]["percentile"]))
+    labels.append("(إ ك)")
+    data.append(int(results["test5"]["percentile"]))
+    labels.append("(ا إ ص)")
+    data.append(int(results["test6"]["percentile"]))
+    labels.append("(ف م ق)")
+    print("data)")
+    print(data)
+    
+
+    print(std_values_by_test)
+
+    chart_labels = ["3","2,5","2","1,5","1","0,5","صفر", "0,5-","1-","1,5-","2-", "2,5-", "3-", "3,5-", "4-"]
+    chart_percentile_labels = ["160","150","140","130","120","110","100", "90","80","70","60", "50", "40", "30", "20"]
+
+    chart_pairs = list(zip(chart_labels, chart_percentile_labels))
+    #print(chart_data)
+    #print(chart_data["chart_labels"])
+
+    chart_rows_std = build_std_chart(std_values_by_test)
+    print(chart_rows_std)
+
+
+
+
+
+    #send prepare data to send to the html
+    context = {
+        "student": {"name": student.studentName, "gender": student.gender, "school": student.schoolName, "grade": student.grade, "District": student.eduDistrict, "nationality": student.nationality,  "examDate": student.examDate, "birthDate": student.birthDate, "age": student.age, "age_year": student_age_year, "age_month": student_age_month, "age_day": student_age_day, "examiner": examiner.name, "specalist": examiner.speciality},
+        "test1": {"raw_score": test1.total_correct, "time_sec": test1.time_seconds},
+        "test2": {"raw_score": test2.total_score, "time_sec": test2.time_seconds},
+        "test3": {"raw_score": test3.total_correct, "time_sec": test3.total_time_secs},
+        "test4": {"raw_score": test4.total_correct},
+        "test5": {"raw_score": test5.total_correct, "time_sec": test5.total_time_secs},
+        "test6": {"raw_score": test6.total_correct, "time_sec": test6.total_time_secs},
+        "results": results,
+        "total_raw_score": total_raw_score,
+        "total_percentile" : total_percentile,
+        "total_std": total_std,
+        "chart_rows_std": chart_rows_std,
+        "chart_data": chart_pairs,
+        'data': json.dumps(data), 
+        'labels': json.dumps(labels)
+
+
+
+    }
+    return render(request, "primary_test/result.html", context)
+
+
+
+def build_std_chart(std_values_by_test, labels_by_test=None, mean=100.0, sd=15.0):
+    """
+    std_values_by_test: dict like {"test1": 104, "test2": 96, ...}  (Modified Standard)
+    labels_by_test: optional dict mapping test key -> Arabic label shown in first column
+    Returns: list of rows, each row: {"std_label": "...", "std_value": 104, "cells": [0/1,...]}
+            where 'cells' length = number of bins from -4 to +3 in 0.5 steps (= 15 columns).
+            The chosen bin has value 1, others 0.
+    """
+    # bins: -4, -3.5, -3, ..., 2.5, 3   (step = 0.5)  => 15 bins
+    bin_edges = [round(-4.0 + 0.5*i, 1) for i in range(0, 15)]
+
+    rows = []
+    for key, std in std_values_by_test.items():
+        if std is None:
+            # no score => empty row
+            cells = [0]*len(bin_edges)
+            z_disp = ""
+        else:
+            z = (float(std) - mean) / sd
+            # clip
+            z = max(-4.0, min(3.0, z))
+            # find nearest ceiling bin to the right (to stay consistent with your “round-up” philosophy),
+            # but for visualization nearest is usually nicer. Choose one:
+            # NEAREST:
+            idx = min(range(len(bin_edges)), key=lambda i: abs(z - bin_edges[i]))
+            # If you prefer round-up instead, use:
+            # idx = next((i for i,b in enumerate(bin_edges) if z <= b), len(bin_edges)-1)
+
+            cells = [1 if i == idx else 0 for i in range(len(bin_edges))]
+            hit_idx = idx
+            z_disp = std  # we display the modified standard value itself in the second column
+
+        label = labels_by_test.get(key, key) if labels_by_test else key
+        
+        rows.append({
+            "std_label": label,
+            "std_value": z_disp,
+            "cells": cells,
+            "hit_index": hit_idx,
+        })
+
+    return rows
+
+# helpers_c.py (or inside percentile_lookup.py)
+
+
+
+def round_tens_booklet(p: int) -> int:
+    """Booklet rule: <=5 down, >5 up."""
+    if p is None:
+        return None
+    ones = p % 10
+    base = (p // 10) * 10
+    return base if ones <= 5 else base + 10
+
+def build_std_hits_per_test(std_values_by_test, mean=100.0, sd=15.0):
+    """
+    Returns:
+      tests: list of {"label": key, "std_value": v, "hit_index": idx}
+      std_bins: list of {"label": <axis label>, "percentile": <display>, "idx": i}
+    """
+    # bins for z: -4 .. +3 step 0.5
+    z_bins = [round(-4.0 + 0.5*i, 1) for i in range(15)]
+    # display row labels you’re already using:
+    chart_labels =  ["3","2,5","2","1,5","1","0,5","صفر","0,5-","1-","1,5-","2-","2,5-","3-","3,5-","4-"]
+    chart_pcts   =  ["160","150","140","130","120","110","100","90","80","70","60","50","40","30","20"]
+    std_bins = [{"label": l, "percentile": p, "idx": i} for i, (l,p) in enumerate(zip(chart_labels, chart_pcts))]
+
+    tests = []
+    for key, std in std_values_by_test.items():
+        if std is None:
+            tests.append({"label": key, "std_value": None, "hit_index": None})
+            continue
+        z = max(-4.0, min(3.0, (float(std) - mean) / sd))
+        # nearest-bin is visually cleaner; switch to ceil if you want
+        hit_idx = min(range(len(z_bins)), key=lambda i: abs(z - z_bins[i]))
+        tests.append({"label": key, "std_value": int(std), "hit_index": hit_idx})
+    return tests, std_bins
+
+def build_percentile_hits_per_test(percentiles_by_test):
+    """
+    Returns:
+      tests: list of {"label": key, "percentile": p_rounded, "hit_index": idx}
+      pct_bins: list of {"label": str(val), "idx": i}
+    """
+    # Tens bins 20..160 (match booklet)
+    values = list(range(20, 161, 10))
+    pct_bins = [{"label": str(v), "idx": i} for i, v in enumerate(values)]
+
+    index_by_value = {v: i for i, v in enumerate(values)}
+    tests = []
+    for key, p in percentiles_by_test.items():
+        if p is None:
+            tests.append({"label": key, "percentile": None, "hit_index": None})
+            continue
+        pr = round_tens_booklet(int(p))
+        # clamp to [20,160] if outside
+        pr = max(20, min(160, pr))
+        hit_idx = index_by_value.get(pr)
+        tests.append({"label": key, "percentile": pr, "hit_index": hit_idx})
+    return tests, pct_bins
+
 
 #Secondary test 1
 @login_required(login_url="/login")
