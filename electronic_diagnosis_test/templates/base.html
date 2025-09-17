@@ -77,16 +77,15 @@
                                         </a>
                                         <ul class="dropdown-menu dropdown-menu-end text-end" aria-labelledby="dropdownMenuLink">
                                             {% if examiners.stage == "PRIMARY" %}
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/التسمية السريعة للأشكال.pdf' %}">التسمية السريعة للأشكال</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/التسمية السريعة للحروف.pdf' %}">التسمية السريعة للحروف</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/دقة قراءة الكلمات غير الحقيقية.pdf' %}">اختبار دقة قراءة الكلمات غير الحقيقية</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/دليل استخدام الاختبارات - المرحلة الابتدائية.pdf' %}">دليل استخدام الاختبارات</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/دليل الاختبار - الابتدائي.pdf' %}">دليل الاختبار</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\primary\كراسة الإجابة.pdf' %}">كراسة الإجابة</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\primary\كراسة البطاقات.pdf' %}">كراسة البطاقات</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\primary\كراسة النتائج و التوصيات.pdf' %}">كراسة النتائج و التوصيات</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\primary\دليل الاختبار.pdf' %}">دليل الاختبار</a></li>
                                             {% elif examiners.stage == "SECONDARY" %}
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/‎⁨اختبار التسمية السريعة للصور⁩.pdf' %}">اختبار التسمية السريعة للصور</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/متوسط - اختبار  دقة قراءة الكلمات غير الحقيقية.pdf' %}">اختبار دقة قراءة الكلمات غير الحقيقية</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/دليل استخدام الاختبارات - المرحلة المتوسطة.pdf' %}">دليل استخدام الاختبارات</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'pdf/دليل الاختبار - المتوسط.pdf' %}">دليل الاختبار</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\كراسة الإجابة.pdf' %}">كراسة الإجابة</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\كراسة البطاقات.pdf' %}">كراسة البطاقات</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\كراسة النتائج والتوصيات.pdf' %}">كراسة النتائج و التوصيات</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\دليل الاختبار.pdf' %}">دليل الاختبار</a></li>
                                             {% endif %}
                                         </ul>
                                     </li>
