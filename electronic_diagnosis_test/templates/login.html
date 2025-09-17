@@ -19,7 +19,7 @@
             <label for="password" class="form-label">كلمة المرور</label>
             <div class="input-group">
               <input type="password" class="form-control" id="password" name="password" placeholder="أدخل كلمة المرور">
-              <span class="input-group-text" onclick="togglePassword()">
+              <span class="input-group-text" onclick="togglePassword()" style="cursor:pointer" title="إظهار كلمة المرور" aria-label="إظهار كلمة المرور">
                 <i class="bi bi-eye" id="togglePasswordIcon"></i>
               </span>
             </div>
@@ -39,7 +39,34 @@
         </form>
       </div>
 
-  
+      <script>
+        function togglePassword() {
+          const input = document.getElementById('password');
+          const icon  = document.getElementById('togglePasswordIcon');
+      
+          const isHidden = input.type === 'password';
+          input.type = isHidden ? 'text' : 'password';
+      
+          // swap Icons
+          if (isHidden) {
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+            icon.parentElement.setAttribute('title', 'إخفاء كلمة المرور');
+            icon.parentElement.setAttribute('aria-label', 'إخفاء كلمة المرور');
+          } else {
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+            icon.parentElement.setAttribute('title', 'إظهار كلمة المرور');
+            icon.parentElement.setAttribute('aria-label', 'إظهار كلمة المرور');
+          }
+      
+
+          input.focus();
+          const len = input.value.length;
+          input.setSelectionRange(len, len);
+        }
+      </script>
+      
 
 
 
