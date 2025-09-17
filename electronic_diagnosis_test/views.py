@@ -18,6 +18,7 @@ from .data.secondary.test3 import secondary_test3_words
 from .data.primary.test6 import test6_training_questions, test6_main_questions
 from .percentile_lookup import lookup_scores_primary
 import math
+import json
 
 #import pandas as pd
 #from .models import Student
@@ -35,6 +36,7 @@ from django.template.loader import render_to_string
 #from django.core.mail import send_mail
 #from django.conf import settings
 import time
+from django.http import JsonResponse
 
 
 
@@ -1425,6 +1427,8 @@ def primary_test6(request):
         "total": total,
     })
 
+
+
 @login_required(login_url="/login")
 def primary_result(request):
     student = Student.objects.get(id=request.session['student'])
@@ -1475,6 +1479,25 @@ def primary_result(request):
         "(ف م ق)": results["test6"]["std"],
     }
 
+    data = []
+    labels = []
+
+    data.append(int(results["test1"]["percentile"]))
+    labels.append("(ق ك م)")
+    data.append(int(results["test2"]["percentile"]))
+    labels.append("(ط ق ج)")
+    data.append(int(results["test3"]["percentile"]))
+    labels.append("(ط ف م)")
+    data.append(int(results["test4"]["percentile"]))
+    labels.append("(إ ك)")
+    data.append(int(results["test5"]["percentile"]))
+    labels.append("(ا إ ص)")
+    data.append(int(results["test6"]["percentile"]))
+    labels.append("(ف م ق)")
+    print("data)")
+    print(data)
+    
+
     print(std_values_by_test)
 
     chart_labels = ["3","2,5","2","1,5","1","0,5","صفر", "0,5-","1-","1,5-","2-", "2,5-", "3-", "3,5-", "4-"]
@@ -1486,6 +1509,8 @@ def primary_result(request):
 
     chart_rows_std = build_std_chart(std_values_by_test)
     print(chart_rows_std)
+
+
 
 
 
@@ -1504,6 +1529,9 @@ def primary_result(request):
         "total_std": total_std,
         "chart_rows_std": chart_rows_std,
         "chart_data": chart_pairs,
+        'data': json.dumps(data), 
+        'labels': json.dumps(labels)
+
 
 
     }
