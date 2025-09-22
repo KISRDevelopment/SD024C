@@ -22,14 +22,15 @@
     </div>
         <div class="row">
       {% for letter, text in answers.items %}
-        <div class="col-md-6 mb-3 text-end">
+      <div class="col-md-6 mb-3 text-end" style="padding-top: 3% ;">
+
           <button 
             type="submit" 
             name="answer" 
             value="{{ letter }}" 
             class="btn btn-outline-secondary w-100 text-end" 
             data-answer = "{{letter}}"
-            style="direction: rtl;">
+            style="direction: rtl; font-size: 50;">
             <strong>{{ letter }} - </strong>{{ text }}
           </button>
         </div>

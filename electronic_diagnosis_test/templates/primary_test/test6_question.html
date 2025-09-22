@@ -17,13 +17,13 @@
 
     <div class="row">
       {% for key, value in question.answers.items %}
-      <div class="col-6 mb-2">
+      <div class="col-md-6 mb-3 text-end" style="padding-top: 3% ;">
         <button
           type="submit"
           name="answer"
           value="{{ key }}"
           class="btn btn-outline-primary w-100 text-end"
-          style="direction: rtl;">
+          style="direction: rtl; font-size: 50;">
           {{ key }}. {{ value }}
         </button>
       </div>
