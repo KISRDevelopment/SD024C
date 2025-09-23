@@ -9,31 +9,31 @@
   {% endif %}
 </div>
 {% else %}
-<div class="card p-3 my-3">
-<div class="fs-5 fw-bold mb-4 text-end">{{ index }}- {{ question.text }}</div>
+<div class="card p-3 my-3" style="padding-right: 5%;" >
+<div class="fs-5 fw-bold mb-4 text-end" >{{ index }}- {{ question.text }}</div>
 
 <!--<div class="row">-->
   {% for opt in question.options %}
-  <div class="col-md-6 mb-2 text-end">
+  <div class="col-md-6 mb-2 text-end " style="padding-top: 3% ; ">
     {% if opt.value == selected and selected != correct %}
       
-        <button class="btn btn-danger w-100 text-end" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
+        <button class="btn btn-danger w-100 text-end" style="font-size: 50;" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
       <!--</div>-->
     {% elif opt.value == correct %}
       <!--<div class="col-md-6 mb-2">-->
-        <button class="btn btn-success w-100 text-end" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
+        <button class="btn btn-success w-100 text-end" style="font-size: 50;" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
       <!--</div>-->
     {% else %}
       <!--<div class="col-md-6 mb-2">-->
-        <button class="btn btn-outline-secondary w-100 text-end" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
+        <button class="btn btn-outline-secondary w-100 text-end" style="font-size: 50;" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
       <!--</div>-->
     {% endif %}
     </div>
   {% endfor %}
 <!--</div>-->
 
-<div class="text-center mt-4">
-  <button class="btn btn-primary"
+<div class="text-center mt-4" style="padding-top: 3% ;">
+  <button class="btn btn-primary" style="font-size: 50;"
           hx-get="{% url 'test3_training' %}?index={{ index }}{% if index == total_questions %}&final=true{% endif %}"
           hx-target="#question-area"
           hx-swap="innerHTML">
