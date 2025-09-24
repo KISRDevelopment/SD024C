@@ -1,5 +1,5 @@
 
-
+<div id="question-area" >
 <form
 id="qform-{{ index }}"
 method="POST"
@@ -10,25 +10,25 @@ hx-swap="innerHTML">
 {% csrf_token %}
 <input type="hidden" name="index" value="{{ index }}">
 
-<div class="card p-3 my-3">
-  <div class="mb-2 fw-bold fs-5">
+<!--<div class="card p-3 my-3">-->
+  <div class="mb-2 fw-bold fs-1 p-5">
     {{ index|add:"1" }}. {{ question.text }}
   </div>
 
-  <div class="row text-end">
+  <!--<div class="row text-end">-->
     {% for opt in question.options %}
-    <div class="col-4 mb-2">
+    <div class="col-6 mb-2 px-5">
       <button
         type="submit"
         name="answer"
         value="{{ opt.label }}"
-        class="btn btn-outline-primary w-100"
+        class="btn btn-outline-secondary fs-2 w-100 text-end"
         style="direction: rtl;">
         {{ opt.text }}
       </button>
     </div>
     {% endfor %}
-  </div>
+  <!--</div>-->
 
   <!-- hidden skip submit (no response) -->
   <button id="skip-{{ index }}" type="submit" name="answer" value="" class="d-none">skip</button>
@@ -46,8 +46,9 @@ hx-swap="innerHTML">
       <button class="btn btn-danger" type="submit" form="stopform-{{ index }}">تأكيد الإيقاف</button>
     </div>
   </div>
-</div>
+<!--</div>-->
 </form>
+</div>
 
 
 <!-- Modal -->

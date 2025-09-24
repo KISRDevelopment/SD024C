@@ -1,5 +1,5 @@
 
-
+<div id="question-area" >
   <form
   id="qform-{{ index }}"
   method="POST"
@@ -9,26 +9,26 @@
 
   {% csrf_token %}
   <input type="hidden" name="index" value="{{ index }}">
-  <div class="card p-3 my-3">
-    <div class="mb-2 fw-bold fs-4">
+  <!--<div class="card p-3 my-3">-->
+    <div class="mb-2 fw-bold fs-1 px-5">
       {{ question.paragraph }}
     </div>
-    <p class="mb-2">{{ question.id }} - {{ question.question }}</p>
+    <p class="mb-2 fs-1 p-5">{{ question.id }} - {{ question.question }}</p>
 
-    <div class="row">
+    <!--<div class="row">-->
       {% for key, value in question.answers.items %}
       <div class="col-6 mb-2">
         <button
           type="submit"
           name="answer"
           value="{{ key }}"
-          class="btn btn-outline-primary w-100 text-end"
+          class="btn btn-outline-secondary w-100 text-end fs-2"
           style="direction: rtl;">
           {{ key }}. {{ value }}
         </button>
       </div>
       {% endfor %}
-    </div>
+    <!--</div>-->
 
     <!-- hidden skip submit (no response) -->
     <button id="skip-{{ index }}" type="submit" name="answer" value="" class="d-none">skip</button>
@@ -48,7 +48,7 @@
     </div>
   </div>
 </form>
-
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="stopModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">

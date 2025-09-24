@@ -2,7 +2,7 @@
 
 
 
-<div id="question-area" style="font-size: 50;  ">
+<div id="question-area" >
 <form 
   method="POST" 
   hx-post="{% url 'test6_training' %}" 
@@ -12,34 +12,34 @@
   {% csrf_token %}
   <input type="hidden" name="index" value="{{ index }}">
 
-  <div class="card p-3 my-3" style="padding-right: 5%;">
-    <div class="mb-4 fw-bold fs-5 text-end" style="font-size: 70;  ">
+  <!--<div class="card p-3 my-3" style="padding-right: 5%;">-->
+    <div class="mb-2 fw-bold fs-1 text-end px-5" >
        {{ paragraph|safe }}
     </div>
 
-    <div class="mb-4 fw-bold fs-5 text-end" style="font-size: 50;  ">
+    <div class="mb-2  fs-1 text-end p-5" >
       {{ index|add:"1" }}- {{ question_text|safe }}
     </div>
-        <div class="row">
+        <!--<div class="row">-->
       {% for letter, text in answers.items %}
-      <div class="col-md-6 mb-3 text-end" style="padding-top: 3% ;" >
+      <div class="col-6 mb-2 px-5 text-end"  >
 
           <button 
             type="submit" 
             name="answer" 
             value="{{ letter }}" 
-            class="btn btn-outline-secondary w-100 text-end" 
+            class="btn btn-outline-secondary fs-2 w-100 text-end" 
             data-answer = "{{letter}}"
-            style="direction: rtl; font-size: 50;">
+            style="direction: rtl; ">
             <strong>{{ letter }} - </strong>{{ text }}
           </button>
         </div>
       {% endfor %}
-    </div>
+    <!--</div>
 
 
 
-  </div>
+  </div>-->
 </form>
 </div>
 
