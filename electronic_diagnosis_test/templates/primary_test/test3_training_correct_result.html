@@ -1,5 +1,5 @@
 {% if show_final_result %}
-<div class="text-center mt-4">
+<div class="text-center mt-4" style="text-align: center; padding-top: 5%;">
   {% if passed %}
     <div class="alert alert-success fs-5">تم اجتياز التدريب! يمكنك الآن بدء الاختبار.</div>
     <a href="{% url 'test3' %}" class="btn btn-success px-5 mt-3">ابدأ الاختبار</a>
@@ -9,23 +9,23 @@
   {% endif %}
 </div>
 {% else %}
-<div class="card p-3 my-3" style="padding-right: 5%;" >
-<div class="fs-5 fw-bold mb-4 text-end" >{{ index }}- {{ question.text }}</div>
+<!--<div class="card p-3 my-3" style="padding-right: 5%;" >-->
+<div class="fs-1 fw-bold mb-2 text-end p-5" >{{ index }}- {{ question.text }}</div>
 
 <!--<div class="row">-->
   {% for opt in question.options %}
-  <div class="col-md-6 mb-2 text-end " style="padding-top: 3% ; ">
+  <div class="col-6 mb-2 px-5 text-end ">
     {% if opt.value == selected and selected != correct %}
       
-        <button class="btn btn-danger w-100 text-end" style="font-size: 50;" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
+        <button class="btn btn-danger w-100 text-end fs-2"  disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
       <!--</div>-->
     {% elif opt.value == correct %}
       <!--<div class="col-md-6 mb-2">-->
-        <button class="btn btn-success w-100 text-end" style="font-size: 50;" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
+        <button class="btn btn-success w-100 text-end fs-2" style="font-size: 50; background-color: #198754; color: white;" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
       <!--</div>-->
     {% else %}
       <!--<div class="col-md-6 mb-2">-->
-        <button class="btn btn-outline-secondary w-100 text-end" style="font-size: 50;" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
+        <button class="btn btn-outline-secondary w-100 text-end fs-2" style="font-size: 50;" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
       <!--</div>-->
     {% endif %}
     </div>
@@ -33,14 +33,14 @@
 <!--</div>-->
 
 <div class="text-center mt-4" style="padding-top: 3% ;">
-  <button class="btn btn-primary" style="font-size: 50;"
+  <button class="btn btn-primary fs-2" style="font-size: 50;"
           hx-get="{% url 'test3_training' %}?index={{ index }}{% if index == total_questions %}&final=true{% endif %}"
           hx-target="#question-area"
           hx-swap="innerHTML">
     التالي
   </button>
 </div>
-</div>
+<!--</div>-->
 {% endif %}
 
 

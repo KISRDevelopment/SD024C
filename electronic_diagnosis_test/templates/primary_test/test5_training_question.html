@@ -1,5 +1,5 @@
 
-<div id="question-area" style="font-size: 100; padding-top: 3%;">
+<div id="question-area" style="font-size: 50; " >
     <form 
       method="POST" 
       hx-post="{% url 'test5_training' %}" 
@@ -9,7 +9,7 @@
       {% csrf_token %}
       <input type="hidden" name="index" value="{{ index }}">
     
-      <div class="card p-3 my-3">
+      <div class="card p-3 my-3" style="padding-right: 5%; padding-top: 3%;">
         <div class="mb-4 fw-bold fs-5 text-end">
           {{ index|add:"1" }}- {{ question.text|safe }}
         </div>
