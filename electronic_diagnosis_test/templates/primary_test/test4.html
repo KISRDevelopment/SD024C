@@ -39,7 +39,7 @@
                                 {% for word in test_words|slice:":15" %}
                                 <tr>
                                     <td class="cell-number">{{ forloop.counter }}</td>
-                                    <td class="cell-word"><div style="margin: 0 10px; ">{{ word }}</div></td>
+                                    <td class="cell-word d-flex justify-content-between align-items-center"><button class=""><i class="bi bi-volume-up fs-3"></i></button>{{ word }}</td>
                                     <td id="cell_{{ forloop.counter0 }}" class="score-cell unresponsive" onclick="toggleCorrect({{ forloop.counter0 }})">
                                         <span id="mark_{{ forloop.counter0 }}">-</span>
                                         <input type="hidden" name="score_{{ forloop.counter0 }}" id="input_{{ forloop.counter0 }}" value="-">
@@ -60,7 +60,7 @@
                                 {% for word in test_words|slice:"15:" %}
                                 <tr>
                                     <td class="cell-number">{{ forloop.counter|add:"15" }}</td>
-                                    <td class="cell-word">{{ word }}</td>
+                                    <td class="cell-word d-flex justify-content-between align-items-center"><button><i class="bi bi-volume-up fs-3"></i></button>{{ word }}</td>
                                     <td id="cell_{{ forloop.counter0|add:"15" }}" class="score-cell unresponsive" onclick="toggleCorrect({{ forloop.counter0|add:'15' }})">
                                         <span id="mark_{{ forloop.counter0|add:"15" }}">-</span>
                                         <input type="hidden" name="score_{{ forloop.counter0|add:"15" }}" id="input_{{ forloop.counter0|add:"15" }}" value="-">
