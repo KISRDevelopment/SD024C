@@ -1949,6 +1949,14 @@ def secondary_test2(request):
 @login_required(login_url="/login")
 def secondary_test3(request):
     student = Student.objects.get(id=request.session['student'])
+    test_words = secondary_test3_words
+    start = 0 
+    rows = list(enumerate(test_words[start:], start=start))
+
+    submitted = {} 
+    results = [] 
+    idx_map = {} # quick lookup by idx for the template 
+    correct_count = 0
 
     # Modal confirmation submit
     if request.method == 'POST' and request.POST.get("form2"):
@@ -1957,6 +1965,10 @@ def secondary_test3(request):
         total_correct = request.session.get('test3_total_correct', 0)
         raw_scores = request.session.get('test3_raw_scores', [])
         reason = request.POST.get("submitTst", "")
+        '''for idx, correct_word in rows: 
+            typed = request.POST.get(f"word_{idx}", "") 
+            submitted[f"word_{idx}"] = typed'''
+
 
         # Save final test result
         SecondaryTest3.objects.create(
@@ -1977,22 +1989,39 @@ def secondary_test3(request):
 
     # Main test submission (score & time)
     if request.method == 'POST' and request.POST.get("form1"):
-        raw_scores = []
-        for i in range(39):
-            val = request.POST.get(f'score_{i}', "-")
-            raw_scores.append(val)
+        for idx, correct_word in rows: 
+            typed = request.POST.get(f"word_{idx}", "") 
+            submitted[f"word_{idx}"] = typed
+
+
+            ok = typed == correct_word 
+            result = { 
+                "idx": idx, 
+                "typed": typed, 
+                "correct_word": correct_word, 
+                "correct": ok, 
+                }
+            
+            results.append(result) 
+            idx_map[idx] = result 
+            if ok: 
+                correct_count += 1
+        #raw_scores = []
+        #for i in range(39):
+            #val = request.POST.get(f'score_{i}', "-")
+            #raw_scores.append(val)
 
         #test_scores = [int(request.POST.get(f'score_{i}', 0)) for i in range(30)]
-        total_correct = sum(1 for val in raw_scores if val == "1")
+        #total_correct = sum(1 for val in raw_scores if val == "1")
 
         # Save to session for modal confirmation
-        request.session['test3_total_correct'] = total_correct
-        request.session['test3_raw_scores'] = raw_scores
+        request.session['test3_total_correct'] = correct_count
+        request.session['test3_raw_scores'] = results
 
         return render(request, 'secondary_test/test3.html', {
             'test_words': secondary_test3_words,
             'result': {
-                'total_correct': total_correct,
+                'total_correct': correct_count,
             }
         })
     return render(request,"secondary_test/test3.html", {
