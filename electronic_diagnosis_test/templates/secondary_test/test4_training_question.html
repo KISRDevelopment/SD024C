@@ -13,14 +13,14 @@
   <input type="hidden" name="index" value="{{ index }}">
 
   <!--<div class="card p-3 my-3">-->
-    <div class="mb-2 fw-bold fs-1 px-5 text-end">
+    <div class="mb-2 fw-bold fs-1 px-5 text-center">
        {{ paragraph|safe }}
     </div>
 
-    <div class="mb-2 p-5  fs-1 text-end">
+    <div class="mb-2 p-5  fs-1 text-center">
       {{ index|add:"1" }}- {{ question_text|safe }}
     </div>
-        <!--<div class="row">-->
+      <div class="d-flex flex-column align-items-center">
       {% for letter, text in answers.items %}
         <div class="col-6 mb-2 px-5 text-end">
           <button 
@@ -34,11 +34,11 @@
           </button>
         </div>
       {% endfor %}
-    <!--</div>
+    </div>
 
 
 
-  </div>-->
+  <!--</div>-->
 </form>
 </div>
 

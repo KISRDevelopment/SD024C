@@ -1,5 +1,5 @@
 {% if show_final_result %}
-<div class="text-center mt-4" style="text-align: center; padding-top: 5%;">
+<div class="text-center mt-4">
   {% if passed %}
     <div class="alert alert-success fs-5">تم اجتياز التدريب! يمكنك الآن بدء الاختبار.</div>
     <a href="{% url 'test3' %}" class="btn btn-success px-5 mt-3">ابدأ الاختبار</a>
@@ -10,9 +10,9 @@
 </div>
 {% else %}
 <!--<div class="card p-3 my-3" style="padding-right: 5%;" >-->
-<div class="fs-1 fw-bold mb-2 text-end p-5" >{{ index }}- {{ question.text }}</div>
+<div class="fs-1 fw-bold mb-2 text-center p-5" >{{ index }}- {{ question.text }}</div>
 
-<!--<div class="row">-->
+<div class="d-flex flex-column align-items-center">
   {% for opt in question.options %}
   <div class="col-6 mb-2 px-5 text-end ">
     {% if opt.value == selected and selected != correct %}

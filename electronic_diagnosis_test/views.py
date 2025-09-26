@@ -285,11 +285,18 @@ def editStudent(request, id):
 def startTest(request,id):
     request.session['student'] = id
     stage = (Examiner.objects.get(user_id=request.user.id).stage)
+    student_grade = Student.objects.get(id=request.session['student']).grade
+    grade = int(student_grade)
     print(stage)
     if stage == 'PRIMARY':
         return redirect('testsPage')
     elif stage == 'SECONDARY':
         return redirect('testsPageSec')
+    elif stage == 'BOTH':
+        if grade > 1 and grade <= 5:
+            return redirect('testsPage')
+        elif grade > 6 and grade <= 9:
+            return redirect('testsPageSec')
     else:
         return redirect('testsPage')
     

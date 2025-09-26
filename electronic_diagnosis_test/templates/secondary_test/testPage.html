@@ -11,7 +11,7 @@
     <div class="container" style="direction: rtl;">
         <p class="text-m-b fs-3" style="margin-bottom: 10px;">الطالب : {{student}}</p>
         {% if sec_context_test1.status_test1 == "منجز " and sec_context_test2.status_test2 == "منجز " and sec_context_test3.status_test3 == "منجز " and sec_context_test4.status_test4 == "منجز " %}
-        <a href="" style="font-weight: bold;" type="submit" class="btn-outline-p"> عرض النتائج والتوصيات </a>
+        <a href="" style="font-weight: bold;" type="submit" class="btn btn-primary-color"> عرض النتائج والتوصيات </a>
         {% elif sec_context_test1.status_test1 == "توقف " or sec_context_ltrs.status_ltrs == "توقف "%}
         <a href="" style="font-weight: bold;" type="submit" class="btn-outline-p"> عرض النتائج والتوصيات </a>
         {% else %}
@@ -99,7 +99,7 @@
 
 
 
-<!--modal for the show Phoneme test result-->
+<!--modal for the show test 1 result-->
 <div class="modal fade" id="ModalShowTest1" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <form action="{% url 'testsPageSec' %}" method="POST">
         {% csrf_token %}
@@ -112,11 +112,11 @@
                     <div class="mx-auto" style="width: 400px;">
                         <div class="form-group mb-3">
                             <label class="text-m-b">الدرجة الكلية </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test1.correctAnswers}} /40</label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{sec_context_test1.correctAnswers}} /40</label>
                             <label class="text-m-b">time in sec </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test1.time_sec}} </label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{sec_context_test1.time_sec}} </label>
                             <label class="text-m-b">fluency </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test1.fluency_score}}</label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{sec_context_test1.fluency_score}}</label>
                         </div>
                     </div>
                 </div>
@@ -129,22 +129,22 @@
     </form>
 </div>
 
-<!--modal for the show Phoneme test result-->
+<!--modal for the show test 2 result-->
 <div class="modal fade" id="ModalShowTest2" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <form action="{% url 'testsPageSec' %}" method="POST">
         {% csrf_token %}
         <div class="modal-dialog" role="document">
             <div class="modal-content rounded-3 shadow">
                 <div class="modal-header p-4">
-                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتيجة اختبار دقة قراءة الكلمة المفردة</h2>
+                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتيجة اختبار الطلاقة في فهم المقروه</h2>
                 </div>
                 <div class="modal-body" style="text-align: right;">
                     <div class="mx-auto" style="width: 400px;">
                         <div class="form-group mb-3">
                             <label class="text-m-b">الدرجة الكلية </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test2.correctAnswers}} / 50</label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{sec_context_test2.correctAnswers}} / 50</label>
                             <label class="text-m-b">time in sec </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test2.time_sec}} </label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{sec_context_test2.time_sec}} </label>
                             <!--<label class="text-m-b">fluency </label>
                             <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test2.fluency_score}}</label>-->
                         </div>
@@ -159,20 +159,20 @@
     </form>
 </div>
 
-<!--modal for the show Phoneme test result-->
+<!--modal for the show test 3 test result-->
 <div class="modal fade" id="ModalShowTest3" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <form action="{% url 'testsPageSec' %}" method="POST">
         {% csrf_token %}
         <div class="modal-dialog" role="document">
             <div class="modal-content rounded-3 shadow">
                 <div class="modal-header p-4">
-                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتيجة اختبار دقة قراءة الكلمة المفردة</h2>
+                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتيجة اختبار إملاء الكلمة</h2>
                 </div>
                 <div class="modal-body" style="text-align: right;">
                     <div class="mx-auto" style="width: 400px;">
                         <div class="form-group mb-3">
                             <label class="text-m-b">الدرجة الكلية </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test3.correctAnswers}} / 39</label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{sec_context_test3.correctAnswers}} / 39</label>
                             <!--<label class="text-m-b">time in sec </label>
                             <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test3.time_sec}} </label>-->
                             <!--<label class="text-m-b">fluency </label>
@@ -189,20 +189,20 @@
     </form>
 </div>
 
-<!--modal for the show Phoneme test result-->
+<!--modal for the show test 4 result-->
 <div class="modal fade" id="ModalShowTest4" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <form action="{% url 'testsPageSec' %}" method="POST">
         {% csrf_token %}
         <div class="modal-dialog" role="document">
             <div class="modal-content rounded-3 shadow">
                 <div class="modal-header p-4">
-                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتيجة اختبار دقة قراءة الكلمة المفردة</h2>
+                    <h2 class="modal-title mb-0 w-100 text-center fs-2 fw-bolder color-purple"> نتيجة اختبار فهم المقروء (القطعة)</h2>
                 </div>
                 <div class="modal-body" style="text-align: right;">
                     <div class="mx-auto" style="width: 400px;">
                         <div class="form-group mb-3">
                             <label class="text-m-b">الدرجة الكلية </label>
-                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test4.correctAnswers}} / 32</label>
+                            <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{sec_context_test4.correctAnswers}} / 32</label>
                             <!--<label class="text-m-b">time in sec </label>
                             <label class="form-control fs-5" style="background-color:#f8f4ff; direction: rtl;"> {{context_test3.time_sec}} </label>-->
                             <!--<label class="text-m-b">fluency </label>

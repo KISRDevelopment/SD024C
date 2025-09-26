@@ -20,8 +20,8 @@
 <script>
   function startTimer() {
     setTimeout(() => {
-      document.getElementById('auto-next')?.click();
-    }, 5000); // 5 seconds
+      document.getElementById('stop_test')?.click();
+    }, 60000); // 1 minutes
   }
 
   document.addEventListener("htmx:afterSwap", (e) => {

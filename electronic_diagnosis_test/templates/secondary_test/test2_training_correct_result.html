@@ -10,9 +10,9 @@
     </div>
   {% else %}
   <!--<div class="card p-3 my-3">-->
-    <div class="fs-1 fw-bold mb-2 text-end p-5">{{ index }}- {{ question.text }}</div>
+    <div class="fs-1 fw-bold mb-2 text-center p-5">{{ index }}- {{ question.text }}</div>
   
-    <!--<div class="row">-->
+    <div class="d-flex flex-column align-items-center">
       {% for opt in question.options %}
       <div class="col-6 mb-2 px-5 text-end">
         {% if opt.value == selected and selected != correct %}

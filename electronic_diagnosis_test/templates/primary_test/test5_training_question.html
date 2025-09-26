@@ -10,13 +10,13 @@
       <input type="hidden" name="index" value="{{ index }}">
     
       <!--<div class="card p-3 my-3" style="padding-right: 5%; padding-top: 3%;">-->
-        <div class="mb-2 fw-bold fs-1 text-end p-5">
+        <div class="mb-2 fw-bold fs-1 text-center p-5">
           {{ index|add:"1" }}- {{ question.text|safe }}
         </div>
     
-        <!--<div class="row text-end">-->
+        <div class="d-flex flex-column align-items-center">
           {% for opt in question.options %}
-            <div class="col-6 mb-2 px-5 text-end">
+            <div class="col-6 mb-2 px-5 text-center">
               
               <button 
                 type="submit" 
@@ -29,7 +29,7 @@
               </button>
             </div>
           {% endfor %}
-        <!--</div>-->
+        </div>
       <!--</div>-->
     </form>
     </div>
