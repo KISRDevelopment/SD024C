@@ -198,12 +198,12 @@ margin: auto;
     width: 60px;
 }
 
-.custom-reading-table th:nth-child(2) {
+/*.custom-reading-table th:nth-child(2) {
     width: 100%;
-}
+}*/
 
 .custom-reading-table th:last-child {
-    width: 20%;
+    width: 100%;
 }
 
 /* Add padding inside cells for better spacing */
