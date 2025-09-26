@@ -33,18 +33,19 @@
                                 <tr>
                                     <th >م</th>
                                     <th >الكلمة</th>
-                                    <th >✓</th>
+                                    <!--<th >✓</th>-->
                                 </tr>
                             </thead>
                             <tbody >
                                 {% for word in test_words|slice:":20" %}
                                 <tr>
                                     <td class="cell-number">{{ forloop.counter }}</td>
-                                    <td class="cell-word"><div style="margin: 0 10px; ">{{ word }}</div></td>
-                                    <td id="cell_{{ forloop.counter0 }}" class="score-cell unresponsive" onclick="toggleCorrect({{ forloop.counter0 }})">
+                                    <!--<td class="cell-word d-flex align-items-center"><button><i class="bi bi-volume-up fs-3"></i></button><div class="flex-grow-1 text-center">{{ word }}</div></td>-->
+                                    <td class="cell-word d-flex align-items-center"><button><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0 }}" id="word_{{ forloop.counter0 }}"></td>
+                                    <!--<td id="cell_{{ forloop.counter0 }}" class="score-cell unresponsive" onclick="toggleCorrect({{ forloop.counter0 }})">
                                         <span id="mark_{{ forloop.counter0 }}">-</span>
                                         <input type="hidden" name="score_{{ forloop.counter0 }}" id="input_{{ forloop.counter0 }}" value="-">
-                                    </td>                                    
+                                    </td>-->                                    
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -55,17 +56,18 @@
                     <div class="col-md-6" >
                         <table class="custom-reading-table">
                             <thead>
-                                <tr><th>م</th><th>الكلمة</th><th>✓</th></tr>
+                                <tr><th>م</th><th>الكلمة</th><!--<th>✓</th>--></tr>
                             </thead>
                             <tbody>
                                 {% for word in test_words|slice:"20:" %}
                                 <tr>
                                     <td class="cell-number">{{ forloop.counter|add:"20" }}</td>
-                                    <td class="cell-word">{{ word }}</td>
-                                    <td id="cell_{{ forloop.counter0|add:"19" }}" class="score-cell unresponsive" onclick="toggleCorrect({{ forloop.counter0|add:'19' }})">
+                                    <!--<td class="cell-word d-flex align-items-center"><button><i class="bi bi-volume-up fs-3"></i></button><div class="flex-grow-1 text-center">{{ word }}</div></td>-->
+                                    <td class="cell-word d-flex align-items-center"><button><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0|add:'20' }}" id="word_{{ forloop.counter0|add:'20' }}"></td>
+                                    <!--<td id="cell_{{ forloop.counter0|add:"19" }}" class="score-cell unresponsive" onclick="toggleCorrect({{ forloop.counter0|add:'19' }})">
                                         <span id="mark_{{ forloop.counter0|add:"19" }}">-</span>
                                         <input type="hidden" name="score_{{ forloop.counter0|add:"19" }}" id="input_{{ forloop.counter0|add:"19" }}" value="-">
-                                    </td>
+                                    </td>-->
                                 </tr>
                                 {% endfor %}
 
@@ -90,13 +92,13 @@
                         </div>
                 
                         <!-- Score -->
-                        <div class="col-4 text-center">
+                        <!--<div class="col-4 text-center">
                             <span class="d-block bg-purple-score text-white fw-bold py-2 rounded-top">الدرجة الكلية / 30</span>
                             <label class="d-block border border-purple-score border-2 rounded-bottom py-2 fs-5 fw-bold"
                                    id="result" style="min-width: 330px;">
                                 <span id="score-value">0</span>
                             </label>
-                        </div>
+                        </div>-->
                 
                     </div> <!-- END of flex container -->
                 
