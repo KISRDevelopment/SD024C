@@ -14,9 +14,9 @@
       <i class="bi bi-printer"></i> طباعة
     </button>
   </div>
-
+<div class="">
   <!-- ====== الجزء (أ): البيانات الشخصية ====== -->
-  <section class="sheet mb-4">
+  <section class="sheet mb-4 ">
     <div class="ribbon">
       <span class="tag tag-orange">كرّاسة النتائج والتوصيات</span>
       <span class="tag tag-purple">اختبار القراءة والإملاء المقنّن للأطفال</span>
@@ -25,7 +25,7 @@
     <div class="notebooks">
       <h2 class="section-title">الجزء (أ): البيانات الشخصية</h2>
       <div class="row g-3">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-6 ">
           <div class="field"><label>اسم المفحوص رباعياً:</label> <span>{{ student.name }}</span></div>
           <div class="field"><label>اسم المدرسة:</label> <span>{{ student.school }}</span></div>
           <div class="field fieldoneline"><label>المنطقة التعليمية:</label> <span>{{ student.District }}</span></div>
@@ -62,8 +62,8 @@
                 </div>
       <!--</div>-->
         </div>
-        <div class="col-12 col-md-6">
-                <div class=" field col-md-6 d-flex align-items-center gap-2">
+        <div class="col-12 col-md-6 ">
+        <div class=" field col-md-6 d-flex align-items-center gap-2 gender-line">
         <label class="">جنس المفحوص:</label>
         <label class="ms-2">
           <input type="checkbox" {% if student.gender == 'male' %}checked{% endif %} disabled> ذكر
@@ -98,7 +98,7 @@
   </section>
 
     <!-- ====== الجزء (ب): تدوين الدرجات ====== -->
-  <section class="sheet mb-4">
+  <section class="sheet mb-4 page-break">
 
 
     <div class="notebooks">
@@ -184,7 +184,7 @@
   </section>
 
     <!-- ====== الجزء (ج): ====== -->
-  <section class="sheet mb-4">
+  <section class="sheet mb-4 page-break">
 
 
     <div class="notebooks">
@@ -223,23 +223,53 @@
 
   </div>
 
-<h2 class="">graph C is in progressing</h2>
+
+    <div class="container-box card-signin chart-wrap" style="width: 1000px;margin-top: 2%">
+    <canvas id="pctChart" width="400" height="200"></canvas>
+</div>
 
 
     </div>
   </section>
 
-      <!-- ====== الجزء (ج): ====== -->
-  <section class="sheet mb-4">
+      <!-- ====== الجزء (d): ====== -->
+  <section class="sheet mb-4 page-break">
 
 
     <div class="notebooks">
       <h2 class="section-title">الجزء (د): تمثيل الرتب المئينية للاختبارات الفرعية تمثيلا بيانياً</h2>
-      <h2 class="">Table D is in progressing</h2>
       <div class="table-responsive mb-3">
+            <table class="table table-bordered align-middle tiny-cells mb-0 std-grid">
+      <thead>
+        <tr>
+          <th class="text-center">الرتبة <br>المئينية</th>
+          {% for row in chart_rows_std %}
+          <th class="text-center">{{ row.std_label }}</th>
+          {% endfor %}
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for labels in chart_std_labels %}
+        <tr>
+          
+          <td class="text-center fw-semibold">{{labels}}</td>
+        {% for test in chart_rows_pct %}
+          <td class="text-center {% if test.hit_index == forloop.parentloop.counter0 %}hit{% endif %}"></td>
+        {% endfor %}
+          {% for v in chart_rows_pct.cells %}
+            <td class="text-center {% if v == 1 %}hit{% endif %}"></td>
+          {% endfor %}
+        </tr>
+        </tr>
+        {% empty %}
+        <tr><td colspan="16" class="text-center text-muted">لا توجد بيانات</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
 
-    <div class="container-box card-signin" style="width: 1000px;margin-top: 2%">
+    <div class="container-box card-signin chart-wrap" style="width: 1000px;margin-top: 2%">
     <canvas id="myChart" width="400" height="200"></canvas>
 </div>
   </div>
@@ -250,7 +280,7 @@
     </div>
   </section>
 
-
+<!--</div>-->
 
 <style>
   .table-purple { background:#720e9e; color:#fff; }
@@ -259,7 +289,7 @@
 </style>
 
 
-  <section class="sheet mb-4">
+  <section class="sheet mb-4 page-break">
 
 
   <div class="notebooks">
@@ -300,7 +330,7 @@
                 <p> نتيجة المهارات والاختبارات التي اجاب عنها المفحوص (&#10004 , &#10006):</p>
                 <div class="card-body">
                     <div class="row g-3 mx-auto" style="width: 850px;">
-                        <div class="d-grid mx-auto">
+                        <div class="d-grid mx-auto print-center">
                             <table>
                                 <tr>
                                     <th id="style-th" style="border: 1px solid black; color:black; background-color: #e2d9f3;direction: rtl;height: 25px; text-align: center;" rowspan="2">الاختبار الفرعي </th>
@@ -318,19 +348,19 @@
                                     </td>
                                     <td style="border: 1px solid; border-color:black; text-align: center; ">
                                                                               <div class="col-md-6" style="display: flex; flex-direction: row; justify-content: right; align-items:center;">
-                                            {% if test2_latest == True %}
-                                            <label for="choice2" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice2" value="True" checked>
-                                            <label for="choice2" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice2" value="False"> {% elif test2_latest == False %}
-                                            <label for="choice2" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice2" value="True">
-                                            <label for="choice2" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice2" value="False" checked> {%elif test2_latest == None%}
-                                            <label for="choice2" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice2" value="True">
-                                            <label for="choice2" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice2" value="False"> {%endif%}
+                                            {% if test1_latest == True %}
+                                            <label for="choice1" class="p-2" value="True">  &#10004</label>
+                                            <input type="radio" name="choice1" value="True" checked>
+                                            <label for="choice1" class="p-2" value="False"> &#10006 </label>
+                                            <input type="radio" name="choice1" value="False"> {% elif test1_latest == False %}
+                                            <label for="choice1" class="p-2" value="True">  &#10004</label>
+                                            <input type="radio" name="choice1" value="True">
+                                            <label for="choice1" class="p-2" value="False"> &#10006 </label>
+                                            <input type="radio" name="choice1" value="False" checked> {%elif test1_latest == None%}
+                                            <label for="choice1" class="p-2" value="True">  &#10004</label>
+                                            <input type="radio" name="choice1" value="True">
+                                            <label for="choice1" class="p-2" value="False"> &#10006 </label>
+                                            <input type="radio" name="choice1" value="False"> {%endif%}
                                         </div>
                                     </td>
 
@@ -368,19 +398,19 @@
                                     </td>
                                     <td style="border: 1px solid; border-color:black; text-align: center; ">
                                                                               <div class="col-md-6" style="display: flex; flex-direction: row; justify-content: right; align-items:center;">
-                                            {% if test2_latest == True %}
-                                            <label for="choice2" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice2" value="True" checked>
-                                            <label for="choice2" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice2" value="False"> {% elif test2_latest == False %}
-                                            <label for="choice2" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice2" value="True">
-                                            <label for="choice2" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice2" value="False" checked> {%elif test2_latest == None%}
-                                            <label for="choice2" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice2" value="True">
-                                            <label for="choice2" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice2" value="False"> {%endif%}
+                                            {% if test3_latest == True %}
+                                            <label for="choice3" class="p-2" value="True">  &#10004</label>
+                                            <input type="radio" name="choice3" value="True" checked>
+                                            <label for="choice3" class="p-2" value="False"> &#10006 </label>
+                                            <input type="radio" name="choice3" value="False"> {% elif test3_latest == False %}
+                                            <label for="choice3" class="p-2" value="True">  &#10004</label>
+                                            <input type="radio" name="choice3" value="True">
+                                            <label for="choice3" class="p-2" value="False"> &#10006 </label>
+                                            <input type="radio" name="choice3" value="False" checked> {%elif test3_latest == None%}
+                                            <label for="choice3" class="p-2" value="True">  &#10004</label>
+                                            <input type="radio" name="choice3" value="True">
+                                            <label for="choice3" class="p-2" value="False"> &#10006 </label>
+                                            <input type="radio" name="choice3" value="False"> {%endif%}
                                         </div>
                                     </td>
                                     
@@ -416,19 +446,19 @@
                                     <td style="border: 1px solid black; color:black; background-color: white;direction: rtl;height: 25px; text-align: center; padding-right: 15px;">5 - نتيجة اختبار الإملاء الصحيح</td>
                                     <td style="border: 1px solid; border-color:black; text-align: center; ">
                                         <div class="col-md-6" style="display: flex; flex-direction: row; justify-content: right; align-items:center;">
-                                            {% if test4_latest == True %}
-                                            <label for="choice4" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice4" value="True" checked>
-                                            <label for="choice4" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice4" value="False">{%elif test4_latest == False%}
-                                            <label for="choice4" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice4" value="True">
-                                            <label for="choice4" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice4" value="False" checked> {%elif test4_latest == None%}
-                                            <label for="choice4" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice4" value="True">
-                                            <label for="choice4" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice4" value="False"> {%endif%}
+                                            {% if test5_latest == True %}
+                                            <label for="choice5" class="p-2" value="True">  &#10004</label>
+                                            <input type="radio" name="choice5" value="True" checked>
+                                            <label for="choice5" class="p-2" value="False"> &#10006 </label>
+                                            <input type="radio" name="choice5" value="False">{%elif test5_latest == False%}
+                                            <label for="choice5" class="p-2" value="True">  &#10004</label>
+                                            <input type="radio" name="choice5" value="True">
+                                            <label for="choice5" class="p-2" value="False"> &#10006 </label>
+                                            <input type="radio" name="choice5" value="False" checked> {%elif test5_latest == None%}
+                                            <label for="choice5" class="p-2" value="True">  &#10004</label>
+                                            <input type="radio" name="choice5" value="True">
+                                            <label for="choice5" class="p-2" value="False"> &#10006 </label>
+                                            <input type="radio" name="choice5" value="False"> {%endif%}
                                         </div>
 
                                     </td>
@@ -445,19 +475,19 @@
                                     </td>
                                     <td style="border: 1px solid; border-color:black; text-align: center; ">
                                                                               <div class="col-md-6" style="display: flex; flex-direction: row; justify-content: right; align-items:center;">
-                                            {% if test2_latest == True %}
-                                            <label for="choice2" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice2" value="True" checked>
-                                            <label for="choice2" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice2" value="False"> {% elif test2_latest == False %}
-                                            <label for="choice2" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice2" value="True">
-                                            <label for="choice2" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice2" value="False" checked> {%elif test2_latest == None%}
-                                            <label for="choice2" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice2" value="True">
-                                            <label for="choice2" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice2" value="False"> {%endif%}
+                                            {% if test6_latest == True %}
+                                            <label for="choice6" class="p-2" value="True">  &#10004</label>
+                                            <input type="radio" name="choice6" value="True" checked>
+                                            <label for="choice6" class="p-2" value="False"> &#10006 </label>
+                                            <input type="radio" name="choice6" value="False"> {% elif test6_latest == False %}
+                                            <label for="choice6" class="p-2" value="True">  &#10004</label>
+                                            <input type="radio" name="choice6" value="True">
+                                            <label for="choice6" class="p-2" value="False"> &#10006 </label>
+                                            <input type="radio" name="choice6" value="False" checked> {%elif test6_latest == None%}
+                                            <label for="choice6" class="p-2" value="True">  &#10004</label>
+                                            <input type="radio" name="choice6" value="True">
+                                            <label for="choice6" class="p-2" value="False"> &#10006 </label>
+                                            <input type="radio" name="choice6" value="False"> {%endif%}
                                         </div>
                                     </td>
 
@@ -476,15 +506,16 @@
                     <label for="strength" class=""> اولا: نقاط القوة:   </label>
                     <textarea type="text" class="form-control" name="strength" id="strength" rows="5" value="">{{strength_latest}}</textarea>
                 </div>
-
+<div class="page-break">
                 <div class="form-group mb-3">
                     <label for="weakness" class=""> ثانيا: نقاط الضعف:  </label>
                     <textarea type="text" class="form-control" name="weakness" id="weakness" rows="5" value="">{{weakness_latest}}</textarea>
                 </div>
 
+
                 <div class="form-group mb-3">
                     <label for="result" class=""> النتيجة:  </label>
-                    <textarea type="text" class="form-control" name="result" id="result" rows="5" value="">{{result_latest}}</textarea>
+                    <textarea type="text" class="form-control" name="results" id="results" rows="5" value="">{{result_latest}}</textarea>
                 </div>
 
                 <div class="form-group mb-3">
@@ -492,8 +523,12 @@
                     <textarea type="text" class="form-control" name="suggestion" id="suggestion" rows="5" value="">{{suggestion_latest}}</textarea>
                 </div>
             </div>
-                <button class="btn-light-purple" style="border-radius: 10px;" type="submit" name="action" value="submit">تسليم</button>
-                <button class="btn-light-purple" style="border-radius: 10px;" type="submit" name="action" value="print" onclick="printPage()">طباعة  </button>
+            <div class="text-center d-print-none">
+            <button class="btn-purple" type="submit" name="action" value="submit">
+    تسليم
+  </button>
+</div>
+</div>
             
         </form>
 
@@ -507,6 +542,7 @@
 
   </div>
   </section>
+  </div>
 
 
 </div>
@@ -540,14 +576,215 @@
   .dotted-list li{min-height:22px}
 
   /* Print to A4 */
-  @media print{
-    @page{size:A4;margin:12mm}
-    .d-print-none{display:none!important}
-    .sheet{break-inside:avoid}
+/* PRINT STYLES */
+/* FINAL: make print preview align and avoid cut-off */
+/* Screen (normal) -------------------------------------------------------- */
+ /* whatever you use */
+
+/* Print ------------------------------------------------------------------ */
+/* your normal screen styles here … */
+
+
+/* A4 print styles */
+/* normal screen styles here … keep these! */
+
+
+/* print styles */
+@page { size: A4 portrait; margin: 12mm; }
+
+@media print {
+  html, body {
+    width: 210mm;
+    margin: 0;
+    padding: 0;
   }
+
+/* Make the column act full-width in print and avoid grid quirks */
+  .col-12, .col-md-6 { width: 100% !important; float: none !important; }
+
+  /* Your gender row */
+  .gender-line{
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8mm !important;           /* space between ذكر / أنثى */
+    white-space: nowrap !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Keep each label with its box on one line */
+  .gender-line > label{
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 3mm !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  /* Replace native checkbox with a printable one (works even when disabled) */
+  .gender-line input[type="checkbox"]{
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    width: 13px; height: 13px;
+    border: 1.6px solid #444;
+    border-radius: 2px;
+    background: #fff;
+    margin: 0;                      /* the gap is on the label */
+    position: relative;
+    vertical-align: middle;
+    /* disabled should still look normal in print */
+    opacity: 1 !important;
+    filter: none !important;
+    pointer-events: none !important;
+  }
+
+  .gender-line input[type="checkbox"]:checked::after{
+    content: "✓";
+    position: absolute;
+    inset: -1px 0 0 0;
+    font-size: 11px;
+    line-height: 13px;
+    text-align: center;
+    color: #444;
+    font-weight: 700;
+  }
+
+  .print-area {
+    width: calc(210mm - 24mm);
+    margin: 0 auto !important;   /* center */
+    transform: scale(0.8);
+
+
+    box-sizing: border-box;
+  }
+
+  .page-break { page-break-before: always; break-before: page; }
+  .container, .container-fluid, .wrapper, .row {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  table, .chart, .print-block {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    transform: scale(0.8);
+  }
+
+  img, svg, canvas {
+    
+    position: relative;
+    transform-origin: center;
+    max-width: 100% !important;
+    height: auto !important;
+    display: flex;
+    margin: 0 auto; 
+    justify-content: center;
+    overflow: visible !important;
+  }
+
+  .chart-wrap {    
+    display: flex;
+    justify-content: center;
+    display: block;
+    width: 85% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 auto;
+    }
+
+      /* universal center (kills the usual culprits) */
+  .print-center {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important;
+    position: static !important;   /* ignore absolute/relative offsets */
+    left: auto !important; right: auto !important;
+  }
+
+  /* scale + center (use when you need to shrink something) */
+  .scale-center-90 {                 /* 90% example; make 80/70 as needed */
+    position: relative !important;
+    left: 50% !important;
+    transform: translateX(-50%) scale(0.9) !important;
+    transform-origin: top center !important;
+    margin: 0 !important;
+  }
+
+  /* parent helper: center children even if parent is flex/row */
+  .print-center-parent {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+  }
+
+  /* neutralize Bootstrap/grid pushes */
+  .row { margin: 0 !important; }
+  [class*="col-"] { float: none !important; }
+
+
+
+
+  .d-print-none, .no-print {
+    display: none !important;
+  }
+
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+
+
+
+
+/* Add these */
+/*@media print {
+  /* 210mm page - 24mm margins = 186mm content box */
+/*  .printable {
+    width: 186mm !important;
+    margin: 0 auto !important;
+    max-width: none !important;
+  }*/
+
+  /* Kill anything that causes shrink-to-fit: padding, shadow, fixed bars */
+/*  .printable, .printable * {
+    transform: none !important;
+    zoom: 1 !important;
+  }
+  .container, .container-fluid, .row, .card, .panel, .wrapper {
+    max-width: none !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    border: none !important;
+    position: static !important;
+  }*/
+
+  /* Images/tables scale nicely */
+  /*img { max-width: 100% !important; height: auto !important; }
+  table { width: 100% !important; table-layout: auto !important; }
+}*/
 </style>
 
 <script>
+    // Let CSS control canvas size when printing
+  window.onbeforeprint = () => {
+    document.querySelectorAll('.chart-box canvas').forEach(c => {
+      c.removeAttribute('width');
+      c.removeAttribute('height');
+    });
+
+    document.querySelectorAll('table').forEach(c => {
+      c.removeAttribute('width');
+      c.removeAttribute('height');
+    });
+  };
     var labels = JSON.parse('{{ labels|escapejs }}');
     var data = JSON.parse('{{ data|escapejs }}');
 
@@ -578,6 +815,50 @@
         }
 
     });
+
+  const labelstd = {{ labelstd|safe }};
+  const datastd  = {{ datastd|safe }};
+
+  console.log("Labels:", labelstd);
+  console.log("Data:", datastd);
+
+    const pct = document.getElementById('pctChart').getContext('2d');
+    new Chart(pct, {
+    type: 'bar',
+    data: {
+    labels: labelstd, 
+    datasets: [{
+      label: 'القيمة',
+      data: datastd,
+      backgroundColor: '#CC99CC',
+    }]
+  },
+  options: {
+    indexAxis: 'x',
+    scales: {
+      x: {grid: {display: false}},
+      y: {
+        min: -4,
+        max: 3,
+        ticks: { stepSize: 0.5 },
+        grid: {
+          color: (c) => {
+            const v = c.tick?.value;
+            return (v !== undefined && Number(v) === 0) ? '#1e293b': '#cbd5e1';
+          },
+          lineWidth: (c) => {
+            const v = c.tick?.value;
+            return (v !== undefined && Number(v) === 0) ? 2: 1;
+          }
+        }
+        
+      }
+    },
+    plugins: {
+      legend: { display: false },
+    }
+  }
+});
 
     function printPage() {
         window.print();
