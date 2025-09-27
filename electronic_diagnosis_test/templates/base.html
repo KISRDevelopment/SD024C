@@ -86,6 +86,15 @@
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\كراسة البطاقات.pdf' %}">كراسة البطاقات</a></li>
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\كراسة النتائج والتوصيات.pdf' %}">كراسة النتائج و التوصيات</a></li>
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\دليل الاختبار.pdf' %}">دليل الاختبار</a></li>
+                                            {% elif examiners.stage == "BOTH" %}
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\primary\كراسة الإجابة.pdf' %}">كراسة الإجابة</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\primary\كراسة البطاقات.pdf' %}">كراسة البطاقات</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\primary\كراسة النتائج و التوصيات.pdf' %}">كراسة النتائج و التوصيات</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\primary\دليل الاختبار.pdf' %}">دليل الاختبار</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\كراسة الإجابة.pdf' %}">كراسة الإجابة</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\كراسة البطاقات.pdf' %}">كراسة البطاقات</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\كراسة النتائج والتوصيات.pdf' %}">كراسة النتائج و التوصيات</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\دليل الاختبار.pdf' %}">دليل الاختبار</a></li>
                                             {% endif %}
                                         </ul>
                                     </li>
