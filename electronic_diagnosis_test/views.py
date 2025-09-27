@@ -19,21 +19,11 @@ from .data.primary.test6 import test6_training_questions, test6_main_questions
 from .percentile_lookup import lookup_scores_primary
 import math
 import json
-
-#import pandas as pd
-#from .models import Student
-#from .models import Score
-#from .models import *
-#from django.urls import *
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.template.loader import render_to_string
-#from dateutil import relativedelta
-#import pandas as pd
-#from primary.utils import return_scores, return_scores_Sec
-#import json
-#from django.core.mail import send_mail
+from django.core.mail import send_mail
 #from django.conf import settings
 import time
 from django.http import JsonResponse
@@ -332,11 +322,11 @@ def requestPage (request):
         print(message)
         
         send_mail(
-            f"{name} from {organization}",
-            f"Name:{name} \nOrganization:{organization} \nEmail:{email} \nMessage:\n{message}",
-            "smerri@kisr.edu.kw",
-            ['ccetphonologytest@gmail.com'],
-            fail_silently=False
+            subject=f"{name} from {organization}",
+            message=f"Name: {name}\nOrganization: {organization}\nEmail: {email}\nMessage:\n{message}",
+            from_email=f"{email}",              # who the email appears from
+            recipient_list=["smerri@kisr.edu.kw"],     # 👈 who should receive the email
+            fail_silently=False,
         )
         print("Name:{name} \nOrganization:{organization} \nEmail:{email} \nMessage:\n{message}")
         
@@ -1450,6 +1440,41 @@ def primary_result(request):
     test5 = PrimaryTest5.objects.filter(student_id = request.session['student']).latest("id")
     test6 = PrimaryTest6.objects.filter(student_id = request.session['student']).latest("id")
 
+    result_primary = PrimaryResult.objects.filter(student_id = request.session['student'])
+    print(result_primary)
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == "submit":
+            test_1_skill = request.POST.get('choice1')
+            test_2_skill = request.POST.get('choice2')
+            test_3_skill = request.POST.get('choice3')
+            test_4_skill = request.POST.get('choice4')
+            test_5_skill = request.POST.get('choice5')
+            test_6_skill = request.POST.get('choice6')
+            note = request.POST['note']
+            strength = request.POST['strength']
+            weakness = request.POST['weakness']
+            result = request.POST['results']
+            suggestion = request.POST['suggestion']
+
+            primaryresult = PrimaryResult.objects.create( student= student, examiner = examiner, test_1_skill = test_1_skill, test_2_skill = test_2_skill, test_3_skill = test_3_skill, test_4_skill = test_4_skill, test_5_skill = test_5_skill, test_6_skill = test_6_skill, notes= note, strength=strength, weakness = weakness, result = result, suggestion = suggestion)
+            primaryresult.save()
+
+    
+    finalReport_exist = result_primary.exists()
+    if finalReport_exist:
+        test1_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_1_skill
+        test2_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_2_skill
+        test3_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_3_skill
+        test4_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_4_skill
+        test5_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_5_skill
+        test6_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_6_skill
+        note_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").notes
+        strength_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").strength
+        weakness_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").weakness
+        result_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").result
+        suggestion_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").suggestion
+
     # Pull raw scores
     raw_scores = {
         "test1": test1.total_correct,
@@ -1475,6 +1500,25 @@ def primary_result(request):
     total_raw_score = raw_scores["test1"] + raw_scores["test2"] + raw_scores["test3"] + raw_scores["test4"] + raw_scores["test5"] + raw_scores["test6"]
     total_percentile = results["test1"]["percentile"] + results["test2"]["percentile"] + results["test3"]["percentile"] + results["test4"]["percentile"] + results["test5"]["percentile"] + results["test6"]["percentile"]
     total_std = results["test1"]["std"] + results["test2"]["std"] + results["test3"]["std"] + results["test4"]["std"] + results["test5"]["std"] + results["test6"]["std"]
+
+    datastd = []
+    labelstd = []
+
+    datastd.append(int(results["test1"]["percentile"]))
+    labelstd.append("قراءة الكلمة المفردة")
+    datastd.append(int(results["test2"]["percentile"]))
+    labelstd.append("الطلاقة في قراءة الجملة")
+    datastd.append(int(results["test3"]["percentile"]))
+    labelstd.append("الطلاقة في فهم المقطع")
+    datastd.append(int(results["test4"]["percentile"]))
+    labelstd.append("إملاء الكلمة")
+    datastd.append(int(results["test5"]["percentile"]))
+    labelstd.append("اختبار الإملاء الصحيح")
+    datastd.append(int(results["test6"]["percentile"]))
+    labelstd.append("فهم المقروء (القطعة)")
+    print("datastd")
+    print(datastd)
+    print(labelstd)
 
     # pull the Modified Standard per test (std)
     std_values_by_test = {
@@ -1503,18 +1547,29 @@ def primary_result(request):
     labels.append("(ف م ق)")
     print("data)")
     print(data)
+
+    pct_values_by_test = {
+        "(ق ك م)": results["test1"]["percentile"],  # ← use your real abbreviations
+        "(ط ق ج)":  results["test2"]["percentile"],
+        "(ط ف م)": results["test3"]["percentile"],
+        "(إ ك)": results["test4"]["percentile"],
+        "(ا إ ص)": results["test5"]["percentile"],
+        "(ف م ق)": results["test6"]["percentile"],
+    }
     
 
-    print(std_values_by_test)
+    print(pct_values_by_test)
 
     chart_labels = ["3","2,5","2","1,5","1","0,5","صفر", "0,5-","1-","1,5-","2-", "2,5-", "3-", "3,5-", "4-"]
     chart_percentile_labels = ["160","150","140","130","120","110","100", "90","80","70","60", "50", "40", "30", "20"]
+    chart_std_labels = ["90","80","70","60","50","40","30", "20","10","5","1"]
 
     chart_pairs = list(zip(chart_labels, chart_percentile_labels))
     #print(chart_data)
     #print(chart_data["chart_labels"])
 
     chart_rows_std = build_std_chart(std_values_by_test)
+    chart_rows_pct = build_pct_chart(pct_values_by_test)
     print(chart_rows_std)
 
 
@@ -1535,9 +1590,24 @@ def primary_result(request):
         "total_percentile" : total_percentile,
         "total_std": total_std,
         "chart_rows_std": chart_rows_std,
+        "chart_rows_pct": chart_rows_pct,
         "chart_data": chart_pairs,
+        "chart_std_labels": chart_std_labels,
         'data': json.dumps(data), 
-        'labels': json.dumps(labels)
+        'labels': json.dumps(labels),
+        'datastd': json.dumps(datastd), 
+        'labelstd': json.dumps(labelstd),
+        "test1_latest": test1_latest,
+        "test2_latest": test2_latest,
+        "test3_latest": test3_latest,
+        "test4_latest": test4_latest,
+        "test5_latest": test5_latest,
+        "test6_latest": test6_latest,
+        "note_latest": note_latest,
+        "strength_latest": strength_latest,
+        'weakness_latest': weakness_latest,
+        "result_latest": result_latest,
+        "suggestion_latest": suggestion_latest
 
 
 
@@ -1548,46 +1618,86 @@ def primary_result(request):
 
 def build_std_chart(std_values_by_test, labels_by_test=None, mean=100.0, sd=15.0):
     """
-    std_values_by_test: dict like {"test1": 104, "test2": 96, ...}  (Modified Standard)
-    labels_by_test: optional dict mapping test key -> Arabic label shown in first column
-    Returns: list of rows, each row: {"std_label": "...", "std_value": 104, "cells": [0/1,...]}
-            where 'cells' length = number of bins from -4 to +3 in 0.5 steps (= 15 columns).
-            The chosen bin has value 1, others 0.
+    std_values_by_test: {"test1": 104, "test2": 96, ...}  (Modified Standard)
+    Returns rows only (same as your original): [
+      {"std_label": "...", "std_value": 104, "cells": [0/1,...], "hit_index": int|None}
+    ]
+    We bin the *std* directly into 15 columns: 20,30,...,160.
     """
-    # bins: -4, -3.5, -3, ..., 2.5, 3   (step = 0.5)  => 15 bins
-    bin_edges = [round(-4.0 + 0.5*i, 1) for i in range(0, 15)]
+
+    # 15 bins: 20..160 step 10
+    bin_edges = list(range(160, 19, -10))
+    lo, hi = 20, 160 
 
     rows = []
     for key, std in std_values_by_test.items():
+        label = labels_by_test.get(key, key) if labels_by_test else key
+
         if std is None:
-            # no score => empty row
-            cells = [0]*len(bin_edges)
-            z_disp = ""
+            cells = [0] * len(bin_edges)
+            hit_idx = None
+            disp = ""
         else:
-            z = (float(std) - mean) / sd
-            # clip
-            z = max(-4.0, min(3.0, z))
-            # find nearest ceiling bin to the right (to stay consistent with your “round-up” philosophy),
-            # but for visualization nearest is usually nicer. Choose one:
-            # NEAREST:
-            idx = min(range(len(bin_edges)), key=lambda i: abs(z - bin_edges[i]))
-            # If you prefer round-up instead, use:
-            # idx = next((i for i,b in enumerate(bin_edges) if z <= b), len(bin_edges)-1)
+            s = float(std)
+            # clip to [20, 160]
+            s = max(lo, min(hi, s))
+
+            # Choose a bin (NEAREST). This respects descending order.
+            idx = min(range(len(bin_edges)), key=lambda i: abs(s - bin_edges[i]))
+
+            # If you prefer "round-up toward higher score (left side)", use:
+            # idx = next((i for i, b in enumerate(bin_edges) if s >= b), len(bin_edges) - 1)
 
             cells = [1 if i == idx else 0 for i in range(len(bin_edges))]
             hit_idx = idx
-            z_disp = std  # we display the modified standard value itself in the second column
+            disp = std  # show original std value
 
-        label = labels_by_test.get(key, key) if labels_by_test else key
-        
         rows.append({
             "std_label": label,
-            "std_value": z_disp,
+            "std_value": disp,
             "cells": cells,
             "hit_index": hit_idx,
         })
 
     return rows
+
+def build_pct_chart(values_by_test, labels_by_test=None):
+    """
+    values_by_test: {"test1": 42, "test2": 77, ...} (percentile ranks)
+    Bins: [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90]
+    Returns rows like build_std_chart.
+    """
+    bin_edges = [90, 80, 70, 60, 50, 40, 30, 20, 10, 5, 1]
+
+    rows = []
+    for key, val in values_by_test.items():
+        label = labels_by_test.get(key, key) if labels_by_test else key
+
+        if val is None:
+            cells = [0] * len(bin_edges)
+            hit_idx = None
+            disp = ""
+        else:
+            v = float(val)
+            # Clip to [1, 90]
+            v = min(max(v, 1), 90)
+
+            # Find the *first bin ≤ value* (so the mark sits at/below the percentile)
+            idx = next((i for i, b in enumerate(bin_edges) if v >= b), len(bin_edges) - 1)
+
+            cells = [1 if i == idx else 0 for i in range(len(bin_edges))]
+            hit_idx = idx
+            disp = val
+
+        rows.append({
+            "pct_label": label,
+            "pct_value": disp,
+            "cells": cells,
+            "hit_index": hit_idx,
+        })
+
+    return rows
+
 
 # helpers_c.py (or inside percentile_lookup.py)
 
