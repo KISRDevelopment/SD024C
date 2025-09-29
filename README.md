@@ -10,14 +10,32 @@ An internal web application for administering Arabic literacy assessments (prima
 
 SD024C digitizes a standardized Arabic reading & spelling assessment. Each subtest has a **Training** phase (gate/eligibility) and a **Main Test** phase.
 
-Representative subtests implemented/in progress:
+Representative subtests implemented/in progress: 
+2-step practice flow (`question → immediate feedback`) then gated access to main test. Non-responses recorded.
 
 * **Primary Test 1 — Word Reading: Accuracy & Speed**
   Training (3 items) → Main test (per‑word accuracy, timer for speed/fluency).
 * **Primary Test 2 — Sentence Reading Fluency**
-  Per‑word toggling, global timer with fluency formula, total score display.
-* **Secondary Test 2 — (Practice + Main)**
-  2-step practice flow (`question → immediate feedback`) then gated access to main test. Non-responses recorded.
+  Training (3 items) → Per‑word toggling, global timer with fluency formula, total score display.
+* **Primary Test 3 — Reading Comprehension Fluency**
+  Training (3 items) → Main test (if 3 minutes is up, test is over).
+* **Primary Test 4 — Word Spelling**
+  Main test (teacher records).
+* **Primary Test 5 — Spelling Choice**
+  Training (3 items) → Main test (if 1 minutes is up, test is over).
+* **Primary Test 6 — Reading Comprehension**
+  Training (2 items) → Main test (if 3 minutes is up, test is over).
+  
+* **Secondary Test 1 — Word Reading: Accuracy**
+  Training (3 items) → Main test (per‑word accuracy, timer for speed/fluency).
+* **Secondary Test 2 — Reading Comprehension Fluency**
+  Training (3 items) → Main test (if 3 minutes is up, test is over).
+* **Secondary Test 3 — Word Spelling**
+  Main test (student writes their answer, and it will be automated corrected once submit).
+* **Secondary Test 4 — Reading Comprehension**
+  Training (2 items) → Main test (if 3 minutes is up, test is over).
+  
+  
 
 
 
