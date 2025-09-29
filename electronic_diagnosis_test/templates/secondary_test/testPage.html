@@ -11,7 +11,7 @@
     <div class="container" style="direction: rtl;">
         <p class="text-m-b fs-3" style="margin-bottom: 10px;">الطالب : {{student}}</p>
         {% if sec_context_test1.status_test1 == "منجز " and sec_context_test2.status_test2 == "منجز " and sec_context_test3.status_test3 == "منجز " and sec_context_test4.status_test4 == "منجز " %}
-        <a href="" style="font-weight: bold;" type="submit" class="btn btn-primary-color"> عرض النتائج والتوصيات </a>
+        <a href="{% url 'secondary_result'%}" style="font-weight: bold;" type="submit" class="btn btn-primary-color"> عرض النتائج والتوصيات </a>
         {% elif sec_context_test1.status_test1 == "توقف " or sec_context_ltrs.status_ltrs == "توقف "%}
         <a href="" style="font-weight: bold;" type="submit" class="btn-outline-p"> عرض النتائج والتوصيات </a>
         {% else %}

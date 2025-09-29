@@ -16,7 +16,7 @@ from .data.primary.test5 import primary_test5_training_questions, primary_test5_
 from .data.secondary.test4 import test4_training_questions, test4_main_questions
 from .data.secondary.test3 import secondary_test3_words
 from .data.primary.test6 import test6_training_questions, test6_main_questions
-from .percentile_lookup import lookup_scores_primary
+from .percentile_lookup import lookup_scores_primary, lookup_scores_secondary
 import math
 import json
 from django.contrib.auth.hashers import make_password
@@ -1613,6 +1613,163 @@ def primary_result(request):
 
     }
     return render(request, "primary_test/result.html", context)
+
+@login_required(login_url="/login")
+def secondary_result(request):
+    student = Student.objects.get(id=request.session['student'])
+    examiner = Examiner.objects.get(user_id = request.user.id)
+    student_age_year = student.age.split('/')[0]
+    student_age_month = student.age.split('/')[1]
+    student_age_day = student.age.split('/')[2]
+    test1 = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id")
+    test2 = SecondaryTest2.objects.filter(student_id = request.session['student']).latest("id")
+    test3 = SecondaryTest3.objects.filter(student_id = request.session['student']).latest("id")
+    test4 = SecondaryTest4.objects.filter(student_id = request.session['student']).latest("id")
+    note_latest = ""
+    strength_latest = ""
+    weakness_latest = ""
+    result_latest = ""
+    suggestion_latest = ""
+
+    result_secondary = SecondaryResult.objects.filter(student_id = request.session['student'])
+    print(result_secondary)
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == "submit":
+            note = request.POST['note']
+            strength = request.POST['strength']
+            weakness = request.POST['weakness']
+            result = request.POST['results']
+            suggestion = request.POST['suggestion']
+
+            secondaryresult = SecondaryResult.objects.create( student= student, examiner = examiner, notes= note, strength=strength, weakness = weakness, result = result, suggestion = suggestion)
+            secondaryresult.save()
+
+    
+    finalReport_exist = result_secondary.exists()
+    if finalReport_exist:
+        note_latest = SecondaryResult.objects.filter(student_id=request.session['student']).latest("id").notes
+        strength_latest = SecondaryResult.objects.filter(student_id=request.session['student']).latest("id").strength
+        weakness_latest = SecondaryResult.objects.filter(student_id=request.session['student']).latest("id").weakness
+        result_latest = SecondaryResult.objects.filter(student_id=request.session['student']).latest("id").result
+        suggestion_latest = SecondaryResult.objects.filter(student_id=request.session['student']).latest("id").suggestion
+
+    # Pull raw scores
+    raw_scores = {
+        "test1": test1.total_correct,
+        "test2": test2.total_correct,
+        "test3": test3.total_correct,
+        "test4": test4.total_correct,
+    }
+
+    # Run lookup
+    results = lookup_scores_secondary(
+        grade=str(student.grade),
+        test1_raw=raw_scores["test1"],
+        test2_raw=raw_scores["test2"],
+        test3_raw=raw_scores["test3"],
+        test4_raw=raw_scores["test4"],
+    )
+
+    
+    total_raw_score = raw_scores["test1"] + raw_scores["test2"] + raw_scores["test3"] + raw_scores["test4"] 
+    total_percentile = results["test1"]["percentile"] + results["test2"]["percentile"] + results["test3"]["percentile"] + results["test4"]["percentile"]
+    total_std = results["test1"]["std"] + results["test2"]["std"] + results["test3"]["std"] + results["test4"]["std"] 
+
+    datastd = []
+    labelstd = []
+
+    datastd.append(int(results["test1"]["percentile"]))
+    labelstd.append("قراءة الكلمة المفردة")
+    datastd.append(int(results["test2"]["percentile"]))
+    labelstd.append("الطلاقة في قراءة الجملة")
+    datastd.append(int(results["test3"]["percentile"]))
+    labelstd.append("الطلاقة في فهم المقطع")
+    datastd.append(int(results["test4"]["percentile"]))
+    labelstd.append("إملاء الكلمة")
+    print("datastd")
+    print(datastd)
+    print(labelstd)
+
+    # pull the Modified Standard per test (std)
+    std_values_by_test = {
+        "(ق ك م)": results["test1"]["std"],  # ← use your real abbreviations
+        "(ط ف م)":  results["test2"]["std"],
+        "(إ ك)": results["test3"]["std"],
+        "(ف م ق)": results["test4"]["std"],
+    }
+
+    print(std_values_by_test)
+
+    data = []
+    labels = []
+
+    data.append(int(results["test1"]["percentile"]))
+    labels.append("(ق ك م)")
+    data.append(int(results["test2"]["percentile"]))
+    labels.append("(ط ق ج)")
+    data.append(int(results["test3"]["percentile"]))
+    labels.append("(ط ف م)")
+    data.append(int(results["test4"]["percentile"]))
+    labels.append("(إ ك)")
+    print("data)")
+    print(data)
+
+    pct_values_by_test = {
+        "(ق ك م)": results["test1"]["percentile"],  # ← use your real abbreviations
+        "(ط ق ج)":  results["test2"]["percentile"],
+        "(ط ف م)": results["test3"]["percentile"],
+        "(إ ك)": results["test4"]["percentile"],
+    }
+    
+
+    print(pct_values_by_test)
+
+    chart_labels = ["متفوق","متفوق","فوق المتوسط","فوق المتوسط","متوسط","أقل من المتوسط","أقل من المتوسط", "متدن","متدن","متدن جدا","متدن جدا"]
+    chart_percentile_labels = ["90","80","70","60","50","40","30", "20","10","5","1"]
+    chart_std_labels = ["90","80","70","60","50","40","30", "20","10","5","1"]
+
+    chart_pairs = list(zip(chart_labels, chart_percentile_labels))
+    #print(chart_data)
+    #print(chart_data["chart_labels"])
+
+    chart_rows_std = build_std_chart(std_values_by_test)
+    chart_rows_pct = build_pct_chart(pct_values_by_test)
+    print(chart_rows_std)
+
+
+
+
+
+    #send prepare data to send to the html
+    context = {
+        "student": {"name": student.studentName, "gender": student.gender, "school": student.schoolName, "grade": student.grade, "District": student.eduDistrict, "nationality": student.nationality,  "examDate": student.examDate, "birthDate": student.birthDate, "age": student.age, "age_year": student_age_year, "age_month": student_age_month, "age_day": student_age_day, "examiner": examiner.name, "specalist": examiner.speciality},
+        "test1": {"raw_score": test1.total_correct, "time_sec": test1.time_seconds},
+        "test2": {"raw_score": test2.total_correct, "time_sec": test2.total_time_secs},
+        "test3": {"raw_score": test3.total_correct},
+        "test4": {"raw_score": test4.total_correct},
+        "results": results,
+        "total_raw_score": total_raw_score,
+        "total_percentile" : total_percentile,
+        "total_std": total_std,
+        "chart_rows_std": chart_rows_pct,
+        "chart_rows_pct": chart_rows_pct,
+        "chart_data": chart_pairs,
+        "chart_std_labels": chart_std_labels,
+        'data': json.dumps(data), 
+        'labels': json.dumps(labels),
+        'datastd': json.dumps(datastd), 
+        'labelstd': json.dumps(labelstd),
+        "note_latest": note_latest,
+        "strength_latest": strength_latest,
+        'weakness_latest': weakness_latest,
+        "result_latest": result_latest,
+        "suggestion_latest": suggestion_latest
+
+
+
+    }
+    return render(request, "secondary_test/result.html", context)
 
 
 
