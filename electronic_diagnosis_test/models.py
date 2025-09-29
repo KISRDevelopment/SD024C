@@ -186,4 +186,14 @@ class PrimaryResult(models.Model):
     def __str__(self):
         return f"{self.student}"
 
+class SecondaryResult(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    examiner = models.ForeignKey(Examiner, on_delete=models.CASCADE)
+    notes = models.TextField()
+    strength = models.TextField()
+    weakness = models.TextField()
+    result = models.TextField()
+    suggestion = models.TextField()
 
+    def __str__(self):
+        return f"{self.student}"
