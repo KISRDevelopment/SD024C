@@ -1439,6 +1439,17 @@ def primary_result(request):
     test4 = PrimaryTest4.objects.filter(student_id = request.session['student']).latest("id")
     test5 = PrimaryTest5.objects.filter(student_id = request.session['student']).latest("id")
     test6 = PrimaryTest6.objects.filter(student_id = request.session['student']).latest("id")
+    test1_latest = None
+    test2_latest = None
+    test3_latest = None
+    test4_latest = None
+    test5_latest = None
+    test6_latest = None
+    note_latest = ""
+    strength_latest = ""
+    weakness_latest = ""
+    result_latest = ""
+    suggestion_latest = ""
 
     result_primary = PrimaryResult.objects.filter(student_id = request.session['student'])
     print(result_primary)
@@ -1463,17 +1474,20 @@ def primary_result(request):
     
     finalReport_exist = result_primary.exists()
     if finalReport_exist:
-        test1_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_1_skill
-        test2_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_2_skill
-        test3_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_3_skill
-        test4_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_4_skill
-        test5_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_5_skill
-        test6_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_6_skill
-        note_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").notes
-        strength_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").strength
-        weakness_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").weakness
-        result_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").result
-        suggestion_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").suggestion
+        try:
+            test1_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_1_skill
+            test2_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_2_skill
+            test3_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_3_skill
+            test4_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_4_skill
+            test5_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_5_skill
+            test6_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_6_skill
+            note_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").notes
+            strength_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").strength
+            weakness_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").weakness
+            result_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").result
+            suggestion_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").suggestion
+        except PrimaryResult.DoesNotExist:
+              pass
 
     # Pull raw scores
     raw_scores = {
