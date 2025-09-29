@@ -22,39 +22,39 @@
   {% csrf_token %}
   <input type="hidden" name="index" value="{{ index }}">
 
-  <div class="card p-3 my-3">
-    <div class="mb-4 fw-bold fs-5 text-end">
+  <!--<div class="card p-3 my-3">-->
+    <div class="mb-2 fw-bold fs-1 text-center px-5">
        {{ paragraph_text|safe }}
     </div>
 
-    <div class="mb-4 fw-bold fs-5 text-end">
+    <div class="mb-2  fs-1 text-center p-5">
       {{ index }}- {{ question_text|safe }}
     </div>
-        <div class="row">
+  <div class="d-flex flex-column align-items-center">
       {% for letter, text in answers.items %}
-        <div class="col-md-6 mb-3 text-end">
+        <div class="col-6 mb-2 px-5 text-end">
             {% if letter == selected and selected != correct %}
-            <button class="btn btn-danger w-100 text-end" disabled><strong>{{letter}} - </strong>{{ text }}</button>
+            <button class="btn btn-danger w-100 text-end fs-2" disabled><strong>{{letter}} - </strong>{{ text }}</button>
             {% elif letter == correct %}
           <!--<div class="col-md-6 mb-2">-->
-            <button class="btn btn-success w-100 text-end" disabled><strong>{{letter}} - </strong>{{ text }}</button>
+            <button class="btn btn-success w-100 text-end fs-2" disabled><strong>{{letter}} - </strong>{{ text }}</button>
           <!--</div>-->
         {% else %}
           <!--<div class="col-md-6 mb-2">-->
-            <button class="btn btn-outline-secondary w-100 text-end" disabled><strong>{{letter}} - </strong>{{ text }}</button>
+            <button class="btn btn-outline-secondary w-100 text-end fs-2" disabled><strong>{{letter}} - </strong>{{ text }}</button>
           <!--</div>-->
         {% endif %}
         </div>
       {% endfor %}
-          <div class="text-center mt-4">
-      <button class="btn btn-primary"
+    <div class="text-center mt-4">
+      <button class="btn btn-primary fs-2"
               hx-get="{% url 'test4_training_sec' %}?index={{ index }}{% if index == total_questions %}&final=true{% endif %}"
               hx-target="#question-area"
               hx-swap="innerHTML">
         التالي
       </button>
     </div>
-    </div>
+  </div>
 
 
 

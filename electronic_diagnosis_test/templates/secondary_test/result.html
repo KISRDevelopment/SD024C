@@ -118,14 +118,14 @@
 
           <tr>
             <td class="td-style-result">١ - اختبار دقة قراءة الكلمة المفردة</td>
-            <td class="td-style-border">{{ test1.time_sec }}</td>
+            <td class="text-center td-style"></td>
             <td class="td-style-border">{{ test1.raw_score }}</td>
             <td class="td-style-border">{{ results.test1.percentile }}</td>
             <td class="td-style-border">{{ results.test1.std  }}</td>
 
           </tr>
           <tr>
-            <td class="td-style-result">٢ - اختبار الطلاقة في قراءة الجملة </td>
+            <td class="td-style-result">٢ - اختبار الطلاقة في فهم المقروء </td>
             <td class="td-style-border">{{ test2.time_sec }}</td>
             <td class="td-style-border">{{ test2.raw_score }}</td>
             <td class="td-style-border">{{ results.test2.percentile }}</td>
@@ -133,35 +133,19 @@
 
           </tr>
           <tr>
-            <td class="td-style-result">٣ - اختبار الطلاقة في فهم المقروء </td>
-            <td class="td-style-border">{{ test3.time_sec }}</td>
+            <td class="td-style-result">٣ - اختبار إملاء الكلمة  </td>
+            <td class="text-center td-style"></td>
             <td class="td-style-border">{{ test3.raw_score }}</td>
             <td class="td-style-border">{{ results.test3.percentile }}</td>
             <td class="td-style-border">{{ results.test3.std }}</td>
 
           </tr>
           <tr>
-            <td class="td-style-result">٤ - اختبار إملاء الكلمة  </td>
-            <td class="td-style-border">{{ test4.time_sec }}</td>
+            <td class="td-style-result">٤ - اختبار فهم المقروء القطعة  </td>
+            <td class="text-center td-style"></td>
             <td class="td-style-border">{{ test4.raw_score }}</td>
             <td class="td-style-border">{{ results.test4.percentile }}</td>
             <td class="td-style-border">{{ results.test4.std }}</td>
-
-          </tr>
-          <tr>
-            <td class="td-style-result">٥ - اختبار اختيار الإملاء الصحيح  </td>
-            <td class="td-style"></td>
-            <td class="td-style-border">{{ test5.raw_score }}</td>
-            <td class="td-style-border">{{ results.test5.percentile }}</td>
-            <td class="td-style-border">{{ results.test5.std }}</td>
-
-          </tr>
-          <tr>
-            <td class="td-style-result">٦ - اختبار فهم المقروء القطعة  </td>
-            <td class="text-center td-style"></td>
-            <td class="td-style-border">{{ test6.raw_score }}</td>
-            <td class="td-style-border">{{ results.test6.percentile }}</td>
-            <td class="td-style-border">{{ results.test6.std }}</td>
 
           </tr>
 
@@ -188,15 +172,15 @@
 
 
     <div class="notebooks">
-      <h2 class="section-title">الجزء (ج): تمثيل الدرجات المعيارية المعدلة للاختبارات الفرعية تمثيلاً بيانياً</h2>
+      <h2 class="section-title">الجزء (ج): تمثيل الرتب المئينية للاختبارات الفرعية تمثيلا بيانياً</h2>
       <div class="table-responsive mb-3">
     <table class="table table-bordered align-middle tiny-cells mb-0 std-grid">
       <thead>
         <tr>
-          <th class="text-center">الدرجة<br>المعيارية</th>
-          <th class="text-center"> الدرجة المعيارية <br> المعدلة</th>
+          <th class="text-center">الوصف<br>الكيفي</th>
+          <th class="text-center"> الرتبة  <br> المئينية</th>
           {% for row in chart_rows_std %}
-          <th class="text-center">{{ row.std_label }}</th>
+          <th class="text-center">{{ row.pct_label }}</th>
           {% endfor %}
 
         </tr>
@@ -224,61 +208,19 @@
   </div>
 
 
-    <div class="container-box card-signin chart-wrap" style="width: 1000px;margin-top: 2%">
+    <!--<div class="container-box card-signin chart-wrap" style="width: 1000px;margin-top: 2%">
     <canvas id="pctChart" width="400" height="200"></canvas>
-</div>
-
-
-    </div>
-  </section>
-
-      <!-- ====== الجزء (d): ====== -->
-  <section class="sheet mb-4 page-break">
-
-
-    <div class="notebooks">
-      <h2 class="section-title">الجزء (د): تمثيل الرتب المئينية للاختبارات الفرعية تمثيلا بيانياً</h2>
-      <div class="table-responsive mb-3">
-            <table class="table table-bordered align-middle tiny-cells mb-0 std-grid">
-      <thead>
-        <tr>
-          <th class="text-center">الرتبة <br>المئينية</th>
-          {% for row in chart_rows_std %}
-          <th class="text-center">{{ row.std_label }}</th>
-          {% endfor %}
-
-        </tr>
-      </thead>
-      <tbody>
-        {% for labels in chart_std_labels %}
-        <tr>
-          
-          <td class="text-center fw-semibold">{{labels}}</td>
-        {% for test in chart_rows_pct %}
-          <td class="text-center {% if test.hit_index == forloop.parentloop.counter0 %}hit{% endif %}"></td>
-        {% endfor %}
-          {% for v in chart_rows_pct.cells %}
-            <td class="text-center {% if v == 1 %}hit{% endif %}"></td>
-          {% endfor %}
-        </tr>
-        </tr>
-        {% empty %}
-        <tr><td colspan="16" class="text-center text-muted">لا توجد بيانات</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
+</div>-->
 
     <div class="container-box card-signin chart-wrap" style="width: 1000px;margin-top: 2%">
     <canvas id="myChart" width="400" height="200"></canvas>
 </div>
-  </div>
-
-
 
 
     </div>
   </section>
+
+
 
 <!--</div>-->
 
@@ -293,7 +235,7 @@
 
 
   <div class="notebooks">
-      <h2 class="section-title">الجزء (هـ): التقرير النهائي والتوصيات</h2>
+      <h2 class="section-title">الجزء (د): التقرير النهائي والتوصيات</h2>
     <div class="table-responsive mb-3">
         <!-- section H-->
 <div class="container-box card-signin" style="width: 1000px; margin-top: 2%; text-align: right; direction: rtl;">
@@ -326,187 +268,15 @@
                     <label for="note" class=""> ملاحظات على المفحوص قبل الاختبار وفي أثنائه:  </label>
                     <textarea type="text" class="form-control" name="note" id="note" rows="2" value="">{{note_latest}}</textarea>
                 </div>
-            
-                <p> نتيجة المهارات والاختبارات التي اجاب عنها المفحوص (&#10004 , &#10006):</p>
-                <div class="card-body">
-                    <div class="row g-3 mx-auto" style="width: 850px;">
-                        <div class="d-grid mx-auto print-center">
-                            <table>
-                                <tr>
-                                    <th id="style-th" style="border: 1px solid black; color:black; background-color: #e2d9f3;direction: rtl;height: 25px; text-align: center;" rowspan="2">الاختبار الفرعي </th>
-                                    <th id="style-th" style="border: 1px solid black; color:black; background-color: #e2d9f3;direction: rtl;height: 25px; text-align: center;" colspan="3"> المهارة التي يقيسها الاختبار </th>
-                                </tr>
-                                <tr>
-                                    <th style="border: 1px solid black; color:black; background-color: #e2d9f3;direction: rtl;height: 30px; text-align: center;"> الوعي بالأصوات </th>
-                                    <th style="border: 1px solid black; color:black; background-color: #e2d9f3;direction: rtl;height: 30px; text-align: center;">سرعة النفاذ الى المعجم اللغوي</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <td style="border: 1px solid ; color:black; background-color: white;direction: rtl;height: 25px; text-align: center; padding-right: 15px;">1 -  قراءة الكلمة المفردة</td>
-                                    <td style="border: 1px solid; border-color:black; text-align: center; background-color: #e2d9f3;">
-
-                                    </td>
-                                    <td style="border: 1px solid; border-color:black; text-align: center; ">
-                                                                              <div class="col-md-6" style="display: flex; flex-direction: row; justify-content: right; align-items:center;">
-                                            {% if test1_latest == True %}
-                                            <label for="choice1" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice1" value="True" checked>
-                                            <label for="choice1" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice1" value="False"> {% elif test1_latest == False %}
-                                            <label for="choice1" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice1" value="True">
-                                            <label for="choice1" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice1" value="False" checked> {%elif test1_latest == None%}
-                                            <label for="choice1" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice1" value="True">
-                                            <label for="choice1" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice1" value="False"> {%endif%}
-                                        </div>
-                                    </td>
 
 
-                                </tr>
-                                <tr>
-                                    <td style="border: 1px solid black; color:black; background-color: white;direction: rtl;height: 25px; text-align: center; padding-right: 15px;">2 - الطلاقة في قراءة الجملة</td>
-                                    <td style="border: 1px solid; border-color:black; text-align: center; background-color: #e2d9f3;">
-
-                                    </td>
-                                    <td style="border: 1px solid; border-color:black; text-align: center; ">
-                                                                              <div class="col-md-6" style="display: flex; flex-direction: row; justify-content: right; align-items:center;">
-                                            {% if test2_latest == True %}
-                                            <label for="choice2" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice2" value="True" checked>
-                                            <label for="choice2" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice2" value="False"> {% elif test2_latest == False %}
-                                            <label for="choice2" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice2" value="True">
-                                            <label for="choice2" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice2" value="False" checked> {%elif test2_latest == None%}
-                                            <label for="choice2" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice2" value="True">
-                                            <label for="choice2" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice2" value="False"> {%endif%}
-                                        </div>
-                                    </td>
-                                    
-
-                                </tr>
-                                <tr>
-                                    <td style="border: 1px solid black; color:black; background-color: white;direction: rtl;height: 25px; text-align: center; padding-right: 15px;">3 - الطلاقة في فهم المقروء</td>
-                                    <td style="border: 1px solid; border-color:black; text-align: center; background-color: #e2d9f3;">
-
-                                    </td>
-                                    <td style="border: 1px solid; border-color:black; text-align: center; ">
-                                                                              <div class="col-md-6" style="display: flex; flex-direction: row; justify-content: right; align-items:center;">
-                                            {% if test3_latest == True %}
-                                            <label for="choice3" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice3" value="True" checked>
-                                            <label for="choice3" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice3" value="False"> {% elif test3_latest == False %}
-                                            <label for="choice3" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice3" value="True">
-                                            <label for="choice3" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice3" value="False" checked> {%elif test3_latest == None%}
-                                            <label for="choice3" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice3" value="True">
-                                            <label for="choice3" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice3" value="False"> {%endif%}
-                                        </div>
-                                    </td>
-                                    
-
-                                </tr>
-                                <tr>
-                                    <td style="border: 1px solid black; color:black; background-color: white;direction: rtl;height: 25px; text-align: center; padding-right: 15px;">4 -  الإملاء الكلمة</td>
-                                    <td style="border: 1px solid; border-color:black; text-align: center; ">
-                                          <div class="col-md-6" style="display: flex; flex-direction: row; justify-content: right; align-items:center;">
-                                            {% if test4_latest == True %}
-                                            <label for="choice4" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice4" value="True" checked>
-                                            <label for="choice4" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice4" value="False">{%elif test4_latest == False%}
-                                            <label for="choice4" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice4" value="True">
-                                            <label for="choice4" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice4" value="False" checked> {%elif test4_latest == None%}
-                                            <label for="choice4" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice4" value="True">
-                                            <label for="choice4" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice4" value="False"> {%endif%}
-                                        </div>
-
-                                    </td>
-                                    <td style="border: 1px solid; border-color:black; text-align: center;  background-color: #e2d9f3;">
-
-                                    </td>
-                                    
-
-                                </tr>
-                                <tr>
-                                    <td style="border: 1px solid black; color:black; background-color: white;direction: rtl;height: 25px; text-align: center; padding-right: 15px;">5 - نتيجة اختبار الإملاء الصحيح</td>
-                                    <td style="border: 1px solid; border-color:black; text-align: center; ">
-                                        <div class="col-md-6" style="display: flex; flex-direction: row; justify-content: right; align-items:center;">
-                                            {% if test5_latest == True %}
-                                            <label for="choice5" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice5" value="True" checked>
-                                            <label for="choice5" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice5" value="False">{%elif test5_latest == False%}
-                                            <label for="choice5" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice5" value="True">
-                                            <label for="choice5" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice5" value="False" checked> {%elif test5_latest == None%}
-                                            <label for="choice5" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice5" value="True">
-                                            <label for="choice5" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice5" value="False"> {%endif%}
-                                        </div>
-
-                                    </td>
-                                    <td style="border: 1px solid; border-color:black; text-align: center; background-color:  #e2d9f3;">
-
-                                    </td>
-
-
-                                </tr>
-                                  <tr>
-                                    <td style="border: 1px solid black; color:black; background-color: white;direction: rtl;height: 25px; text-align: center; padding-right: 15px;">6 - نتيجة اختبار فهم المقروء (القطعة)</td>
-                                    <td style="border: 1px solid; border-color:black; text-align: center; background-color: #e2d9f3;">
-
-                                    </td>
-                                    <td style="border: 1px solid; border-color:black; text-align: center; ">
-                                                                              <div class="col-md-6" style="display: flex; flex-direction: row; justify-content: right; align-items:center;">
-                                            {% if test6_latest == True %}
-                                            <label for="choice6" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice6" value="True" checked>
-                                            <label for="choice6" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice6" value="False"> {% elif test6_latest == False %}
-                                            <label for="choice6" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice6" value="True">
-                                            <label for="choice6" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice6" value="False" checked> {%elif test6_latest == None%}
-                                            <label for="choice6" class="p-2" value="True">  &#10004</label>
-                                            <input type="radio" name="choice6" value="True">
-                                            <label for="choice6" class="p-2" value="False"> &#10006 </label>
-                                            <input type="radio" name="choice6" value="False"> {%endif%}
-                                        </div>
-                                    </td>
-
-
-                                </tr>
-
-                            </table>
-                        </div>
-                    </div>
-
-                </div>
-
-                <h3> التفسير الكيفي للاختبار:</h3>
+                <h4 style="color: #5E2B8C"> التفسير الكيفي للاختبار:</h4>
 
                 <div class="form-group mb-3">
                     <label for="strength" class=""> اولا: نقاط القوة:   </label>
                     <textarea type="text" class="form-control" name="strength" id="strength" rows="5" value="">{{strength_latest}}</textarea>
                 </div>
-<div class="page-break">
+
                 <div class="form-group mb-3">
                     <label for="weakness" class=""> ثانيا: نقاط الضعف:  </label>
                     <textarea type="text" class="form-control" name="weakness" id="weakness" rows="5" value="">{{weakness_latest}}</textarea>
@@ -517,7 +287,7 @@
                     <label for="result" class=""> النتيجة:  </label>
                     <textarea type="text" class="form-control" name="results" id="results" rows="5" value="">{{result_latest}}</textarea>
                 </div>
-
+<div class="page-break">
                 <div class="form-group mb-3">
                     <label for="suggestion" class=""> توصيات مقترحة:  </label>
                     <textarea type="text" class="form-control" name="suggestion" id="suggestion" rows="5" value="">{{suggestion_latest}}</textarea>
@@ -733,8 +503,11 @@
     display: none !important;
   }
 
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
+    * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;      /* modern */
+    color-adjust: exact !important;            /* legacy */
+  }
 }
 
 
@@ -809,14 +582,25 @@
                     ticks: {
                         stepSize: 10,
                         autoSkip: false,
-                    }
+                    },
+          grid: {
+          color: (c) => {
+            const v = c.tick?.value;
+            return (v !== undefined && Number(v) === 50) ? '#1e293b': '#cbd5e1';
+          },
+          lineWidth: (c) => {
+            const v = c.tick?.value;
+            return (v !== undefined && Number(v) === 50) ? 2: 1;
+          }
+        }
+                    
                 }
             }
         }
 
     });
 
-  const labelstd = {{ labelstd|safe }};
+  /*const labelstd = {{ labelstd|safe }};
   const datastd  = {{ datastd|safe }};
 
   console.log("Labels:", labelstd);
@@ -862,7 +646,7 @@
 
     function printPage() {
         window.print();
-    }
+    }*/
 </script>
 <!--end of user result-->
 

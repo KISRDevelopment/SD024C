@@ -16,24 +16,14 @@ from .data.primary.test5 import primary_test5_training_questions, primary_test5_
 from .data.secondary.test4 import test4_training_questions, test4_main_questions
 from .data.secondary.test3 import secondary_test3_words
 from .data.primary.test6 import test6_training_questions, test6_main_questions
-from .percentile_lookup import lookup_scores_primary
+from .percentile_lookup import lookup_scores_primary, lookup_scores_secondary
 import math
 import json
-
-#import pandas as pd
-#from .models import Student
-#from .models import Score
-#from .models import *
-#from django.urls import *
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.template.loader import render_to_string
-#from dateutil import relativedelta
-#import pandas as pd
-#from primary.utils import return_scores, return_scores_Sec
-#import json
-#from django.core.mail import send_mail
+from django.core.mail import send_mail
 #from django.conf import settings
 import time
 from django.http import JsonResponse
@@ -285,11 +275,18 @@ def editStudent(request, id):
 def startTest(request,id):
     request.session['student'] = id
     stage = (Examiner.objects.get(user_id=request.user.id).stage)
+    student_grade = Student.objects.get(id=request.session['student']).grade
+    grade = int(student_grade)
     print(stage)
     if stage == 'PRIMARY':
         return redirect('testsPage')
     elif stage == 'SECONDARY':
         return redirect('testsPageSec')
+    elif stage == 'BOTH':
+        if grade > 1 and grade <= 5:
+            return redirect('testsPage')
+        elif grade > 6 and grade <= 9:
+            return redirect('testsPageSec')
     else:
         return redirect('testsPage')
     
@@ -325,11 +322,11 @@ def requestPage (request):
         print(message)
         
         send_mail(
-            f"{name} from {organization}",
-            f"Name:{name} \nOrganization:{organization} \nEmail:{email} \nMessage:\n{message}",
-            "smerri@kisr.edu.kw",
-            ['ccetphonologytest@gmail.com'],
-            fail_silently=False
+            subject=f"{name} from {organization}",
+            message=f"Name: {name}\nOrganization: {organization}\nEmail: {email}\nMessage:\n{message}",
+            from_email=f"{email}",              # who the email appears from
+            recipient_list=["smerri@kisr.edu.kw"],     # 👈 who should receive the email
+            fail_silently=False,
         )
         print("Name:{name} \nOrganization:{organization} \nEmail:{email} \nMessage:\n{message}")
         
@@ -1442,6 +1439,55 @@ def primary_result(request):
     test4 = PrimaryTest4.objects.filter(student_id = request.session['student']).latest("id")
     test5 = PrimaryTest5.objects.filter(student_id = request.session['student']).latest("id")
     test6 = PrimaryTest6.objects.filter(student_id = request.session['student']).latest("id")
+    test1_latest = None
+    test2_latest = None
+    test3_latest = None
+    test4_latest = None
+    test5_latest = None
+    test6_latest = None
+    note_latest = ""
+    strength_latest = ""
+    weakness_latest = ""
+    result_latest = ""
+    suggestion_latest = ""
+
+    result_primary = PrimaryResult.objects.filter(student_id = request.session['student'])
+    print(result_primary)
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == "submit":
+            test_1_skill = request.POST.get('choice1')
+            test_2_skill = request.POST.get('choice2')
+            test_3_skill = request.POST.get('choice3')
+            test_4_skill = request.POST.get('choice4')
+            test_5_skill = request.POST.get('choice5')
+            test_6_skill = request.POST.get('choice6')
+            note = request.POST['note']
+            strength = request.POST['strength']
+            weakness = request.POST['weakness']
+            result = request.POST['results']
+            suggestion = request.POST['suggestion']
+
+            primaryresult = PrimaryResult.objects.create( student= student, examiner = examiner, test_1_skill = test_1_skill, test_2_skill = test_2_skill, test_3_skill = test_3_skill, test_4_skill = test_4_skill, test_5_skill = test_5_skill, test_6_skill = test_6_skill, notes= note, strength=strength, weakness = weakness, result = result, suggestion = suggestion)
+            primaryresult.save()
+
+    
+    finalReport_exist = result_primary.exists()
+    if finalReport_exist:
+        try:
+            test1_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_1_skill
+            test2_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_2_skill
+            test3_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_3_skill
+            test4_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_4_skill
+            test5_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_5_skill
+            test6_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").test_6_skill
+            note_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").notes
+            strength_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").strength
+            weakness_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").weakness
+            result_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").result
+            suggestion_latest = PrimaryResult.objects.filter(student_id=request.session['student']).latest("id").suggestion
+        except PrimaryResult.DoesNotExist:
+              pass
 
     # Pull raw scores
     raw_scores = {
@@ -1468,6 +1514,25 @@ def primary_result(request):
     total_raw_score = raw_scores["test1"] + raw_scores["test2"] + raw_scores["test3"] + raw_scores["test4"] + raw_scores["test5"] + raw_scores["test6"]
     total_percentile = results["test1"]["percentile"] + results["test2"]["percentile"] + results["test3"]["percentile"] + results["test4"]["percentile"] + results["test5"]["percentile"] + results["test6"]["percentile"]
     total_std = results["test1"]["std"] + results["test2"]["std"] + results["test3"]["std"] + results["test4"]["std"] + results["test5"]["std"] + results["test6"]["std"]
+
+    datastd = []
+    labelstd = []
+
+    datastd.append(int(results["test1"]["percentile"]))
+    labelstd.append("قراءة الكلمة المفردة")
+    datastd.append(int(results["test2"]["percentile"]))
+    labelstd.append("الطلاقة في قراءة الجملة")
+    datastd.append(int(results["test3"]["percentile"]))
+    labelstd.append("الطلاقة في فهم المقطع")
+    datastd.append(int(results["test4"]["percentile"]))
+    labelstd.append("إملاء الكلمة")
+    datastd.append(int(results["test5"]["percentile"]))
+    labelstd.append("اختبار الإملاء الصحيح")
+    datastd.append(int(results["test6"]["percentile"]))
+    labelstd.append("فهم المقروء (القطعة)")
+    print("datastd")
+    print(datastd)
+    print(labelstd)
 
     # pull the Modified Standard per test (std)
     std_values_by_test = {
@@ -1496,18 +1561,29 @@ def primary_result(request):
     labels.append("(ف م ق)")
     print("data)")
     print(data)
+
+    pct_values_by_test = {
+        "(ق ك م)": results["test1"]["percentile"],  # ← use your real abbreviations
+        "(ط ق ج)":  results["test2"]["percentile"],
+        "(ط ف م)": results["test3"]["percentile"],
+        "(إ ك)": results["test4"]["percentile"],
+        "(ا إ ص)": results["test5"]["percentile"],
+        "(ف م ق)": results["test6"]["percentile"],
+    }
     
 
-    print(std_values_by_test)
+    print(pct_values_by_test)
 
     chart_labels = ["3","2,5","2","1,5","1","0,5","صفر", "0,5-","1-","1,5-","2-", "2,5-", "3-", "3,5-", "4-"]
     chart_percentile_labels = ["160","150","140","130","120","110","100", "90","80","70","60", "50", "40", "30", "20"]
+    chart_std_labels = ["90","80","70","60","50","40","30", "20","10","5","1"]
 
     chart_pairs = list(zip(chart_labels, chart_percentile_labels))
     #print(chart_data)
     #print(chart_data["chart_labels"])
 
     chart_rows_std = build_std_chart(std_values_by_test)
+    chart_rows_pct = build_pct_chart(pct_values_by_test)
     print(chart_rows_std)
 
 
@@ -1528,59 +1604,271 @@ def primary_result(request):
         "total_percentile" : total_percentile,
         "total_std": total_std,
         "chart_rows_std": chart_rows_std,
+        "chart_rows_pct": chart_rows_pct,
         "chart_data": chart_pairs,
+        "chart_std_labels": chart_std_labels,
         'data': json.dumps(data), 
-        'labels': json.dumps(labels)
+        'labels': json.dumps(labels),
+        'datastd': json.dumps(datastd), 
+        'labelstd': json.dumps(labelstd),
+        "test1_latest": test1_latest,
+        "test2_latest": test2_latest,
+        "test3_latest": test3_latest,
+        "test4_latest": test4_latest,
+        "test5_latest": test5_latest,
+        "test6_latest": test6_latest,
+        "note_latest": note_latest,
+        "strength_latest": strength_latest,
+        'weakness_latest': weakness_latest,
+        "result_latest": result_latest,
+        "suggestion_latest": suggestion_latest
 
 
 
     }
     return render(request, "primary_test/result.html", context)
 
+@login_required(login_url="/login")
+def secondary_result(request):
+    student = Student.objects.get(id=request.session['student'])
+    examiner = Examiner.objects.get(user_id = request.user.id)
+    student_age_year = student.age.split('/')[0]
+    student_age_month = student.age.split('/')[1]
+    student_age_day = student.age.split('/')[2]
+    test1 = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id")
+    test2 = SecondaryTest2.objects.filter(student_id = request.session['student']).latest("id")
+    test3 = SecondaryTest3.objects.filter(student_id = request.session['student']).latest("id")
+    test4 = SecondaryTest4.objects.filter(student_id = request.session['student']).latest("id")
+    note_latest = ""
+    strength_latest = ""
+    weakness_latest = ""
+    result_latest = ""
+    suggestion_latest = ""
+
+    result_secondary = SecondaryResult.objects.filter(student_id = request.session['student'])
+    print(result_secondary)
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == "submit":
+            note = request.POST['note']
+            strength = request.POST['strength']
+            weakness = request.POST['weakness']
+            result = request.POST['results']
+            suggestion = request.POST['suggestion']
+
+            secondaryresult = SecondaryResult.objects.create( student= student, examiner = examiner, notes= note, strength=strength, weakness = weakness, result = result, suggestion = suggestion)
+            secondaryresult.save()
+
+    
+    finalReport_exist = result_secondary.exists()
+    if finalReport_exist:
+        note_latest = SecondaryResult.objects.filter(student_id=request.session['student']).latest("id").notes
+        strength_latest = SecondaryResult.objects.filter(student_id=request.session['student']).latest("id").strength
+        weakness_latest = SecondaryResult.objects.filter(student_id=request.session['student']).latest("id").weakness
+        result_latest = SecondaryResult.objects.filter(student_id=request.session['student']).latest("id").result
+        suggestion_latest = SecondaryResult.objects.filter(student_id=request.session['student']).latest("id").suggestion
+
+    # Pull raw scores
+    raw_scores = {
+        "test1": test1.total_correct,
+        "test2": test2.total_correct,
+        "test3": test3.total_correct,
+        "test4": test4.total_correct,
+    }
+
+    # Run lookup
+    results = lookup_scores_secondary(
+        grade=str(student.grade),
+        test1_raw=raw_scores["test1"],
+        test2_raw=raw_scores["test2"],
+        test3_raw=raw_scores["test3"],
+        test4_raw=raw_scores["test4"],
+    )
+
+    
+    total_raw_score = raw_scores["test1"] + raw_scores["test2"] + raw_scores["test3"] + raw_scores["test4"] 
+    total_percentile = results["test1"]["percentile"] + results["test2"]["percentile"] + results["test3"]["percentile"] + results["test4"]["percentile"]
+    total_std = results["test1"]["std"] + results["test2"]["std"] + results["test3"]["std"] + results["test4"]["std"] 
+
+    datastd = []
+    labelstd = []
+
+    datastd.append(int(results["test1"]["percentile"]))
+    labelstd.append("قراءة الكلمة المفردة")
+    datastd.append(int(results["test2"]["percentile"]))
+    labelstd.append("الطلاقة في قراءة الجملة")
+    datastd.append(int(results["test3"]["percentile"]))
+    labelstd.append("الطلاقة في فهم المقطع")
+    datastd.append(int(results["test4"]["percentile"]))
+    labelstd.append("إملاء الكلمة")
+    print("datastd")
+    print(datastd)
+    print(labelstd)
+
+    # pull the Modified Standard per test (std)
+    std_values_by_test = {
+        "(ق ك م)": results["test1"]["std"],  # ← use your real abbreviations
+        "(ط ف م)":  results["test2"]["std"],
+        "(إ ك)": results["test3"]["std"],
+        "(ف م ق)": results["test4"]["std"],
+    }
+
+    print(std_values_by_test)
+
+    data = []
+    labels = []
+
+    data.append(int(results["test1"]["percentile"]))
+    labels.append("(ق ك م)")
+    data.append(int(results["test2"]["percentile"]))
+    labels.append("(ط ق ج)")
+    data.append(int(results["test3"]["percentile"]))
+    labels.append("(ط ف م)")
+    data.append(int(results["test4"]["percentile"]))
+    labels.append("(إ ك)")
+    print("data)")
+    print(data)
+
+    pct_values_by_test = {
+        "(ق ك م)": results["test1"]["percentile"],  # ← use your real abbreviations
+        "(ط ق ج)":  results["test2"]["percentile"],
+        "(ط ف م)": results["test3"]["percentile"],
+        "(إ ك)": results["test4"]["percentile"],
+    }
+    
+
+    print(pct_values_by_test)
+
+    chart_labels = ["متفوق","متفوق","فوق المتوسط","فوق المتوسط","متوسط","أقل من المتوسط","أقل من المتوسط", "متدن","متدن","متدن جدا","متدن جدا"]
+    chart_percentile_labels = ["90","80","70","60","50","40","30", "20","10","5","1"]
+    chart_std_labels = ["90","80","70","60","50","40","30", "20","10","5","1"]
+
+    chart_pairs = list(zip(chart_labels, chart_percentile_labels))
+    #print(chart_data)
+    #print(chart_data["chart_labels"])
+
+    chart_rows_std = build_std_chart(std_values_by_test)
+    chart_rows_pct = build_pct_chart(pct_values_by_test)
+    print(chart_rows_std)
+
+
+
+
+
+    #send prepare data to send to the html
+    context = {
+        "student": {"name": student.studentName, "gender": student.gender, "school": student.schoolName, "grade": student.grade, "District": student.eduDistrict, "nationality": student.nationality,  "examDate": student.examDate, "birthDate": student.birthDate, "age": student.age, "age_year": student_age_year, "age_month": student_age_month, "age_day": student_age_day, "examiner": examiner.name, "specalist": examiner.speciality},
+        "test1": {"raw_score": test1.total_correct, "time_sec": test1.time_seconds},
+        "test2": {"raw_score": test2.total_correct, "time_sec": test2.total_time_secs},
+        "test3": {"raw_score": test3.total_correct},
+        "test4": {"raw_score": test4.total_correct},
+        "results": results,
+        "total_raw_score": total_raw_score,
+        "total_percentile" : total_percentile,
+        "total_std": total_std,
+        "chart_rows_std": chart_rows_pct,
+        "chart_rows_pct": chart_rows_pct,
+        "chart_data": chart_pairs,
+        "chart_std_labels": chart_std_labels,
+        'data': json.dumps(data), 
+        'labels': json.dumps(labels),
+        'datastd': json.dumps(datastd), 
+        'labelstd': json.dumps(labelstd),
+        "note_latest": note_latest,
+        "strength_latest": strength_latest,
+        'weakness_latest': weakness_latest,
+        "result_latest": result_latest,
+        "suggestion_latest": suggestion_latest
+
+
+
+    }
+    return render(request, "secondary_test/result.html", context)
+
 
 
 def build_std_chart(std_values_by_test, labels_by_test=None, mean=100.0, sd=15.0):
     """
-    std_values_by_test: dict like {"test1": 104, "test2": 96, ...}  (Modified Standard)
-    labels_by_test: optional dict mapping test key -> Arabic label shown in first column
-    Returns: list of rows, each row: {"std_label": "...", "std_value": 104, "cells": [0/1,...]}
-            where 'cells' length = number of bins from -4 to +3 in 0.5 steps (= 15 columns).
-            The chosen bin has value 1, others 0.
+    std_values_by_test: {"test1": 104, "test2": 96, ...}  (Modified Standard)
+    Returns rows only (same as your original): [
+      {"std_label": "...", "std_value": 104, "cells": [0/1,...], "hit_index": int|None}
+    ]
+    We bin the *std* directly into 15 columns: 20,30,...,160.
     """
-    # bins: -4, -3.5, -3, ..., 2.5, 3   (step = 0.5)  => 15 bins
-    bin_edges = [round(-4.0 + 0.5*i, 1) for i in range(0, 15)]
+
+    # 15 bins: 20..160 step 10
+    bin_edges = list(range(160, 19, -10))
+    lo, hi = 20, 160 
 
     rows = []
     for key, std in std_values_by_test.items():
+        label = labels_by_test.get(key, key) if labels_by_test else key
+
         if std is None:
-            # no score => empty row
-            cells = [0]*len(bin_edges)
-            z_disp = ""
+            cells = [0] * len(bin_edges)
+            hit_idx = None
+            disp = ""
         else:
-            z = (float(std) - mean) / sd
-            # clip
-            z = max(-4.0, min(3.0, z))
-            # find nearest ceiling bin to the right (to stay consistent with your “round-up” philosophy),
-            # but for visualization nearest is usually nicer. Choose one:
-            # NEAREST:
-            idx = min(range(len(bin_edges)), key=lambda i: abs(z - bin_edges[i]))
-            # If you prefer round-up instead, use:
-            # idx = next((i for i,b in enumerate(bin_edges) if z <= b), len(bin_edges)-1)
+            s = float(std)
+            # clip to [20, 160]
+            s = max(lo, min(hi, s))
+
+            # Choose a bin (NEAREST). This respects descending order.
+            idx = min(range(len(bin_edges)), key=lambda i: abs(s - bin_edges[i]))
+
+            # If you prefer "round-up toward higher score (left side)", use:
+            # idx = next((i for i, b in enumerate(bin_edges) if s >= b), len(bin_edges) - 1)
 
             cells = [1 if i == idx else 0 for i in range(len(bin_edges))]
             hit_idx = idx
-            z_disp = std  # we display the modified standard value itself in the second column
+            disp = std  # show original std value
 
-        label = labels_by_test.get(key, key) if labels_by_test else key
-        
         rows.append({
             "std_label": label,
-            "std_value": z_disp,
+            "std_value": disp,
             "cells": cells,
             "hit_index": hit_idx,
         })
 
     return rows
+
+def build_pct_chart(values_by_test, labels_by_test=None):
+    """
+    values_by_test: {"test1": 42, "test2": 77, ...} (percentile ranks)
+    Bins: [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90]
+    Returns rows like build_std_chart.
+    """
+    bin_edges = [90, 80, 70, 60, 50, 40, 30, 20, 10, 5, 1]
+
+    rows = []
+    for key, val in values_by_test.items():
+        label = labels_by_test.get(key, key) if labels_by_test else key
+
+        if val is None:
+            cells = [0] * len(bin_edges)
+            hit_idx = None
+            disp = ""
+        else:
+            v = float(val)
+            # Clip to [1, 90]
+            v = min(max(v, 1), 90)
+
+            # Find the *first bin ≤ value* (so the mark sits at/below the percentile)
+            idx = next((i for i, b in enumerate(bin_edges) if v >= b), len(bin_edges) - 1)
+
+            cells = [1 if i == idx else 0 for i in range(len(bin_edges))]
+            hit_idx = idx
+            disp = val
+
+        rows.append({
+            "pct_label": label,
+            "pct_value": disp,
+            "cells": cells,
+            "hit_index": hit_idx,
+        })
+
+    return rows
+
 
 # helpers_c.py (or inside percentile_lookup.py)
 
@@ -1942,6 +2230,14 @@ def secondary_test2(request):
 @login_required(login_url="/login")
 def secondary_test3(request):
     student = Student.objects.get(id=request.session['student'])
+    test_words = secondary_test3_words
+    start = 0 
+    rows = list(enumerate(test_words[start:], start=start))
+
+    submitted = {} 
+    results = [] 
+    idx_map = {} # quick lookup by idx for the template 
+    correct_count = 0
 
     # Modal confirmation submit
     if request.method == 'POST' and request.POST.get("form2"):
@@ -1950,6 +2246,10 @@ def secondary_test3(request):
         total_correct = request.session.get('test3_total_correct', 0)
         raw_scores = request.session.get('test3_raw_scores', [])
         reason = request.POST.get("submitTst", "")
+        '''for idx, correct_word in rows: 
+            typed = request.POST.get(f"word_{idx}", "") 
+            submitted[f"word_{idx}"] = typed'''
+
 
         # Save final test result
         SecondaryTest3.objects.create(
@@ -1970,22 +2270,39 @@ def secondary_test3(request):
 
     # Main test submission (score & time)
     if request.method == 'POST' and request.POST.get("form1"):
-        raw_scores = []
-        for i in range(39):
-            val = request.POST.get(f'score_{i}', "-")
-            raw_scores.append(val)
+        for idx, correct_word in rows: 
+            typed = request.POST.get(f"word_{idx}", "") 
+            submitted[f"word_{idx}"] = typed
+
+
+            ok = typed == correct_word 
+            result = { 
+                "idx": idx, 
+                "typed": typed, 
+                "correct_word": correct_word, 
+                "correct": ok, 
+                }
+            
+            results.append(result) 
+            idx_map[idx] = result 
+            if ok: 
+                correct_count += 1
+        #raw_scores = []
+        #for i in range(39):
+            #val = request.POST.get(f'score_{i}', "-")
+            #raw_scores.append(val)
 
         #test_scores = [int(request.POST.get(f'score_{i}', 0)) for i in range(30)]
-        total_correct = sum(1 for val in raw_scores if val == "1")
+        #total_correct = sum(1 for val in raw_scores if val == "1")
 
         # Save to session for modal confirmation
-        request.session['test3_total_correct'] = total_correct
-        request.session['test3_raw_scores'] = raw_scores
+        request.session['test3_total_correct'] = correct_count
+        request.session['test3_raw_scores'] = results
 
         return render(request, 'secondary_test/test3.html', {
             'test_words': secondary_test3_words,
             'result': {
-                'total_correct': total_correct,
+                'total_correct': correct_count,
             }
         })
     return render(request,"secondary_test/test3.html", {

@@ -167,5 +167,33 @@ class SecondaryTest4(models.Model):
 
     def __str__(self):
         return f"{self.student} - {self.date.strftime('%Y-%m-%d %H:%M:%S')}"
+    
+class PrimaryResult(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='student_ids')
+    examiner = models.ForeignKey(Examiner, on_delete=models.CASCADE, related_name='examiner_ids')
+    test_1_skill = models.BooleanField(null=True)
+    test_2_skill = models.BooleanField(null=True)
+    test_3_skill = models.BooleanField(null=True)
+    test_4_skill = models.BooleanField(null=True)
+    test_5_skill = models.BooleanField(null=True)
+    test_6_skill = models.BooleanField(null=True)
+    notes = models.TextField()
+    strength = models.TextField()
+    weakness = models.TextField()
+    result = models.TextField()
+    suggestion = models.TextField()
 
+    def __str__(self):
+        return f"{self.student}"
 
+class SecondaryResult(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    examiner = models.ForeignKey(Examiner, on_delete=models.CASCADE)
+    notes = models.TextField()
+    strength = models.TextField()
+    weakness = models.TextField()
+    result = models.TextField()
+    suggestion = models.TextField()
+
+    def __str__(self):
+        return f"{self.student}"

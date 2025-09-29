@@ -45,5 +45,6 @@ urlpatterns = [
     path('studentProfile/<int:id>', views.studentProfile, name='studentProfile'),
     path('search/results', views.search_results, name='search-results'),
     path('testsPageSec/', views.testsPageSec, name='testsPageSec'),
+    path('secondary_result', views.secondary_result, name='secondary_result'),
 
 ]
