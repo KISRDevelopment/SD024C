@@ -22,7 +22,7 @@
 
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- ======================= Header ======================= -->
+    <!--  Header  -->
     <header class="py-3">
         <div class="container">
             <div class="row align-items-center">
@@ -47,7 +47,7 @@
         </div>
     </header>
 
-    <!-- ======================= Navbar ======================= -->
+    <!--  Navbar  -->
 
 
 
@@ -58,11 +58,6 @@
 
         <!-- Main navigation links (right side in RTL) -->
         <ul class="navbar-nav flex-row-reverse">
-            <!--<li class="nav-item mx-2">
-                <a href="{% url 'index' %}" class="nav-link text-light fs-4 {% if request.resolver_match.url_name == 'index' %}active{% endif %}">
-                    الرئيسة
-                </a>
-            </li>-->
 
 
             {% if user.is_staff %}
@@ -87,14 +82,14 @@
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\كراسة النتائج والتوصيات.pdf' %}">كراسة النتائج و التوصيات</a></li>
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\دليل الاختبار.pdf' %}">دليل الاختبار</a></li>
                                             {% elif examiners.stage == "BOTH" %}
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\primary\كراسة الإجابة.pdf' %}">كراسة الإجابة</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\primary\كراسة البطاقات.pdf' %}">كراسة البطاقات</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\primary\كراسة النتائج و التوصيات.pdf' %}">كراسة النتائج و التوصيات</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\primary\دليل الاختبار.pdf' %}">دليل الاختبار</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\كراسة الإجابة.pdf' %}">كراسة الإجابة</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\كراسة البطاقات.pdf' %}">كراسة البطاقات</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\كراسة النتائج والتوصيات.pdf' %}">كراسة النتائج و التوصيات</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\دليل الاختبار.pdf' %}">دليل الاختبار</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\primary\كراسة الإجابة.pdf' %}">كراسة الإجابة - ابتدائي</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\primary\كراسة البطاقات.pdf' %}">كراسة البطاقات - ابتدائي</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\primary\كراسة النتائج و التوصيات.pdf' %}">كراسة النتائج و التوصيات - ابتدائي</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\primary\دليل الاختبار.pdf' %}">دليل الاختبار - ابتدائي</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\كراسة الإجابة.pdf' %}">كراسة الإجابة - متوسط</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\كراسة البطاقات.pdf' %}">كراسة البطاقات - متوسط</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\كراسة النتائج والتوصيات.pdf' %}">كراسة النتائج و التوصيات - متوسط</a></li>
+                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs\secondary\دليل الاختبار.pdf' %}">دليل الاختبار - متوسط</a></li>
                                             {% endif %}
                                         </ul>
                                     </li>
@@ -152,7 +147,7 @@
 {% endif %}
 
 
-    <!-- ======================= Main Content ======================= -->
+    <!--  Main Content  -->
     <main class="flex-grow-1">
         <div class="container py-5 ">
             <div class="p-5 bg-body-tertiary rounded-3" >
@@ -165,7 +160,7 @@
         </div>
     </main>
 
-    <!-- ======================= Footer ======================= -->
+    <!-- Footer  -->
     <footer class="py-4 mt-auto bg-primary-color">
         <div class="container">
             <ul class="nav justify-content-center border-bottom pb-3 mb-3">

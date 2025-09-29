@@ -13,19 +13,9 @@
         <div class="container text-center mt-4" style="direction: rtl;">
             <form hx-post="{% url 'secondary_test3' %}" hx-target="#end" hx-swap="innerText" class="form-horizontal col-12" id="questionsForm">
                 {% csrf_token %}
+                 <!-- Column 1 (1-20) -->
                 <div class="row mt-4 mx-auto text-center w-100">
-                    <!-- Column 1 (1–20) -->
                     <div class="col-md-6">
-                        <!--<table class="custom-reading-table">
-                            
-                            <tr>
-                              <td class="cell-number">1</td>
-                              <td class="cell-word">أخي</td>
-                              <td class="cell-check" onclick="toggleCorrect(this)">
-                                ✓<input type="hidden" name="test_0" value="0">
-                              </td>
-                            </tr>
-                          </table>-->
                           
                           
                         <table class="custom-writing-table">
@@ -33,19 +23,13 @@
                                 <tr>
                                     <th >م</th>
                                     <th >الكلمة</th>
-                                    <!--<th >✓</th>-->
                                 </tr>
                             </thead>
                             <tbody >
                                 {% for word in test_words|slice:":20" %}
                                 <tr>
                                     <td class="cell-number">{{ forloop.counter }}</td>
-                                    <!--<td class="cell-word d-flex align-items-center"><button><i class="bi bi-volume-up fs-3"></i></button><div class="flex-grow-1 text-center">{{ word }}</div></td>-->
-                                    <td class="cell-word d-flex align-items-center"><button><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0 }}" id="word_{{ forloop.counter0 }}"></td>
-                                    <!--<td id="cell_{{ forloop.counter0 }}" class="score-cell unresponsive" onclick="toggleCorrect({{ forloop.counter0 }})">
-                                        <span id="mark_{{ forloop.counter0 }}">-</span>
-                                        <input type="hidden" name="score_{{ forloop.counter0 }}" id="input_{{ forloop.counter0 }}" value="-">
-                                    </td>-->                                    
+                                    <td class="cell-word d-flex align-items-center"><button><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0 }}" id="word_{{ forloop.counter0 }}" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off"></td>                                  
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -56,18 +40,13 @@
                     <div class="col-md-6" >
                         <table class="custom-writing-table">
                             <thead>
-                                <tr><th>م</th><th>الكلمة</th><!--<th>✓</th>--></tr>
+                                <tr><th>م</th><th>الكلمة</th></tr>
                             </thead>
                             <tbody>
                                 {% for word in test_words|slice:"20:" %}
                                 <tr>
                                     <td class="cell-number">{{ forloop.counter|add:"20" }}</td>
-                                    <!--<td class="cell-word d-flex align-items-center"><button><i class="bi bi-volume-up fs-3"></i></button><div class="flex-grow-1 text-center">{{ word }}</div></td>-->
-                                    <td class="cell-word d-flex align-items-center"><button><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0|add:'20' }}" id="word_{{ forloop.counter0|add:'20' }}"></td>
-                                    <!--<td id="cell_{{ forloop.counter0|add:"19" }}" class="score-cell unresponsive" onclick="toggleCorrect({{ forloop.counter0|add:'19' }})">
-                                        <span id="mark_{{ forloop.counter0|add:"19" }}">-</span>
-                                        <input type="hidden" name="score_{{ forloop.counter0|add:"19" }}" id="input_{{ forloop.counter0|add:"19" }}" value="-">
-                                    </td>-->
+                                    <td class="cell-word d-flex align-items-center"><button><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0|add:'20' }}" id="word_{{ forloop.counter0|add:'20' }} " autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off"></td>
                                 </tr>
                                 {% endfor %}
 
@@ -79,28 +58,6 @@
 
                 <div class="col-12 mt-4">
 
-                    <!-- Flex row with Score + Time -->
-                    <div class="d-flex justify-content-between align-items-start flex-wrap text-center gap-3">
-                
-                        <!-- Time -->
-                        <div class="col-4 text-center">
-                            <!--<span class="d-block bg-purple-score text-white fw-bold py-2 rounded-top">الزمن بالثواني</span>
-                            <input readonly type="text" id="timeDisplay"
-                                   class="d-block border border-purple-score border-2 rounded-bottom text-center fw-bold py-2 fs-5"
-                                   value="0" style="min-width: 330px;">
-                            <input type="hidden" name="time" id="timeInput">-->
-                        </div>
-                
-                        <!-- Score -->
-                        <!--<div class="col-4 text-center">
-                            <span class="d-block bg-purple-score text-white fw-bold py-2 rounded-top">الدرجة الكلية / 30</span>
-                            <label class="d-block border border-purple-score border-2 rounded-bottom py-2 fs-5 fw-bold"
-                                   id="result" style="min-width: 330px;">
-                                <span id="score-value">0</span>
-                            </label>
-                        </div>-->
-                
-                    </div> <!-- END of flex container -->
                 
                     <!-- Submit Button BELOW -->
                     <div class="d-grid mx-auto mt-5 mb-4" style="width: fit-content;">
@@ -170,8 +127,6 @@
 </style>
 
 <script>
-    //let startTime = Date.now();
-
     function toggleCorrect(index) {
     const cell = document.getElementById("cell_" + index);
     const input = document.getElementById("input_" + index);

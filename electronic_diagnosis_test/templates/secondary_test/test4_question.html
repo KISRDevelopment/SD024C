@@ -9,7 +9,6 @@
 
   {% csrf_token %}
   <input type="hidden" name="index" value="{{ index }}">
-  <!--<div class="card p-3 my-3">-->
     <div class="mb-2 fw-bold fs-1 px-5 text-center">
       {{ question.paragraph }}
     </div>
@@ -94,7 +93,7 @@
           const stopBtn = document.getElementById('stop_test');
           let fired = false;
         
-          // Start the 10s auto-skip timer
+          // stop test when time is up
           function startAutoSkip(ms) {
             if (window.autoSkipTimer) clearTimeout(window.autoSkipTimer);
             window.autoSkipTimer = setTimeout(() => {

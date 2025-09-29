@@ -9,7 +9,6 @@
       {% endif %}
     </div>
   {% else %}
-  <!--<div class="card p-3 my-3">-->
     <div class="fs-1 fw-bold mb-2 text-center p-5">{{ index }}- {{ question.text }}</div>
   
     <div class="d-flex flex-column align-items-center">
@@ -18,15 +17,10 @@
         {% if opt.value == selected and selected != correct %}
           
             <button class="btn btn-danger w-100 text-end fs-2" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
-          <!--</div>-->
         {% elif opt.value == correct %}
-          <!--<div class="col-md-6 mb-2">-->
             <button class="btn btn-success w-100 text-end fs-2" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
-          <!--</div>-->
         {% else %}
-          <!--<div class="col-md-6 mb-2">-->
             <button class="btn btn-outline-secondary w-100 text-end fs-2" disabled><strong>{{opt.label}} - </strong>{{ opt.text }}</button>
-          <!--</div>-->
         {% endif %}
         </div>
       {% endfor %}
@@ -40,7 +34,6 @@
         التالي
       </button>
     </div>
-<!--</div>-->
   {% endif %}
   
     

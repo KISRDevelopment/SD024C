@@ -10,7 +10,6 @@ hx-swap="innerHTML">
 {% csrf_token %}
 <input type="hidden" name="index" value="{{ index }}">
 
-<!--<div class="card p-3 my-3" >-->
   <div class="mb-2 fw-bold fs-1 p-5 text-center">
     {{ index|add:"1" }}. {{ question.text }}
   </div>
@@ -46,7 +45,6 @@ hx-swap="innerHTML">
       <button class="btn btn-danger" type="submit" form="stopform-{{ index }}">تأكيد الإيقاف</button>
     </div>
   </div>
-<!--</div>-->
 </form>
 </div>
 
@@ -95,7 +93,7 @@ hx-swap="innerHTML">
         const stopBtn = document.getElementById('top_test');
         let fired = false;
       
-        // Start the 3m auto-skip timer
+        // Start the 3m auto-skip timer, stop test when time is up
         function startAutoSkip(ms) {
           if (window.autoSkipTimer) clearTimeout(window.autoSkipTimer);
           window.autoSkipTimer = setTimeout(() => {

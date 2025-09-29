@@ -16,16 +16,6 @@
                 <div class="row mt-4 mx-auto text-center w-100">
                     <!-- Column 1 (1–15) -->
                     <div class="col-md-6">
-                        <!--<table class="custom-reading-table">
-                            
-                            <tr>
-                              <td class="cell-number">1</td>
-                              <td class="cell-word">أخي</td>
-                              <td class="cell-check" onclick="toggleCorrect(this)">
-                                ✓<input type="hidden" name="test_0" value="0">
-                              </td>
-                            </tr>
-                          </table>-->
                           
                         <table class="custom-reading-table">
                             <thead>
@@ -81,11 +71,6 @@
                 
                         <!-- Time -->
                         <div class="col-4 text-center">
-                            <!--<span class="d-block bg-purple-score text-white fw-bold py-2 rounded-top">الزمن بالثواني</span>
-                            <input readonly type="text" id="timeDisplay"
-                                   class="d-block border border-purple-score border-2 rounded-bottom text-center fw-bold py-2 fs-5"
-                                   value="0" style="min-width: 330px;">
-                            <input type="hidden" name="time" id="timeInput">-->
                         </div>
                 
                         <!-- Score -->
@@ -165,7 +150,6 @@
 </style>
 
 <script>
-    //let startTime = Date.now();
 
     function toggleCorrect(index) {
     const cell = document.getElementById("cell_" + index);

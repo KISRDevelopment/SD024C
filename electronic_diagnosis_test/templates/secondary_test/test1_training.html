@@ -12,7 +12,6 @@
         <div class="container  mt-4" style="direction: rtl;">
             <form method="post" action="{% url 'test1_training_sec' %}">
                 {% csrf_token %}
-                <!--<div class="text-lg-purple fs-2 mb-5" style="color: #5E2B8C;">الفقرات التدريبية</div>-->
                 {% if error %}
     <div class="alert alert-danger text-center fw-bold" role="alert">
         {{ error }}
