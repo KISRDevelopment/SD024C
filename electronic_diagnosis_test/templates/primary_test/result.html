@@ -30,7 +30,6 @@
           <div class="field"><label>اسم المدرسة:</label> <span>{{ student.school }}</span></div>
           <div class="field fieldoneline"><label>المنطقة التعليمية:</label> <span>{{ student.District }}</span></div>
           <div class="field fieldoneline"><label>جنسية الفحوص:</label> <span>{{ student.nationality }}</span></div>
-        <!--<div class="col-md-6">-->
 
                         <div class="d-grid mx-auto">
                     <table class="table-style">
@@ -60,7 +59,6 @@
                         </tr>
                     </table>
                 </div>
-      <!--</div>-->
         </div>
         <div class="col-12 col-md-6 ">
         <div class=" field col-md-6 d-flex align-items-center gap-2 gender-line">
@@ -78,7 +76,6 @@
         </div>
       </div>
 
-      <!--<div class="row g-3 mt-2">-->
 <div class="row g-3 mt-2">
   <div class="col-12 d-flex">
     <div class="field flex-fill me-4">
@@ -94,7 +91,6 @@
 
 
       </div>
-    <!--</div>-->
   </section>
 
     <!-- ====== الجزء (ب): تدوين الدرجات ====== -->
@@ -203,9 +199,9 @@
       </thead>
       <tbody>
         {% for labels, percentile_labels in chart_data %}
-        <tr>
+        <tr {% if percentile_labels|floatformat:0 == '100' %} class="highlight" {% endif %}">
           <td class="text-center fw-semibold">{{ labels }}</td>
-          <td class="text-center fw-semibold">{{percentile_labels}}</td>
+          <td class="text-center fw-semibold" >{{percentile_labels}}</td>
         {% for test in chart_rows_std %}
           <td class="text-center {% if test.hit_index == forloop.parentloop.counter0 %}hit{% endif %}"></td>
         {% endfor %}
@@ -251,7 +247,7 @@
       </thead>
       <tbody>
         {% for labels in chart_std_labels %}
-        <tr>
+        <tr {% if labels|floatformat:0 == '50' %} class="highlight" {% endif %}>
           
           <td class="text-center fw-semibold">{{labels}}</td>
         {% for test in chart_rows_pct %}
@@ -280,7 +276,6 @@
     </div>
   </section>
 
-<!--</div>-->
 
 <style>
   .table-purple { background:#720e9e; color:#fff; }
@@ -576,18 +571,6 @@
   .dotted-list li{min-height:22px}
 
   /* Print to A4 */
-/* PRINT STYLES */
-/* FINAL: make print preview align and avoid cut-off */
-/* Screen (normal) -------------------------------------------------------- */
- /* whatever you use */
-
-/* Print ------------------------------------------------------------------ */
-/* your normal screen styles here … */
-
-
-/* A4 print styles */
-/* normal screen styles here … keep these! */
-
 
 /* print styles */
 @page { size: A4 portrait; margin: 12mm; }
@@ -630,10 +613,9 @@
     border: 1.6px solid #444;
     border-radius: 2px;
     background: #fff;
-    margin: 0;                      /* the gap is on the label */
+    margin: 0;                      
     position: relative;
     vertical-align: middle;
-    /* disabled should still look normal in print */
     opacity: 1 !important;
     filter: none !important;
     pointer-events: none !important;
@@ -696,18 +678,16 @@
     margin: 0 auto;
     }
 
-      /* universal center (kills the usual culprits) */
   .print-center {
     display: block !important;
     margin-left: auto !important;
     margin-right: auto !important;
     float: none !important;
-    position: static !important;   /* ignore absolute/relative offsets */
+    position: static !important;   
     left: auto !important; right: auto !important;
   }
 
-  /* scale + center (use when you need to shrink something) */
-  .scale-center-90 {                 /* 90% example; make 80/70 as needed */
+  .scale-center-90 {                 
     position: relative !important;
     left: 50% !important;
     transform: translateX(-50%) scale(0.9) !important;
@@ -715,14 +695,12 @@
     margin: 0 !important;
   }
 
-  /* parent helper: center children even if parent is flex/row */
   .print-center-parent {
     display: flex !important;
     justify-content: center !important;
     align-items: flex-start !important;
   }
 
-  /* neutralize Bootstrap/grid pushes */
   .row { margin: 0 !important; }
   [class*="col-"] { float: none !important; }
 
@@ -733,43 +711,13 @@
     display: none !important;
   }
 
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
+    * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;      
+    color-adjust: exact !important;           
+  }
 }
 
-
-
-
-
-/* Add these */
-/*@media print {
-  /* 210mm page - 24mm margins = 186mm content box */
-/*  .printable {
-    width: 186mm !important;
-    margin: 0 auto !important;
-    max-width: none !important;
-  }*/
-
-  /* Kill anything that causes shrink-to-fit: padding, shadow, fixed bars */
-/*  .printable, .printable * {
-    transform: none !important;
-    zoom: 1 !important;
-  }
-  .container, .container-fluid, .row, .card, .panel, .wrapper {
-    max-width: none !important;
-    width: auto !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    box-shadow: none !important;
-    background: transparent !important;
-    border: none !important;
-    position: static !important;
-  }*/
-
-  /* Images/tables scale nicely */
-  /*img { max-width: 100% !important; height: auto !important; }
-  table { width: 100% !important; table-layout: auto !important; }
-}*/
 </style>
 
 <script>

@@ -1,4 +1,4 @@
-#from pyexpat.errors import messages
+
 from django.shortcuts import *
 from django.contrib.auth import *
 from django.contrib import *
@@ -17,14 +17,12 @@ from .data.secondary.test4 import test4_training_questions, test4_main_questions
 from .data.secondary.test3 import secondary_test3_words
 from .data.primary.test6 import test6_training_questions, test6_main_questions
 from .percentile_lookup import lookup_scores_primary, lookup_scores_secondary
-import math
 import json
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
-#from django.conf import settings
 import time
 from django.http import JsonResponse
 
@@ -76,7 +74,6 @@ def admin (request):
         })
     else:
         return redirect(reverse('login'))
-        #return redirect(reverse('examinerPage'))
 
 
 @login_required(login_url="/login")
@@ -324,8 +321,8 @@ def requestPage (request):
         send_mail(
             subject=f"{name} from {organization}",
             message=f"Name: {name}\nOrganization: {organization}\nEmail: {email}\nMessage:\n{message}",
-            from_email=f"{email}",              # who the email appears from
-            recipient_list=["smerri@kisr.edu.kw"],     # 👈 who should receive the email
+            from_email=f"{email}",              
+            recipient_list=["smerri@kisr.edu.kw"],     
             fail_silently=False,
         )
         print("Name:{name} \nOrganization:{organization} \nEmail:{email} \nMessage:\n{message}")
@@ -382,7 +379,6 @@ def testsPage (request):
         if(test3.exists()):
             test3_correct_Ans = test3.latest("id").total_correct
             test3_time_seconds = test3.latest("id").total_time_secs
-            #test3_fluency_score = test3.latest("id")
             
             if (test3_correct_Ans != None):
                 context_test3 = {"correctAnswers":(test3_correct_Ans), "status_test3":('منجز '), "time_sec": (test3_time_seconds), } #"fluency_score": (test3_fluency_score)
@@ -466,9 +462,8 @@ def testsPageSec (request):
         if(test2.exists()):
             test2_correct_Ans = test2.latest("id").total_correct
             test2_time_seconds = test2.latest("id").total_time_secs 
-            #test2_fluency_score = test2.latest("id")
             if (test2_correct_Ans != None):
-                sec_context_test2 = {"correctAnswers":(test2_correct_Ans), "status_test2":('منجز '), "time_sec": (test2_time_seconds), } #"fluency_score": (test1_fluency_score)
+                sec_context_test2 = {"correctAnswers":(test2_correct_Ans), "status_test2":('منجز '), "time_sec": (test2_time_seconds), } 
             else:
                 sec_context_test2 = {"status_test2":('غير منجز'), }
         else:
@@ -477,8 +472,6 @@ def testsPageSec (request):
 
         if(test3.exists()):
             test3_correct_Ans = SecondaryTest3.objects.filter(student_id = request.session['student']).latest("id").total_correct
-            #test1_time_seconds = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").time_seconds
-            #test1_fluency_score = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").fluency_score
             if (test3_correct_Ans != None):
                 sec_context_test3 = {"correctAnswers":(test3_correct_Ans), "status_test3":('منجز ')}
             else:
@@ -488,8 +481,6 @@ def testsPageSec (request):
         
         if(test4.exists()):
             test4_correct_Ans = SecondaryTest4.objects.filter(student_id = request.session['student']).latest("id").total_correct
-            #test1_time_seconds = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").time_seconds
-            #test1_fluency_score = SecondaryTest1.objects.filter(student_id = request.session['student']).latest("id").fluency_score
             if (test4_correct_Ans != None):
                 sec_context_test4 = {"correctAnswers":(test4_correct_Ans), "status_test4":('منجز ')}
             else:
@@ -534,7 +525,6 @@ def primary_test1(request):
     # Modal confirmation submit
     if request.method == 'POST' and request.POST.get("form2"):
         print(request.POST)
-        # Get saved values from session
         total_correct = request.session.get('test1_total_correct', 0)
         time_seconds = request.session.get('test1_time_seconds', 0)
         fluency = request.session.get('test1_fluency', 0)
@@ -550,7 +540,6 @@ def primary_test1(request):
             date=datetime.now()
         )
 
-        # Clear session if you want
         if(reason != "الوصول الى الحد السقفي"):
             del request.session['test1_total_correct']
             del request.session['test1_time_seconds']
@@ -564,7 +553,7 @@ def primary_test1(request):
         total_correct = sum(test_scores)
 
         try:
-            time_seconds = float(request.POST.get('time', 1))  # avoid divide-by-zero
+            time_seconds = float(request.POST.get('time', 1)) 
         except:
             time_seconds = 1
 
@@ -624,7 +613,6 @@ def primary_test2(request):
     # Modal confirmation submit
     if request.method == 'POST' and request.POST.get("form2"):
         print(request.POST)
-        # Get saved values from session
         total_score = request.session.get('test2_total_score', 0)
         print(total_score)
         time_taken = request.session.get('test2_time_seconds', 0)
@@ -647,12 +635,6 @@ def primary_test2(request):
             date=datetime.now()
         )
 
-        # Clear session if you want
-        #if(reason != "الوصول الى الحد السقفي"):
-            #del request.session['test2_total_score']
-            #del request.session['test2_time_seconds']
-            #del request.session['test2_fluency']
-            #del request.session['test2_scores']
 
         return redirect('testsPage')
 
@@ -666,7 +648,7 @@ def primary_test2(request):
             total_score += score
 
         try:
-            time_seconds = float(request.POST.get('time', 1))  # avoid divide-by-zero
+            time_seconds = float(request.POST.get('time', 1)) 
         except:
             time_seconds = 1
 
@@ -841,8 +823,8 @@ def primary_test3(request):
         elapsed = round(time.time() - qstart, 3)
 
         # Normalize to exactly 4.000 for auto-skip
-        if 3.9 <= elapsed <= 4.2:
-            elapsed = 4.000
+        if 179.9 <= elapsed <= 180.2:
+            elapsed = 180.000
 
         durs.append(elapsed)
 
@@ -947,7 +929,6 @@ def primary_test4(request):
             val = request.POST.get(f'score_{i}', "-")
             raw_scores.append(val)
 
-        #test_scores = [int(request.POST.get(f'score_{i}', 0)) for i in range(30)]
         total_correct = sum(1 for val in raw_scores if val == "1")
 
         # Save to session for modal confirmation
@@ -1106,8 +1087,8 @@ def primary_test5(request):
         elapsed = round(time.time() - qstart, 3)
 
         # Normalize to exactly 5.000 for auto-skip
-        if 4.9 <= elapsed <= 5.2:
-            elapsed = 5.000
+        if 179.9 <= elapsed <= 182.2:
+            elapsed = 180.000
 
         durs.append(elapsed)
 
@@ -1347,8 +1328,8 @@ def primary_test6(request):
 
         # ANSWER / SKIP branch
         # Normalize to exactly 4.000 for auto-skip (keep same behavior as test2, if you use it)
-        if 9.9 <= elapsed <= 10.2:
-            elapsed = 10.000
+        if 179.9 <= elapsed <= 180.2:
+            elapsed = 180.000
         durs.append(elapsed)
 
         # record answer & score
@@ -1814,10 +1795,8 @@ def build_std_chart(std_values_by_test, labels_by_test=None, mean=100.0, sd=15.0
             s = max(lo, min(hi, s))
 
             # Choose a bin (NEAREST). This respects descending order.
-            idx = min(range(len(bin_edges)), key=lambda i: abs(s - bin_edges[i]))
+            idx = min(range(len(bin_edges)), key=lambda i: (abs(s - bin_edges[i]), bin_edges[i]))
 
-            # If you prefer "round-up toward higher score (left side)", use:
-            # idx = next((i for i, b in enumerate(bin_edges) if s >= b), len(bin_edges) - 1)
 
             cells = [1 if i == idx else 0 for i in range(len(bin_edges))]
             hit_idx = idx
@@ -1855,6 +1834,7 @@ def build_pct_chart(values_by_test, labels_by_test=None):
 
             # Find the *first bin ≤ value* (so the mark sits at/below the percentile)
             idx = next((i for i, b in enumerate(bin_edges) if v >= b), len(bin_edges) - 1)
+
 
             cells = [1 if i == idx else 0 for i in range(len(bin_edges))]
             hit_idx = idx
@@ -2246,9 +2226,6 @@ def secondary_test3(request):
         total_correct = request.session.get('test3_total_correct', 0)
         raw_scores = request.session.get('test3_raw_scores', [])
         reason = request.POST.get("submitTst", "")
-        '''for idx, correct_word in rows: 
-            typed = request.POST.get(f"word_{idx}", "") 
-            submitted[f"word_{idx}"] = typed'''
 
 
         # Save final test result
@@ -2287,13 +2264,6 @@ def secondary_test3(request):
             idx_map[idx] = result 
             if ok: 
                 correct_count += 1
-        #raw_scores = []
-        #for i in range(39):
-            #val = request.POST.get(f'score_{i}', "-")
-            #raw_scores.append(val)
-
-        #test_scores = [int(request.POST.get(f'score_{i}', 0)) for i in range(30)]
-        #total_correct = sum(1 for val in raw_scores if val == "1")
 
         # Save to session for modal confirmation
         request.session['test3_total_correct'] = correct_count

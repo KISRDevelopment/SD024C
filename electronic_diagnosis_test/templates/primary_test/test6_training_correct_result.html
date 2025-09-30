@@ -22,7 +22,6 @@
   {% csrf_token %}
   <input type="hidden" name="index" value="{{ index }}">
 
-  <!--<div class="card p-3 my-3" style="padding-right: 5%;">-->
     <div class="mb-2 fw-bold fs-1 text-center px-5" >
        {{ paragraph_text|safe }}
     </div>
@@ -36,13 +35,9 @@
             {% if letter == selected and selected != correct %}
             <button class="btn btn-danger w-100 text-end fs-2"  disabled><strong>{{letter}} - </strong>{{ text }}</button>
             {% elif letter == correct %}
-          <!--<div class="col-md-6 mb-2">-->
             <button class="btn btn-success w-100 text-end fs-2"  disabled><strong>{{letter}} - </strong>{{ text }}</button>
-          <!--</div>-->
         {% else %}
-          <!--<div class="col-md-6 mb-2">-->
             <button class="btn btn-outline-secondary w-100 text-end fs-2"  disabled><strong>{{letter}} - </strong>{{ text }}</button>
-          <!--</div>-->
         {% endif %}
         </div>
       {% endfor %}

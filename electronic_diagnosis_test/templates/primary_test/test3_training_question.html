@@ -8,8 +8,6 @@
     
       {% csrf_token %}
       <input type="hidden" name="index" value="{{ index }}">
-    
-      <!--<div class="card p-3 my-3" style="padding-right: 5%;">-->
         <div class="mb-2 fw-bold fs-1 text-center p-5">
           {{ index|add:"1" }}- {{ question.text|safe }}
         </div>
@@ -29,7 +27,6 @@
             </div>
           {% endfor %}
         </div>
-      <!--</div>-->
     </form>
     </div>
     
