@@ -65,6 +65,7 @@
                 <a href="{% url 'admin' %}" class="nav-link text-light fs-4">المستخدمين</a>
             </li>
             {% else %}
+            {% if request.resolver_match.url_name in "testsPage examinerPage testsPageSec" %}
                                     <!-- أدلة dropdown -->
                                     <li class="nav-item dropdown mx-2">
                                         <a class="nav-link dropdown-toggle text-light fs-4" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -93,6 +94,7 @@
                                             {% endif %}
                                         </ul>
                                     </li>
+                                    {% endif %}
             <li class="nav-item mx-2">
                 <a href="{% url 'examinerPage' %}" class="nav-link text-light fs-4">الطلاب</a>
             </li>
