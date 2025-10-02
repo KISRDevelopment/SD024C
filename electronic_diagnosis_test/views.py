@@ -2252,11 +2252,11 @@ def secondary_test3(request):
             submitted[f"word_{idx}"] = typed
 
 
-            ok = typed == correct_word 
+            ok = typed == correct_word["text"] 
             result = { 
                 "idx": idx, 
                 "typed": typed, 
-                "correct_word": correct_word, 
+                "correct_word": correct_word["text"], 
                 "correct": ok, 
                 }
             
