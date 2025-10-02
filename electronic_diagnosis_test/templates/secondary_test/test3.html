@@ -29,7 +29,10 @@
                                 {% for word in test_words|slice:":20" %}
                                 <tr>
                                     <td class="cell-number">{{ forloop.counter }}</td>
-                                    <td class="cell-word d-flex align-items-center"><button><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0 }}" id="word_{{ forloop.counter0 }}" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off"></td>                                  
+                                    <td class="cell-word d-flex align-items-center"><button class="play-audio"
+                  data-sent="{% static 'audio/secondary/' %}{{ word.audio_sentence }}"
+                  data-word="{% static 'audio/secondary/' %}{{ word.audio_word }}"
+                  data-gap="2000"><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0 }}" id="word_{{ forloop.counter0 }}" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off"></td>                                  
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -46,7 +49,10 @@
                                 {% for word in test_words|slice:"20:" %}
                                 <tr>
                                     <td class="cell-number">{{ forloop.counter|add:"20" }}</td>
-                                    <td class="cell-word d-flex align-items-center"><button><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0|add:'20' }}" id="word_{{ forloop.counter0|add:'20' }} " autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off"></td>
+                                    <td class="cell-word d-flex align-items-center"><button class="play-audio"
+                  data-sent="{% static 'audio/secondary/' %}{{ word.audio_sentence }}"
+                  data-word="{% static 'audio/secondary/' %}{{ word.audio_word }}"
+                  data-gap="2000"><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0|add:'20' }}" id="word_{{ forloop.counter0|add:'20' }} " autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off"></td>
                                 </tr>
                                 {% endfor %}
 
@@ -163,6 +169,30 @@
         document.getElementById("score-value").innerText = total;
       
     }
+
+
+    document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.play-audio');
+    if (!btn) return;
+
+    const sent = btn.getAttribute('data-sent') || "";
+    const word = btn.getAttribute('data-word') || "";
+    const gap  = parseInt(btn.getAttribute('data-gap') || "2000", 10);
+
+    const play = (src) => new Promise(res => {
+        if (!src) return res();
+        const a = new Audio(src);
+        a.addEventListener('ended', res, { once:true });
+        a.addEventListener('error', res, { once:true });
+        a.play().catch(() => res());
+    });
+
+    play(sent)
+        .then(() => new Promise(r => setTimeout(r, (sent && word) ? gap : 0)))
+        .then(() => play(word));
+    });
+
+
 
 </script>
 
