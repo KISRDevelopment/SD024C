@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Hidden audio element (preloaded) -->
+<audio id="sound"
+       src="{% static 'audio/secondary/RWE01.mp3' %}"
+       preload="auto">
+</audio>
+<audio id="training"
+       src="{% static 'audio/secondary/RWE02.mp3' %}"
+       preload="auto">
+</audio>
+
+<div class="container">
+    <div class="text-center">
+        <h2 class="text-lg-purple fs-2 mb-5" style="color: #5E2B8C;">الاختبار الفرعي الثالثٍ</h2>
+        <h4 class=" mb-5 fs-3" style="color: #fd7e14;">اختبار إملاء الكلمة - الفقرات التدريبية</h4>
+    </div>
+    
+    <div class="card rounded-card my-3 mx-auto">
+        <div class="container  mt-4" style="direction: rtl;">
+            <form method="post" action="{% url 'test3_training_sec' %}">
+                {% csrf_token %}
+                {% if error %}
+    <div class="alert alert-danger text-center fw-bold" role="alert">
+        {{ error }}
+    </div>
+{% endif %}
+                <div class="row mt-4 mx-auto text-center w-100">
+                    
+                    <!-- Column 1 (1–3) -->
+                    <div class="">
+                          
+                        <table class="custom-writing-table">
+                            <thead>
+                                <tr>
+                                    <th >م</th>
+                                    <th >الكلمة</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody >
+                                {% for word in training_words %}
+                                <tr>
+                                    <td class="cell-number">{{ forloop.counter }}</td>
+                                    <td class="cell-word d-flex align-items-center">
+                                        <button class="play-audio"
+                                        data-sent="{% static 'audio/secondary/' %}{{ word.audio_sentence }}"
+                                        data-word="{% static 'audio/secondary/' %}{{ word.audio_word }}"
+                                        data-gap="2000">
+                                        <i class="bi bi-volume-up fs-3"></i>
+                                        </button>
+                                        <input type="text" class="form-control" name="word_{{ forloop.counter0 }}" id="word_{{ forloop.counter0 }}" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off">
+                                    </td>                                 
+                                
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="col-12 mt-4">
+
+                
+                    <!-- Submit Button BELOW -->
+                    <div class="d-grid mx-auto mt-5 mb-4" style="width: fit-content;">
+                        <input id="end" type="submit" name="form1" class="btn-light-purple px-5 py-3 fs-5"
+                        value="تسليم الاختبار" data-bs-toggle="modal" data-bs-target="#ModalSubmit"
+                        style="background-color: #b48ce6; color: black; font-weight: bold;">
+                    </div>
+                
+                </div>
+                
+
+                
+                
+              </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+window.addEventListener('DOMContentLoaded', function () {
+  const a = document.getElementById('sound');      // first audio (RWE01)
+  const training = document.getElementById('training'); // second audio (RWE02)
+  if (!a) return;
+
+  // helper to safely play any audio and resolve when finished
+  const playAudio = (audio) => new Promise((resolve) => {
+    if (!audio) return resolve();
+    audio.play().then(() => {
+      audio.addEventListener('ended', resolve, { once: true });
+      audio.addEventListener('error', resolve, { once: true });
+    }).catch(() => {
+      // autoplay blocked -> wait for first gesture
+      const resume = () => {
+        audio.play().finally(() => {
+          ['click','keydown','touchstart'].forEach(ev =>
+            document.removeEventListener(ev, resume, true)
+          );
+          resolve();
+        });
+      };
+      ['click','keydown','touchstart'].forEach(ev =>
+        document.addEventListener(ev, resume, { once: true, capture: true })
+      );
+    });
+  });
+
+  // play first audio -> wait 2 seconds -> play second
+  playAudio(a)
+    .then(() => new Promise(r => setTimeout(r, 2000)))
+    .then(() => playAudio(training));
+});
+
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.play-audio');
+  if (!btn) return;
+
+  e.preventDefault(); // stop accidental form submit
+
+  const sent = btn.getAttribute('data-sent') || "";
+  const word = btn.getAttribute('data-word') || "";
+  const gap  = parseInt(btn.getAttribute('data-gap') || "2000", 10);
+
+  const play = (src) => new Promise(res => {
+    if (!src) return res();
+    const a = new Audio(src);
+    a.addEventListener('ended', res, { once:true });
+    a.addEventListener('error', () => { console.warn('Audio error:', src); res(); }, { once:true });
+    a.play().catch(err => { console.warn('Play blocked:', src, err); res(); });
+  });
+
+  play(sent)
+    .then(() => new Promise(r => setTimeout(r, (sent && word) ? gap : 0)))
+    .then(() => play(word));
+});
+</script>
+
+
+
+{% endblock %}
