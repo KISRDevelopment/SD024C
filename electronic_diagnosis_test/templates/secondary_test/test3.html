@@ -2,6 +2,11 @@
 {% load static %}
 {% block content %}
 
+<audio id="test-audio"
+       src="{% static 'audio/secondary/RWE05.mp3' %}"
+       preload="auto"></audio>
+
+
 <script src="https://unpkg.com/htmx.org@1.9.4" crossorigin="anonymous"></script>
 
 <div class="container">
@@ -133,43 +138,27 @@
 </style>
 
 <script>
-    function toggleCorrect(index) {
-    const cell = document.getElementById("cell_" + index);
-    const input = document.getElementById("input_" + index);
-    const mark = document.getElementById("mark_" + index);
 
-    // Clear all states
-    cell.classList.remove("unresponsive", "correct", "incorrect");
+    window.addEventListener('DOMContentLoaded', function () {
+  const a = document.getElementById('test-audio');
+  if (!a) return;
 
-    if (input.value === "-") {
-        input.value = "1";
-        mark.innerText = "✓";
-        cell.classList.add("correct");
-    } else if (input.value === "1") {
-        input.value = "0";
-        mark.innerText = "✗";
-        cell.classList.add("incorrect");
-    } else {
-        input.value = "-";
-        mark.innerText = "-";
-        cell.classList.add("unresponsive");
-    }
-
-    updateTotalScore();
-}
-
-
-
-    function updateTotalScore() {
-        
-        let total = 0;
-        document.querySelectorAll("input[id^='input_']").forEach((input) => {
-            if (input.value === "1") total++;
-        });
-        document.getElementById("score-value").innerText = total;
-      
-    }
-
+  // Try to autoplay immediately
+  a.play().catch(() => {
+    // If the browser blocks autoplay, wait for the first user gesture, then play once.
+    const resume = () => {
+      a.play().finally(() => {
+        // remove this listener so it doesn't affect your other clicks
+        document.removeEventListener('click', resume, true);
+        document.removeEventListener('keydown', resume, true);
+        document.removeEventListener('touchstart', resume, true);
+      });
+    };
+    document.addEventListener('click', resume, true);
+    document.addEventListener('keydown', resume, true);
+    document.addEventListener('touchstart', resume, true);
+  });
+});
 
     document.addEventListener('click', (e) => {
     const btn = e.target.closest('.play-audio');
