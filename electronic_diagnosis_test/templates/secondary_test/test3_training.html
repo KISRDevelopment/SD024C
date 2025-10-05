@@ -3,14 +3,7 @@
 {% block content %}
 
 <!-- Hidden audio element (preloaded) -->
-<audio id="sound"
-       src="{% static 'audio/secondary/RWE01.mp3' %}"
-       preload="auto">
-</audio>
-<audio id="training"
-       src="{% static 'audio/secondary/RWE02.mp3' %}"
-       preload="auto">
-</audio>
+
 
 <div class="container">
     <div class="text-center">
@@ -56,6 +49,14 @@
                                 
                                 </tr>
                                 {% endfor %}
+                                <audio id="sound"
+                                    src="{% static 'audio/secondary/RWE01.mp3' %}"
+                                    preload="auto">
+                                </audio>
+                                <audio id="training"
+                                    src="{% static 'audio/secondary/RWE02.mp3' %}"
+                                    preload="auto">
+                                </audio>
                             </tbody>
                         </table>
                     </div>
@@ -85,8 +86,9 @@
 
 <script>
 
-window.addEventListener('DOMContentLoaded', function () {
-  const a = document.getElementById('sound');      // first audio (RWE01)
+window.addEventListener('pageshow', function () {
+setTimeout(() =>{
+      const a = document.getElementById('sound');      // first audio (RWE01)
   const training = document.getElementById('training'); // second audio (RWE02)
   if (!a) return;
 
@@ -113,9 +115,11 @@ window.addEventListener('DOMContentLoaded', function () {
   });
 
   // play first audio -> wait 2 seconds -> play second
-  playAudio(a)
-    .then(() => new Promise(r => setTimeout(r, 2000)))
-    .then(() => playAudio(training));
+    playAudio(a)
+        .then(() => new Promise(r => setTimeout(r, 1000)))
+        .then(() => playAudio(training));
+}, 2000);
+
 });
 
 document.addEventListener('click', (e) => {

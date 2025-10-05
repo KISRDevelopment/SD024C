@@ -139,25 +139,29 @@
 
 <script>
 
-    window.addEventListener('DOMContentLoaded', function () {
-  const a = document.getElementById('test-audio');
-  if (!a) return;
+window.addEventListener('pageshow', function () {
+    setTimeout(() => {
+        const a = document.getElementById('test-audio');
+        if (!a) return;
 
-  // Try to autoplay immediately
-  a.play().catch(() => {
-    // If the browser blocks autoplay, wait for the first user gesture, then play once.
-    const resume = () => {
-      a.play().finally(() => {
-        // remove this listener so it doesn't affect your other clicks
-        document.removeEventListener('click', resume, true);
-        document.removeEventListener('keydown', resume, true);
-        document.removeEventListener('touchstart', resume, true);
-      });
-    };
-    document.addEventListener('click', resume, true);
-    document.addEventListener('keydown', resume, true);
-    document.addEventListener('touchstart', resume, true);
-  });
+        // Try to autoplay immediately
+        a.play().catch(() => {
+        // If the browser blocks autoplay, wait for the first user gesture, then play once.
+            const resume = () => {
+                a.play().finally(() => {
+                // remove this listener so it doesn't affect your other clicks
+                    document.removeEventListener('click', resume, true);
+                    document.removeEventListener('keydown', resume, true);
+                    document.removeEventListener('touchstart', resume, true);
+                });
+            };
+                document.addEventListener('click', resume, true);
+                document.addEventListener('keydown', resume, true);
+                document.addEventListener('touchstart', resume, true);
+            });
+    }, 2000);
+
+
 });
 
     document.addEventListener('click', (e) => {

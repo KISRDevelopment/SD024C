@@ -247,23 +247,5 @@ secondary_test3_words = [
         "audio_sentence": "RWE0178.mp3",
         "audio_word": "RWE0179.mp3"
     },
-    '''{
-        "text": "التساؤلات",
-        #"sentence": "وظيفة اللسان التذوق",
-        "audio_sentence": "RWE0.mp3",
-        "audio_word": "RWE0.mp3"
-    }, #audio seem missing
-    {
-        "text": "مفاجأة",
-        #"sentence": "وظيفة اللسان التذوق",
-        "audio_sentence": "RWE0.mp3",
-        "audio_word": "RWE0.mp3"
-    }, #audio seem missing
-    {
-        "text": "اضطروا",
-        #"sentence": "وظيفة اللسان التذوق",
-        "audio_sentence": "RWE0.mp3",
-        "audio_word": "RWE0.mp3"
-    }, #audio seem missing'''
 
 ]
