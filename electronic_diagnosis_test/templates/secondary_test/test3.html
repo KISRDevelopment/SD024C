@@ -2,6 +2,11 @@
 {% load static %}
 {% block content %}
 
+<audio id="test-audio"
+       src="{% static 'audio/secondary/RWE05.mp3' %}"
+       preload="auto"></audio>
+
+
 <script src="https://unpkg.com/htmx.org@1.9.4" crossorigin="anonymous"></script>
 
 <div class="container">
@@ -29,7 +34,10 @@
                                 {% for word in test_words|slice:":20" %}
                                 <tr>
                                     <td class="cell-number">{{ forloop.counter }}</td>
-                                    <td class="cell-word d-flex align-items-center"><button><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0 }}" id="word_{{ forloop.counter0 }}" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off"></td>                                  
+                                    <td class="cell-word d-flex align-items-center"><button class="play-audio"
+                  data-sent="{% static 'audio/secondary/' %}{{ word.audio_sentence }}"
+                  data-word="{% static 'audio/secondary/' %}{{ word.audio_word }}"
+                  data-gap="2000"><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0 }}" id="word_{{ forloop.counter0 }}" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off"></td>                                  
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -46,7 +54,10 @@
                                 {% for word in test_words|slice:"20:" %}
                                 <tr>
                                     <td class="cell-number">{{ forloop.counter|add:"20" }}</td>
-                                    <td class="cell-word d-flex align-items-center"><button><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0|add:'20' }}" id="word_{{ forloop.counter0|add:'20' }} " autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off"></td>
+                                    <td class="cell-word d-flex align-items-center"><button class="play-audio"
+                  data-sent="{% static 'audio/secondary/' %}{{ word.audio_sentence }}"
+                  data-word="{% static 'audio/secondary/' %}{{ word.audio_word }}"
+                  data-gap="2000"><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0|add:'20' }}" id="word_{{ forloop.counter0|add:'20' }} " autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off"></td>
                                 </tr>
                                 {% endfor %}
 
@@ -127,42 +138,54 @@
 </style>
 
 <script>
-    function toggleCorrect(index) {
-    const cell = document.getElementById("cell_" + index);
-    const input = document.getElementById("input_" + index);
-    const mark = document.getElementById("mark_" + index);
 
-    // Clear all states
-    cell.classList.remove("unresponsive", "correct", "incorrect");
+window.addEventListener('pageshow', function () {
+    setTimeout(() => {
+        const a = document.getElementById('test-audio');
+        if (!a) return;
 
-    if (input.value === "-") {
-        input.value = "1";
-        mark.innerText = "✓";
-        cell.classList.add("correct");
-    } else if (input.value === "1") {
-        input.value = "0";
-        mark.innerText = "✗";
-        cell.classList.add("incorrect");
-    } else {
-        input.value = "-";
-        mark.innerText = "-";
-        cell.classList.add("unresponsive");
-    }
-
-    updateTotalScore();
-}
+        // Try to autoplay immediately
+        a.play().catch(() => {
+        // If the browser blocks autoplay, wait for the first user gesture, then play once.
+            const resume = () => {
+                a.play().finally(() => {
+                // remove this listener so it doesn't affect your other clicks
+                    document.removeEventListener('click', resume, true);
+                    document.removeEventListener('keydown', resume, true);
+                    document.removeEventListener('touchstart', resume, true);
+                });
+            };
+                document.addEventListener('click', resume, true);
+                document.addEventListener('keydown', resume, true);
+                document.addEventListener('touchstart', resume, true);
+            });
+    }, 2000);
 
 
+});
 
-    function updateTotalScore() {
-        
-        let total = 0;
-        document.querySelectorAll("input[id^='input_']").forEach((input) => {
-            if (input.value === "1") total++;
-        });
-        document.getElementById("score-value").innerText = total;
-      
-    }
+    document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.play-audio');
+    if (!btn) return;
+
+    const sent = btn.getAttribute('data-sent') || "";
+    const word = btn.getAttribute('data-word') || "";
+    const gap  = parseInt(btn.getAttribute('data-gap') || "2000", 10);
+
+    const play = (src) => new Promise(res => {
+        if (!src) return res();
+        const a = new Audio(src);
+        a.addEventListener('ended', res, { once:true });
+        a.addEventListener('error', res, { once:true });
+        a.play().catch(() => res());
+    });
+
+    play(sent)
+        .then(() => new Promise(r => setTimeout(r, (sent && word) ? gap : 0)))
+        .then(() => play(word));
+    });
+
+
 
 </script>
 

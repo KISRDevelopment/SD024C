@@ -60,7 +60,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <a name="test3" href="{% url 'secondary_test3'%}" id="test3" type="submit" value="التسمية السريعة للحروف" class="btn-t-enabled">إملاء الكلمة</a>
+                            <a name="test3" href="{% url 'test3_training_sec'%}" id="test3" type="submit" value="التسمية السريعة للحروف" class="btn-t-enabled">إملاء الكلمة</a>
                         </td>
                         <td style="text-align: center;">
                             {%if sec_context_test3.correctAnswers != None%} {{sec_context_test3.status_test3}} {% else %} {{sec_context_test3.status_test3}} {%endif%}

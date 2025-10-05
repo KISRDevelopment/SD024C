@@ -46,5 +46,6 @@ urlpatterns = [
     path('search/results', views.search_results, name='search-results'),
     path('testsPageSec/', views.testsPageSec, name='testsPageSec'),
     path('secondary_result', views.secondary_result, name='secondary_result'),
+    path('test3_training_sec/', views.secondary_test3_training, name='test3_training_sec'),
 
 ]

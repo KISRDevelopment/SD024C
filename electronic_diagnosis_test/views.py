@@ -14,7 +14,7 @@ from .data.secondary.test1 import TRAINING_WORDSـSEC, TEST_WORDS_secondary_test
 from .data.secondary.test2 import secondary_test2_training_questions, main_questions
 from .data.primary.test5 import primary_test5_training_questions, primary_test5_main_questions
 from .data.secondary.test4 import test4_training_questions, test4_main_questions
-from .data.secondary.test3 import secondary_test3_words
+from .data.secondary.test3 import secondary_test3_words, secondary_test3_training_words
 from .data.primary.test6 import test6_training_questions, test6_main_questions
 from .percentile_lookup import lookup_scores_primary, lookup_scores_secondary
 import json
@@ -2207,6 +2207,35 @@ def secondary_test2(request):
     })
 
 
+
+@login_required(login_url="/login")
+def secondary_test3_training(request):
+    test_words = secondary_test3_training_words
+    start = 0
+    submitted = {} 
+    rows = list(enumerate(test_words[start:], start=start))
+
+    if request.method == 'POST':
+        for idx, correct_word in rows: 
+            typed = request.POST.get(f"word_{idx}", "") 
+            submitted[f"word_{idx}"] = typed
+
+
+        passed_training = typed == correct_word["text"] 
+
+        if passed_training:
+            request.session['training_passed'] = True
+            return redirect('secondary_test3')
+        else:
+            return render(request, 'secondary_test/test3_training.html', {
+                'training_words': secondary_test3_training_words,
+                'error': 'لم يتم اجتياز التدريب. لا يمكن المتابعة.'
+            })
+
+    return render(request, 'secondary_test/test3_training.html', {
+        'training_words': secondary_test3_training_words
+    })
+
 @login_required(login_url="/login")
 def secondary_test3(request):
     student = Student.objects.get(id=request.session['student'])
@@ -2252,11 +2281,11 @@ def secondary_test3(request):
             submitted[f"word_{idx}"] = typed
 
 
-            ok = typed == correct_word 
+            ok = typed == correct_word["text"] 
             result = { 
                 "idx": idx, 
                 "typed": typed, 
-                "correct_word": correct_word, 
+                "correct_word": correct_word["text"], 
                 "correct": ok, 
                 }
             
