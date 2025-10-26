@@ -3,7 +3,7 @@
 {% block content %}
 
 <audio id="test-audio"
-       src="{% static 'audio/secondary/RWE05.mp3' %}"
+       src="{% static 'audio/secondary/Instructions02.mp3' %}"
        preload="auto"></audio>
 
 
@@ -36,8 +36,7 @@
                                     <td class="cell-number">{{ forloop.counter }}</td>
                                     <td class="cell-word d-flex align-items-center"><button class="play-audio"
                   data-sent="{% static 'audio/secondary/' %}{{ word.audio_sentence }}"
-                  data-word="{% static 'audio/secondary/' %}{{ word.audio_word }}"
-                  data-gap="2000"><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0 }}" id="word_{{ forloop.counter0 }}" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off"></td>                                  
+                    ><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0 }}" id="word_{{ forloop.counter0 }}" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off"></td>                                  
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -56,8 +55,7 @@
                                     <td class="cell-number">{{ forloop.counter|add:"20" }}</td>
                                     <td class="cell-word d-flex align-items-center"><button class="play-audio"
                   data-sent="{% static 'audio/secondary/' %}{{ word.audio_sentence }}"
-                  data-word="{% static 'audio/secondary/' %}{{ word.audio_word }}"
-                  data-gap="2000"><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0|add:'20' }}" id="word_{{ forloop.counter0|add:'20' }} " autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off"></td>
+                  ><i class="bi bi-volume-up fs-3"></i></button><input type="text" class="form-control" name="word_{{ forloop.counter0|add:'20' }}" id="word_{{ forloop.counter0|add:'20' }} " autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off"></td>
                                 </tr>
                                 {% endfor %}
 
@@ -164,26 +162,28 @@ window.addEventListener('pageshow', function () {
 
 });
 
-    document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.play-audio');
-    if (!btn) return;
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.play-audio');
+  if (!btn) return;
 
-    const sent = btn.getAttribute('data-sent') || "";
-    const word = btn.getAttribute('data-word') || "";
-    const gap  = parseInt(btn.getAttribute('data-gap') || "2000", 10);
+  e.preventDefault(); // stop accidental form submit
 
-    const play = (src) => new Promise(res => {
-        if (!src) return res();
-        const a = new Audio(src);
-        a.addEventListener('ended', res, { once:true });
-        a.addEventListener('error', res, { once:true });
-        a.play().catch(() => res());
-    });
+  const sent = btn.getAttribute('data-sent') || "";
+  //const word = btn.getAttribute('data-word') || "";
+  //const gap  = parseInt(btn.getAttribute('data-gap') || "2000", 10);
 
-    play(sent)
-        .then(() => new Promise(r => setTimeout(r, (sent && word) ? gap : 0)))
-        .then(() => play(word));
-    });
+  const play = (src) => new Promise(res => {
+    if (!src) return res();
+    const a = new Audio(src);
+    a.addEventListener('ended', res, { once:true });
+    a.addEventListener('error', () => { console.warn('Audio error:', src); res(); }, { once:true });
+    a.play().catch(err => { console.warn('Play blocked:', src, err); res(); });
+  });
+
+  play(sent);
+});
+
+
 
 
 
