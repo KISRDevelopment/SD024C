@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .data.primary.test1 import TEST_WORDS, TRAINING_WORDS
 from .data.primary.test2 import training_sentences, primary_test2_sentences
 from .data.primary.test3 import primary_test3_training_questions, primary_test3_main_questions
-from .data.primary.test4 import primary_test4_words
+from .data.primary.test4 import primary_test4_words #, primary_test4_training_words
 from .data.secondary.test1 import TRAINING_WORDSـSEC, TEST_WORDS_secondary_test1
 from .data.secondary.test2 import secondary_test2_training_questions, main_questions
 from .data.primary.test5 import primary_test5_training_questions, primary_test5_main_questions
@@ -891,6 +891,25 @@ def primary_test3(request):
     return render(request, "primary_test/test3.html", {
         "question": main_questions[0],
         "index": 0
+    })
+
+@login_required(login_url="/login")
+def primary_test4_training(request):
+    if request.method == 'POST':
+        training_scores = [int(request.POST.get(f'train_{i}', 0)) for i in range(3)]
+        passed_training = all(score == 1 for score in training_scores)
+
+        if passed_training:
+            request.session['training_passed'] = True
+            return redirect('test4')
+        else:
+            return render(request, 'primary_test/test4_training.html', {
+                'training_words': primary_test4_training_words,
+                'error': 'لم يتم اجتياز التدريب. لا يمكن المتابعة.'
+            })
+
+    return render(request, 'primary_test/test4_training.html', {
+        'training_words': primary_test4_training_words
     })
 
 @login_required(login_url="/login")

@@ -39,9 +39,9 @@
                                     <td class="cell-number">{{ forloop.counter }}</td>
                                     <td class="cell-word d-flex align-items-center">
                                         <button class="play-audio"
+                                        type="button"
                                         data-sent="{% static 'audio/secondary/' %}{{ word.audio_sentence }}"
-                                        data-word="{% static 'audio/secondary/' %}{{ word.audio_word }}"
-                                        data-gap="2000">
+                                        >
                                         <i class="bi bi-volume-up fs-3"></i>
                                         </button>
                                         <input type="text" class="form-control" name="word_{{ forloop.counter0 }}" id="word_{{ forloop.counter0 }}" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off">
@@ -50,13 +50,13 @@
                                 </tr>
                                 {% endfor %}
                                 <audio id="sound"
-                                    src="{% static 'audio/secondary/RWE01.mp3' %}"
+                                    src="{% static 'audio/secondary/Instructions01.mp3' %}"
                                     preload="auto">
                                 </audio>
-                                <audio id="training"
+                                <!--<audio id="training"
                                     src="{% static 'audio/secondary/RWE02.mp3' %}"
                                     preload="auto">
-                                </audio>
+                                </audio>-->
                             </tbody>
                         </table>
                     </div>
@@ -85,64 +85,69 @@
 
 
 <script>
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('JS loaded, attaching listeners');
 
-window.addEventListener('pageshow', function () {
-setTimeout(() =>{
-      const a = document.getElementById('sound');      // first audio (RWE01)
-  const training = document.getElementById('training'); // second audio (RWE02)
-  if (!a) return;
+  window.addEventListener('pageshow', function () {
+    setTimeout(() => {
+      const a = document.getElementById('sound');
+      if (!a) return;
 
-  // helper to safely play any audio and resolve when finished
-  const playAudio = (audio) => new Promise((resolve) => {
-    if (!audio) return resolve();
-    audio.play().then(() => {
-      audio.addEventListener('ended', resolve, { once: true });
-      audio.addEventListener('error', resolve, { once: true });
-    }).catch(() => {
-      // autoplay blocked -> wait for first gesture
-      const resume = () => {
-        audio.play().finally(() => {
-          ['click','keydown','touchstart'].forEach(ev =>
-            document.removeEventListener(ev, resume, true)
-          );
-          resolve();
-        });
-      };
-      ['click','keydown','touchstart'].forEach(ev =>
-        document.addEventListener(ev, resume, { once: true, capture: true })
-      );
+      a.play().catch(() => {
+        const resume = () => {
+          a.play().finally(() => {
+            document.removeEventListener('click', resume, true);
+            document.removeEventListener('keydown', resume, true);
+            document.removeEventListener('touchstart', resume, true);
+          });
+        };
+        document.addEventListener('click', resume, true);
+        document.addEventListener('keydown', resume, true);
+        document.addEventListener('touchstart', resume, true);
+      });
+    }, 2000);
+  });
+
+  let currentAudio = null;
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.play-audio');
+    if (!btn) return;
+
+    e.preventDefault();
+
+    const sent = btn.getAttribute('data-sent') || "";
+    console.log('Click detected on .play-audio. src =', sent);
+
+    const play = (src) => new Promise(res => {
+      console.log('play called');
+      if (!src) return res();
+
+      if (currentAudio){
+        console.log('Stopping previous audio');
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        currentAudio = null;
+      }
+
+      const a = new Audio(src);
+      currentAudio = a;
+
+      const cleanup = () => { if (currentAudio === a) currentAudio = null; };
+
+      a.addEventListener('ended', () => { console.log('ended'); cleanup(); res(); }, { once:true });
+      a.addEventListener('error', () => { console.warn('Audio error:', src); cleanup(); res(); }, { once:true });
+
+      a.play().then(() => {
+        console.log('playing:', src);
+      }).catch(err => {
+        console.warn('Play blocked:', src, err);
+        cleanup(); res();
+      });
     });
+
+    play(sent);
   });
-
-  // play first audio -> wait 2 seconds -> play second
-    playAudio(a)
-        .then(() => new Promise(r => setTimeout(r, 1000)))
-        .then(() => playAudio(training));
-}, 2000);
-
-});
-
-document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.play-audio');
-  if (!btn) return;
-
-  e.preventDefault(); // stop accidental form submit
-
-  const sent = btn.getAttribute('data-sent') || "";
-  const word = btn.getAttribute('data-word') || "";
-  const gap  = parseInt(btn.getAttribute('data-gap') || "2000", 10);
-
-  const play = (src) => new Promise(res => {
-    if (!src) return res();
-    const a = new Audio(src);
-    a.addEventListener('ended', res, { once:true });
-    a.addEventListener('error', () => { console.warn('Audio error:', src); res(); }, { once:true });
-    a.play().catch(err => { console.warn('Play blocked:', src, err); res(); });
-  });
-
-  play(sent)
-    .then(() => new Promise(r => setTimeout(r, (sent && word) ? gap : 0)))
-    .then(() => play(word));
 });
 </script>
 
