@@ -3,7 +3,7 @@
 primary_test5_training_questions = [
     {
         "id": 1,
-        "text": "",
+        "text": "جلس خالد مع أحمد",
         "options": [
             {"label": "أ", "text": "أَمَدَ", "value": "أ"},
             {"label": "ب", "text": "أحْمَدَ", "value": "ب"},
@@ -13,7 +13,7 @@ primary_test5_training_questions = [
     },
     {
         "id": 2,
-        "text": "",
+        "text": "يزرع الفلاح أرضاً",
         "options": [
             {"label": "أ", "text": "يزرعُ", "value": "أ"},
             {"label": "ب", "text": "يَزْرعو", "value": "ب"},
@@ -23,7 +23,7 @@ primary_test5_training_questions = [
     },
     {
         "id": 3,
-        "text": "",
+        "text": "النجوم كثيرة",
         "options": [
             {"label": "أ", "text": "كَثيرتُنْ", "value": "أ"},
             {"label": "ب", "text": "كَثْرةٌ", "value": "ب"},
@@ -36,7 +36,7 @@ primary_test5_training_questions = [
 primary_test5_main_questions = [
     {   
         "id": 1,
-        "text": "",
+        "text": "أنتم رجال المستقبل",
         "options": [
             {"label": "أ", "text": "أنْتُمُ", "value": "أ"},
             {"label": "ب", "text": "أنتمو", "value": "ب"},
@@ -46,7 +46,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 2,
-        "text": "",
+        "text": "لعبنا كأننا فراشات",
         "options": [
             {"label": "أ", "text": "كننّا", "value": "أ"},
             {"label": "ب", "text": "كَأَننّا", "value": "ب"},
@@ -56,7 +56,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 3,
-        "text": "",
+        "text": "يحترم التلميذ معلمه",
         "options": [
             {"label": "أ", "text": "معلمةُ", "value": "أ"},
             {"label": "ب", "text": "معلمَهُ", "value": "ب"},
@@ -69,7 +69,7 @@ primary_test5_main_questions = [
 
     {
         "id": 4,
-        "text": "",
+        "text": "أفكر بعقلي وأكتب بيدي",
         "options": [
             {"label": "أ", "text": "بعقلِ", "value": "أ"},
             {"label": "ب", "text": "بعقلي", "value": "ب"},
@@ -79,7 +79,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 5,
-        "text": "",
+        "text": "نحن متعاونون وقت الشدة",
         "options": [
             {"label": "أ", "text": "مُتعاؤنون", "value": "أ"},
             {"label": "ب", "text": "مُتعاونونَ", "value": "ب"},
@@ -89,7 +89,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 6,
-        "text": "",
+        "text": "ذلك علم بلادي",
         "options": [
             {"label": "أ", "text": "ذَلِكَ", "value": "أ"},
             {"label": "ب", "text": "ذالَك", "value": "ب"},
@@ -99,7 +99,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 7,
-        "text": "",
+        "text": "عاش الطفل في دنيا من الفرح",
         "options": [
             {"label": "أ", "text": "دونيا", "value": "أ"},
             {"label": "ب", "text": "دُنْيا", "value": "ب"},
@@ -109,7 +109,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 8,
-        "text": "",
+        "text": "الطريق المستقيم أقصر الطرق",
         "options": [
             {"label": "أ", "text": "المُستَقمُ", "value": "أ"},
             {"label": "ب", "text": "المُستاقِمُ", "value": "ب"},
@@ -119,7 +119,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 9,
-        "text": "",
+        "text": "أعود من المدرسة بعد الظهر",
         "options": [
             {"label": "أ", "text": "الضهرِ", "value": "أ"},
             {"label": "ب", "text": "الظُّهرِ", "value": "ب"},
@@ -129,7 +129,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 10,
-        "text": "",
+        "text": "الناس يسافرون صيفا",
         "options": [
             {"label": "أ", "text": "يُسافِرونا", "value": "أ"},
             {"label": "ب", "text": "يُسافِرونَ", "value": "ب"},
@@ -139,7 +139,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 11,
-        "text": "",
+        "text": "هذه المعلمة نشيطة",
         "options": [
             {"label": "أ", "text": "هاذِهِ", "value": "أ"},
             {"label": "ب", "text": "هاذِهي", "value": "ب"},
@@ -149,7 +149,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 12,
-        "text": "",
+        "text": "سأسافر في الصيف",
         "options": [
             {"label": "أ", "text": "سأفاسِرُ", "value": "أ"},
             {"label": "ب", "text": "سأفارِسُ", "value": "ب"},
@@ -159,7 +159,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 13,
-        "text": "",
+        "text": "سافرنا إلى لندن أيضا",
         "options": [
             {"label": "أ", "text": "أيْظاً", "value": "أ"},
             {"label": "ب", "text": "أيْضاً", "value": "ب"},
@@ -169,7 +169,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 14,
-        "text": "",
+        "text": "هذا غزال صغير يجري",
         "options": [
             {"label": "أ", "text": "قَزالT", "value": "أ"},
             {"label": "ب", "text": "غَذالT", "value": "ب"},
@@ -179,7 +179,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 15,
-        "text": "",
+        "text": "الجرأة أخت الشجاعة",
         "options": [
             {"label": "أ", "text": "الجُرْأَةُ", "value": "أ"},
             {"label": "ب", "text": "الجُرْءَةُ", "value": "ب"},
@@ -189,7 +189,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 16,
-        "text": "",
+        "text": "المسافرون عادوا من السفر",
         "options": [
             {"label": "أ", "text": "عادوا", "value": "أ"},
             {"label": "ب", "text": "عادو", "value": "ب"},
@@ -199,7 +199,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 17,
-        "text": "",
+        "text": "لكن الفرج قريب",
         "options": [
             {"label": "أ", "text": "لاكِنْ", "value": "أ"},
             {"label": "ب", "text": "لكِنَّ", "value": "ب"},
@@ -209,7 +209,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 18,
-        "text": "",
+        "text": "ذهبت إلى الحديقة",
         "options": [
             {"label": "أ", "text": "ذَهَبْتو", "value": "أ"},
             {"label": "ب", "text": "ذهبةُ", "value": "ب"},
@@ -219,7 +219,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 19,
-        "text": "",
+        "text": "توجهت الطائرة للشمال",
         "options": [
             {"label": "أ", "text": "لِلشَّمالي", "value": "أ"},
             {"label": "ب", "text": "لِلشَّمالِ", "value": "ب"},
@@ -229,7 +229,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 20,
-        "text": "",
+        "text": "صوت المؤذن جميل",
         "options": [
             {"label": "أ", "text": "الْمُأَذّنِ", "value": "أ"},
             {"label": "ب", "text": "المُؤَذّنِ", "value": "ب"},
@@ -239,7 +239,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 21,
-        "text": "",
+        "text": "أمي هي الساهرة على راحتنا",
         "options": [
             {"label": "أ", "text": "الساهِرتُ", "value": "أ"},
             {"label": "ب", "text": "الساهِرةُ", "value": "ب"},
@@ -249,7 +249,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 22,
-        "text": "",
+        "text": "زرع سالم شجرة واحدة",
         "options": [
             {"label": "أ", "text": "شَجَرتاً", "value": "أ"},
             {"label": "ب", "text": "شَجَرتَنْ", "value": "ب"},
@@ -259,7 +259,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 23,
-        "text": "",
+        "text": "سأكتب واجبي مساء",
         "options": [
             {"label": "أ", "text": "سَئَكتُبُ", "value": "أ"},
             {"label": "ب", "text": "سَاكْتُبُ", "value": "ب"},
@@ -269,7 +269,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 24,
-        "text": "",
+        "text": "الشرطيان هما اللذان ينظمان المرور",
         "options": [
             {"label": "أ", "text": "الذانِ", "value": "أ"},
             {"label": "ب", "text": "اللذاني", "value": "ب"},
@@ -279,7 +279,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 25,
-        "text": "",
+        "text": "الأطفال كالورد الجميل",
         "options": [
             {"label": "أ", "text": "كَلوردِ", "value": "أ"},
             {"label": "ب", "text": "كَلْ الوردِ", "value": "ب"},
@@ -289,7 +289,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 26,
-        "text": "",
+        "text": "الرياضة مفيدة إذا استغلها الفرد",
         "options": [
             {"label": "أ", "text": "اسْتغالها", "value": "أ"},
             {"label": "ب", "text": "اسْتغل ها", "value": "ب"},
@@ -299,7 +299,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 27,
-        "text": "",
+        "text": "تفاءل خالد بالخير فوجده",
         "options": [
             {"label": "أ", "text": "تفاأَلَ", "value": "أ"},
             {"label": "ب", "text": "تفاءَلَ", "value": "ب"},
@@ -309,7 +309,7 @@ primary_test5_main_questions = [
     },
     {
         "id": 28,
-        "text": "",
+        "text": "التفاؤل خير من التشاؤم",
         "options": [
             {"label": "أ", "text": "التَّشؤمِ", "value": "أ"},
             {"label": "ب", "text": "التَّشاأُمِ", "value": "ب"},
