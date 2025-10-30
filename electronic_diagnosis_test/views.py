@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .data.primary.test1 import TEST_WORDS, TRAINING_WORDS
 from .data.primary.test2 import training_sentences, primary_test2_sentences
 from .data.primary.test3 import primary_test3_training_questions, primary_test3_main_questions
-from .data.primary.test4 import primary_test4_words #, primary_test4_training_words
+from .data.primary.test4 import primary_test4_words#, primary_test4_training_words
 from .data.secondary.test1 import TRAINING_WORDSـSEC, TEST_WORDS_secondary_test1
 from .data.secondary.test2 import secondary_test2_training_questions, main_questions
 from .data.primary.test5 import primary_test5_training_questions, primary_test5_main_questions
@@ -191,8 +191,10 @@ def signupStudents (request):
 @login_required(login_url="/login")
 def examinerPage (request):
     request.session['student'] = 0
+    examiner = Examiner.objects.filter(user_id=request.user.id).first()  
+    stage = examiner.stage if examiner else "" 
     return render(request,"examinerPage.html", {
-        "students": Student.objects.filter(examiner_id=request.user.id),  "stage": (Examiner.objects.get(user_id=request.user.id).stage), "examiners": (Examiner.objects.get(user_id=request.user.id))
+        "students": Student.objects.filter(examiner_id=request.user.id),  "stage": stage, "examiners": examiner
     })
 
 @login_required(login_url="/login")
@@ -893,7 +895,7 @@ def primary_test3(request):
         "index": 0
     })
 
-@login_required(login_url="/login")
+'''@login_required(login_url="/login")
 def primary_test4_training(request):
     if request.method == 'POST':
         training_scores = [int(request.POST.get(f'train_{i}', 0)) for i in range(3)]
@@ -910,7 +912,7 @@ def primary_test4_training(request):
 
     return render(request, 'primary_test/test4_training.html', {
         'training_words': primary_test4_training_words
-    })
+    })'''
 
 @login_required(login_url="/login")
 def primary_test4(request):
