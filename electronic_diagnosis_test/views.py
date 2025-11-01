@@ -469,7 +469,7 @@ def testsPageSec (request):
             else:
                 sec_context_test2 = {"status_test2":('غير منجز'), }
         else:
-            sec_context_test2 = {"status_test3":('غير منجز'), }
+            sec_context_test2 = {"status_test2":('غير منجز'), }
 
 
         if(test3.exists()):
