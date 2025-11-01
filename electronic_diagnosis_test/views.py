@@ -284,7 +284,7 @@ def startTest(request,id):
     elif stage == 'BOTH':
         if grade > 1 and grade <= 5:
             return redirect('testsPage')
-        elif grade > 6 and grade <= 9:
+        elif grade > 5 and grade <= 9:
             return redirect('testsPageSec')
     else:
         return redirect('testsPage')
