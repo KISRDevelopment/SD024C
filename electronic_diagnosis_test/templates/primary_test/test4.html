@@ -2,6 +2,10 @@
 {% load static %}
 {% block content %}
 
+<audio id="test-audio"
+       src="{% static 'audio/primary/Instructions.mp3' %}"
+       preload="auto"></audio>
+
 <script src="https://unpkg.com/htmx.org@1.9.4" crossorigin="anonymous"></script>
 
 <div class="container">
@@ -30,7 +34,7 @@
                                 <tr>
                                     <td class="cell-number">{{ forloop.counter }}</td>
                                     <td class="cell-word position-relative text-center">
-                                        <button class="position-absolute end-0 top-50 translate-middle-y">
+                                        <button class="play-audio position-absolute end-0 top-50 translate-middle-y" data-sent="{% static 'audio/primary/' %}{{ word.audio_sentence }}">
                                             <i class="bi bi-volume-up fs-3"></i>
                                         </button>
                                         {{ word.text }}
@@ -56,7 +60,7 @@
                                 <tr>
                                     <td class="cell-number">{{ forloop.counter|add:"15" }}</td>
                                     <td class="cell-word position-relative text-center">
-                                        <button class="position-absolute end-0 top-50 translate-middle-y">
+                                        <button class="play-audio position-absolute end-0 top-50 translate-middle-y" data-sent="{% static 'audio/primary/' %}{{ word.audio_sentence }}">
                                             <i class="bi bi-volume-up fs-3"></i>
                                         </button>
                                         {{ word.text }}
@@ -160,6 +164,70 @@
 </style>
 
 <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  console.log('JS loaded, attaching listeners');
+
+  window.addEventListener('pageshow', function () {
+    setTimeout(() => {
+      const a = document.getElementById('test-audio');
+      if (!a) return;
+
+      a.play().catch(() => {
+        const resume = () => {
+          a.play().finally(() => {
+            document.removeEventListener('click', resume, true);
+            document.removeEventListener('keydown', resume, true);
+            document.removeEventListener('touchstart', resume, true);
+          });
+        };
+        document.addEventListener('click', resume, true);
+        document.addEventListener('keydown', resume, true);
+        document.addEventListener('touchstart', resume, true);
+      });
+    }, 2000);
+  });
+
+  let currentAudio = null;
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.play-audio');
+    if (!btn) return;
+
+    e.preventDefault();
+
+    const sent = btn.getAttribute('data-sent') || "";
+    console.log('Click detected on .play-audio. src =', sent);
+
+    const play = (src) => new Promise(res => {
+      console.log('play called');
+      if (!src) return res();
+
+      if (currentAudio){
+        console.log('Stopping previous audio');
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        currentAudio = null;
+      }
+
+      const a = new Audio(src);
+      currentAudio = a;
+
+      const cleanup = () => { if (currentAudio === a) currentAudio = null; };
+
+      a.addEventListener('ended', () => { console.log('ended'); cleanup(); res(); }, { once:true });
+      a.addEventListener('error', () => { console.warn('Audio error:', src); cleanup(); res(); }, { once:true });
+
+      a.play().then(() => {
+        console.log('playing:', src);
+      }).catch(err => {
+        console.warn('Play blocked:', src, err);
+        cleanup(); res();
+      });
+    });
+
+    play(sent);
+  });
+});
 
     function toggleCorrect(index) {
     const cell = document.getElementById("cell_" + index);
