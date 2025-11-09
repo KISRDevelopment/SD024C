@@ -19,7 +19,7 @@
                 type="submit" 
                 name="answer" 
                 value="{{ opt.value }}" 
-                class="btn btn-outline-secondary fs-2 w-100 text-end" 
+                class="btn custom-btn fs-2 w-100 text-end" 
                 data-answer = "{{opt.value}}"
                 style="direction: rtl;">
                 <strong>{{ opt.label }} - </strong>{{ opt.text }}
@@ -30,3 +30,17 @@
     </form>
     </div>
     
+    <style>
+.custom-btn {
+  color: #333; 
+  border: 2px solid #ccc; 
+  background-color: #f9f9f9; 
+  transition: all 0.3s ease;
+}
+
+.custom-btn:hover {
+  color: #fff !important; 
+  background-color: #6c757d !important; 
+  border-color: #6c757d !important;
+}
+</style>

@@ -9,10 +9,13 @@
 
   {% csrf_token %}
   <input type="hidden" name="index" value="{{ index }}">
-    <div class="mb-2 fw-bold fs-1 text-center px-5">
+      <div class="mb-3 fw-bold  fs-2 text-center px-5">
+      {{ question.paragraph_number }}
+    </div>
+    <div class="mb-2 fs-3 px-5">
       {{ question.paragraph }}
     </div>
-    <p class="mb-2 fs-1 text-center p-5">{{ question.id }} - {{ question.question }}</p>
+    <p class="mb-2 fs-2 text-center p-5">{{ question.id }} - {{ question.question }}</p>
 
     <div class="d-flex flex-column align-items-center">
       {% for key, value in question.answers.items %}
@@ -21,7 +24,7 @@
           type="submit"
           name="answer"
           value="{{ key }}"
-          class="btn btn-outline-secondary w-100 text-end fs-2"
+          class="btn custom-btn w-100 text-end fs-2"
           style="direction: rtl; ">
           {{ key }}. {{ value }}
         </button>
@@ -33,6 +36,9 @@
     <button id="skip-{{ index }}" type="submit" name="answer" value="" class="d-none">skip</button>
 
     <!-- Stop test (inline reveal) -->
+     <br>
+     <br>
+     <br>
     <div class="mt-3 text-center">
       <button id="stop_test" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#stopModal">
         إيقاف الاختبار
@@ -134,6 +140,21 @@
           }
         })();
         </script>
+
+                <style>
+.custom-btn {
+  color: #333; 
+  border: 2px solid #ccc; 
+  background-color: #f9f9f9; 
+  transition: all 0.3s ease;
+}
+
+.custom-btn:hover {
+  color: #fff !important; 
+  background-color: #6c757d !important; 
+  border-color: #6c757d !important;
+}
+</style>
         
 
         
