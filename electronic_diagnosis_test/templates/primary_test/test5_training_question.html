@@ -9,9 +9,9 @@
       {% csrf_token %}
       <input type="hidden" name="index" value="{{ index }}">
     
-        <div class="mb-2 fw-bold fs-1 text-center p-5">
+        <!--<div class="mb-2 fw-bold fs-1 text-center p-5">
           {{ index|add:"1" }}- {{ question.text|safe }}
-        </div>
+        </div>-->
     
         <div class="d-flex flex-column align-items-center">
           {% for opt in question.options %}
@@ -21,7 +21,7 @@
                 type="submit" 
                 name="answer" 
                 value="{{ opt.value }}" 
-                class="btn btn-outline-secondary fs-2 w-100 text-end" 
+                class="btn custom-btn fs-2 w-100 text-end" 
                 data-answer = "{{opt.value}}"
                 style="direction: rtl;">
                 {{ opt.text }}
@@ -31,4 +31,19 @@
         </div>
     </form>
     </div>
+
+        <style>
+.custom-btn {
+  color: #333; 
+  border: 2px solid #ccc; 
+  background-color: #f9f9f9; 
+  transition: all 0.3s ease;
+}
+
+.custom-btn:hover {
+  color: #fff !important; 
+  background-color: #6c757d !important; 
+  border-color: #6c757d !important;
+}
+</style>
     

@@ -12,11 +12,11 @@
   {% csrf_token %}
   <input type="hidden" name="index" value="{{ index }}">
 
-    <div class="mb-2 fw-bold fs-1 px-5 text-center">
+    <div class="mb-2 fs-3 px-5">
        {{ paragraph|safe }}
     </div>
 
-    <div class="mb-2 p-5  fs-1 text-center">
+    <div class="mb-2 p-5  fs-2 text-center">
       {{ index|add:"1" }}- {{ question_text|safe }}
     </div>
       <div class="d-flex flex-column align-items-center">
@@ -26,7 +26,7 @@
             type="submit" 
             name="answer" 
             value="{{ letter }}" 
-            class="btn btn-outline-secondary fs-2 w-100 text-end" 
+            class="btn custom-btn fs-2 w-100 text-end" 
             data-answer = "{{letter}}"
             style="direction: rtl;">
             <strong>{{ letter }} - </strong>{{ text }}
@@ -40,6 +40,21 @@
 
 </form>
 </div>
+
+<style>
+.custom-btn {
+  color: #333; 
+  border: 2px solid #ccc; 
+  background-color: #f9f9f9; 
+  transition: all 0.3s ease;
+}
+
+.custom-btn:hover {
+  color: #fff !important; 
+  background-color: #6c757d !important; 
+  border-color: #6c757d !important;
+}
+</style>
 
 
 

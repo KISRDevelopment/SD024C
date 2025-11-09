@@ -32,11 +32,31 @@
                     </a>
                 </div>
 
+                {% if examiners.stage == "PRIMARY" %}
                 <div class="col-6 text-center">
                     <h4 class="text-secondary-color fw-bold">
                         اختبار القراءة والإملاء المقنن للأطفال
                     </h4>
                 </div>
+                {% elif examiners.stage == "SECONDARY" %}
+                <div class="col-6 text-center">
+                    <h4 class="text-secondary-color fw-bold">
+                        اختبار القراءة والإملاء المقنن للطلّاب (المرحلة المتوسطة)
+                    </h4>
+                </div>
+                {% elif examiners.stage == "BOTH" %}
+                <div class="col-6 text-center">
+                    <h4 class="text-secondary-color fw-bold">
+                       اختبارات القراءة والإملاء للمرحلتين الابتدائية والمتوسطة
+                    </h4>
+                </div>
+                {% else %}
+                <div class="col-6 text-center">
+                    <h4 class="text-secondary-color fw-bold">
+                       اختبارات القراءة والإملاء للمرحلتين الابتدائية والمتوسطة
+                    </h4>
+                </div>
+                {% endif %}
 
                 <div class="col-3">
                     <a href="https://www.kisr.edu.kw">
@@ -75,21 +95,21 @@
                                             {% if examiners.stage == "PRIMARY" %}
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/primary/كراسة الإجابة.pdf' %}">كراسة الإجابة</a></li>
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/primary/كراسة البطاقات.pdf' %}">كراسة البطاقات</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/primary/كراسة النتائج و التوصيات.pdf' %}">كراسة النتائج و التوصيات</a></li>
+                                            <!--<li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/primary/كراسة النتائج و التوصيات.pdf' %}">كراسة النتائج و التوصيات</a></li>-->
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/primary/دليل الاختبار.pdf' %}">دليل الاختبار</a></li>
                                             {% elif examiners.stage == "SECONDARY" %}
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/secondary/كراسة الإجابة.pdf' %}">كراسة الإجابة</a></li>
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/secondary/كراسة البطاقات.pdf' %}">كراسة البطاقات</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/secondary/كراسة النتائج والتوصيات.pdf' %}">كراسة النتائج و التوصيات</a></li>
+                                            <!--<li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/secondary/كراسة النتائج والتوصيات.pdf' %}">كراسة النتائج و التوصيات</a></li>-->
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/secondary/دليل الاختبار.pdf' %}">دليل الاختبار</a></li>
                                             {% elif examiners.stage == "BOTH" %}
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/primary/كراسة الإجابة.pdf' %}">كراسة الإجابة - ابتدائي</a></li>
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/primary/كراسة البطاقات.pdf' %}">كراسة البطاقات - ابتدائي</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/primary/كراسة النتائج و التوصيات.pdf' %}">كراسة النتائج و التوصيات - ابتدائي</a></li>
+                                            <!--<li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/primary/كراسة النتائج و التوصيات.pdf' %}">كراسة النتائج و التوصيات - ابتدائي</a></li>-->
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/primary/دليل الاختبار.pdf' %}">دليل الاختبار - ابتدائي</a></li>
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/secondary/كراسة الإجابة.pdf' %}">كراسة الإجابة - متوسط</a></li>
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/secondary/كراسة البطاقات.pdf' %}">كراسة البطاقات - متوسط</a></li>
-                                            <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/secondary/كراسة النتائج والتوصيات.pdf' %}">كراسة النتائج و التوصيات - متوسط</a></li>
+                                            <!--<li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/secondary/كراسة النتائج والتوصيات.pdf' %}">كراسة النتائج و التوصيات - متوسط</a></li>-->
                                             <li><a class="dropdown-item fs-5 fw-bold" href="{% static 'docs/secondary/دليل الاختبار.pdf' %}">دليل الاختبار - متوسط</a></li>
                                             {% endif %}
                                         </ul>
@@ -170,6 +190,8 @@
                 <li class="nav-item mx-2"><a href="{% url 'contact' %}" class="nav-link px-2 text-light fs-6">تواصل معنا</a></li>
             </ul>
             <p class="text-center text-light mb-0 fs-6">  طور بواسطة معهد الكويت للأبحاث العلمية  - 2025 </p>
+            <p class="text-center text-light mb-0 fs-6">  جميع حقوق الطبع والنشر محفوظة لمركز تقويم وتعليم الطفل، الكويت؛ ولا يجوز استخدام أو اقتباس أي جزء من هذا الإصدار في أي صورة ورقية أو الكترونية إلا بموافقة خطية من المركز ©
+</p>
         </div>
     </footer>
 

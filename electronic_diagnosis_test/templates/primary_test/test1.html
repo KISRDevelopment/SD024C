@@ -115,7 +115,7 @@
                 <div class="modal-body fs-5" style="direction: rtl;">
                     <label for="submitTst" class="form-label">يرجى الاختيار من القائمة</label>
                     <select id="submitTst" name="submitTst" class="form-select fs-5" required>
-                        <option value="تم الانتهاء من بنود الاختبار كلها" selected>انتهي من بنود الاختبار كلها</option>
+                        <option value="تم الانتهاء من بنود الاختبار كلها" selected>انتهى من بنود الاختبار كلها</option>
                         <option value="توقف لأسباب صحية أو شخصية خاصة بالطالب">توقف لأسباب صحية أو شخصية خاصة بالطالب</option>
                         <option value="توقف لأسباب صحية أو شخصية خاصة بالفاحص">توقف لأسباب صحية أو شخصية خاصة بالفاحص</option>
                         <option value="الوصول الى الحد السقفي">الوصول إلى الحد السقفي</option>
@@ -131,6 +131,14 @@
         </div>
     </form>
 </div>
+
+<style>
+#ModalSubmit select.locked {
+  pointer-events: none;   
+  background-color: #e9ecef;
+  color: #495057;
+}
+</style>
 
 <script>
     let startTime = Date.now();
@@ -196,7 +204,14 @@ function checkCeilingReached() {
 
     if (firstFiveIncorrect) {
         // Preselect dropdown
-        document.getElementById('submitTst').value = "الوصول الى الحد السقفي";
+        const sel = document.getElementById('submitTst');
+        sel.value = "الوصول الى الحد السقفي";
+        
+        sel.classList.add('locked');
+        sel.setAttribute('aria-disabled', 'true');
+        sel.setAttribute('tabindex', '-1');
+        sel.addEventListener('keydown', e => e.preventDefault());
+        sel.addEventListener('mousedown', e => e.preventDefault());
 
         // Show modal (if not already open)
         const modal = new bootstrap.Modal(document.getElementById('ModalSubmit'));
