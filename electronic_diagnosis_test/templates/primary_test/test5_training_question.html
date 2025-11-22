@@ -1,4 +1,5 @@
 
+{% load static %}
 <div id="question-area"  >
     <form 
       method="POST" 
@@ -12,6 +13,11 @@
         <!--<div class="mb-2 fw-bold fs-1 text-center p-5">
           {{ index|add:"1" }}- {{ question.text|safe }}
         </div>-->
+
+      <audio id="test-audio"
+       src="{% static 'audio/primary/test5/' %}{{ question.audio }}"
+       preload="auto"
+       ></audio>
     
         <div class="d-flex flex-column align-items-center">
           {% for opt in question.options %}
@@ -46,4 +52,106 @@
   border-color: #6c757d !important;
 }
 </style>
+
+  <script>
+
+  // This runs EVERY time this fragment is swapped in by HTMX
+  (function () {
+    console.log('Per-question audio init');
+
+    const a = document.getElementById('test-audio');
+    console.log(a);
+    if (!a) return;
+
+    function startQuestionAudio() {
+      if (a.__started) return;   // avoid double-start
+      a.__started = true;
+
+      // Small delay so DOM is ready & browser is calm
+      setTimeout(() => {
+        a.play().catch(() => {
+          const resume = () => {
+            a.play().finally(() => {
+              document.removeEventListener('click', resume, true);
+              document.removeEventListener('keydown', resume, true);
+              document.removeEventListener('touchstart', resume, true);
+            });
+          };
+          document.addEventListener('click', resume, true);
+          document.addEventListener('keydown', resume, true);
+          document.addEventListener('touchstart', resume, true);
+        });
+      }, 500);
+    }
+
+    // If intro already finished, start immediately
+    if (window.test5IntroDone) {
+      startQuestionAudio();
+    } else {
+      // Otherwise wait for the custom event fired by the intro script
+      const handler = () => {
+        document.removeEventListener('test5-intro-done', handler);
+        startQuestionAudio();
+      };
+      document.addEventListener('test5-intro-done', handler);
+    }
+
+
+
+
+  })();
+      (function () {
+        
+        // Reset per-question state on each swap
+        window.isFrozen = false;
+        if (window.autoSkipTimer) { clearTimeout(window.autoSkipTimer); window.autoSkipTimer = null; }
+      
+        const form = document.getElementById('qform-{{ index }}');
+        if (!form) return;
+      
+        const stopBtn = document.getElementById('stop_test');
+        let fired = false;
+      
+        //stop test after 1 min is up
+        function startAutoSkip(ms) {
+          if (window.autoSkipTimer) clearTimeout(window.autoSkipTimer);
+          window.autoSkipTimer = setTimeout(() => {
+            if (fired || window.isFrozen || form.__submitted) return;
+            if (stopBtn) {
+              form.__submitted = true;
+              stopBtn.click();   // non-response
+            } else {
+              // fallback: submit with empty answer
+              const i = document.createElement('input');
+              i.type = 'hidden'; i.name = 'answer'; i.value = '';
+              form.appendChild(i);
+              form.__submitted = true;
+              if (form.requestSubmit) form.requestSubmit(); else form.submit();
+            }
+          }, ms);
+        }
+        startAutoSkip(60000);
+      
+        // If any answer is clicked, cancel timer and prevent double submit
+        form.querySelectorAll('button[name="answer"]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            fired = true;
+            if (window.autoSkipTimer) clearTimeout(window.autoSkipTimer);
+            
+          });
+        });
+      
+        // Freeze timers when modal opens; 
+        const modalEl = document.getElementById('stopModal');
+        if (modalEl) {
+          modalEl.addEventListener('show.bs.modal', () => {
+            window.isFrozen = true;
+            if (window.autoSkipTimer) clearTimeout(window.autoSkipTimer);
+          });
+          modalEl.addEventListener('hidden.bs.modal', () => {
+            window.isFrozen = false; 
+          });
+        }
+      })();
+      </script>
     

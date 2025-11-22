@@ -141,21 +141,51 @@
 </style>
 
 <script>
-    let startTime = Date.now();
+    var startTime = Date.now();
+    var lastCorrectIndex = null;      
+    var ceilingTriggered = false;
+    
 
     function toggleCorrect(index) {
         const cell = document.getElementById("cell_" + index);
         const input = document.getElementById("input_" + index);
 
+        const wasCorrect = (input.value === "1");
+
         if (input.value === "0") {
             input.value = "1";
             cell.classList.add("selected");
+            checkCeilingByGap(index);
         } else {
             input.value = "0";
             cell.classList.remove("selected");
         }
+
+        /*if (index > maxClickedIndex) 
+        {   
+            maxClickedIndex = index;
+        }*/
         updateTotalScore();
+        
     }
+
+    function checkCeilingByGap(index) {
+    if (ceilingTriggered) return;  
+
+    if (lastCorrectIndex === null) {
+        if (index >= 5) {
+            handleCeilingReached();
+        }
+    } else {
+        const wrongBetween = index - lastCorrectIndex - 1;
+
+        if (wrongBetween >= 5) {
+            handleCeilingReached();
+        }
+    }
+
+    lastCorrectIndex = index;
+}
 
     function updateTotalScore() {
         let total = 0;
@@ -167,7 +197,7 @@
     }
 
     // Autosave every 15s
-    setInterval(() => {
+    /*setInterval(() => {
         const form = document.getElementById("questionsForm");
         const formData = new FormData(form);
 
@@ -176,7 +206,7 @@
             headers: { 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value },
             body: formData
         }).then(response => response.ok && console.log("Autosaved"));
-    }, 15000);
+    }, 15000);*/
 
 
     function updateTimeDisplay() {
@@ -187,7 +217,7 @@
     }
 
     // Update every second
-    let timerInterval = setInterval(updateTimeDisplay, 1000);
+    var timerInterval = setInterval(updateTimeDisplay, 1000);
     document.getElementById('ModalSubmit').addEventListener('show.bs.modal', () => {
     clearInterval(timerInterval);
 });
@@ -203,23 +233,34 @@ function checkCeilingReached() {
     }
 
     if (firstFiveIncorrect) {
-        // Preselect dropdown
-        const sel = document.getElementById('submitTst');
-        sel.value = "الوصول الى الحد السقفي";
-        
-        sel.classList.add('locked');
-        sel.setAttribute('aria-disabled', 'true');
-        sel.setAttribute('tabindex', '-1');
-        sel.addEventListener('keydown', e => e.preventDefault());
-        sel.addEventListener('mousedown', e => e.preventDefault());
-
-        // Show modal (if not already open)
-        const modal = new bootstrap.Modal(document.getElementById('ModalSubmit'));
-        modal.show();
-
-        // Freeze the timer
-        clearInterval(timerInterval);
+        handleCeilingReached();
     }
+}
+
+function handleCeilingReached() {
+    if (ceilingTriggered) return;
+    ceilingTriggered = true;
+
+    // Preselect dropdown
+    const sel = document.getElementById('submitTst');
+    sel.value = "الوصول الى الحد السقفي";
+
+    sel.classList.add('locked');
+    sel.setAttribute('aria-disabled', 'true');
+    sel.setAttribute('tabindex', '-1');
+    sel.addEventListener('keydown', e => e.preventDefault());
+    sel.addEventListener('mousedown', e => e.preventDefault());
+
+    // Show modal (if not already open)
+    //const modal = new bootstrap.Modal(document.getElementById('ModalSubmit'));
+    //modal.show();
+    const mainSubmit = document.getElementById('end');
+    if(mainSubmit){
+        mainSubmit.click();
+    }
+
+    // Freeze the timer
+    clearInterval(timerInterval);
 }
 
 </script>
