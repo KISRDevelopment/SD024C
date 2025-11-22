@@ -111,70 +111,6 @@ hx-swap="innerHTML">
 
   
   <script>
-       /* document.addEventListener('DOMContentLoaded', () => {
-  console.log('JS loaded, attaching listeners');
-
-  window.addEventListener('pageshow', function () {
-    setTimeout(() => {
-      const a = document.getElementById('test-audio');
-      if (!a) return;
-
-      a.play().catch(() => {
-        const resume = () => {
-          a.play().finally(() => {
-            document.removeEventListener('click', resume, true);
-            document.removeEventListener('keydown', resume, true);
-            document.removeEventListener('touchstart', resume, true);
-          });
-        };
-        document.addEventListener('click', resume, true);
-        document.addEventListener('keydown', resume, true);
-        document.addEventListener('touchstart', resume, true);
-      });
-    }, 2000);
-  });
-
-  let currentAudio = null;
-
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.play-audio');
-    if (!btn) return;
-
-    e.preventDefault();
-
-    const sent = btn.getAttribute('data-sent') || "";
-    console.log('Click detected on .play-audio. src =', sent);
-
-    const play = (src) => new Promise(res => {
-      console.log('play called');
-      if (!src) return res();
-
-      if (currentAudio){
-        console.log('Stopping previous audio');
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-        currentAudio = null;
-      }
-
-      const a = new Audio(src);
-      currentAudio = a;
-
-      const cleanup = () => { if (currentAudio === a) currentAudio = null; };
-
-      a.addEventListener('ended', () => { console.log('ended'); cleanup(); res(); }, { once:true });
-      a.addEventListener('error', () => { console.warn('Audio error:', src); cleanup(); res(); }, { once:true });
-
-      a.play().then(() => {
-        console.log('playing:', src);
-      }).catch(err => {
-        console.warn('Play blocked:', src, err);
-        cleanup(); res();
-      });
-    });
-
-    play(sent);
-  });
-});*/
 
   // This runs EVERY time this fragment is swapped in by HTMX
   (function () {
@@ -200,58 +136,5 @@ hx-swap="innerHTML">
       });
     }, 500);
   })();
-      (function () {
-        
-        // Reset per-question state on each swap
-        window.isFrozen = false;
-        if (window.autoSkipTimer) { clearTimeout(window.autoSkipTimer); window.autoSkipTimer = null; }
-      
-        const form = document.getElementById('qform-{{ index }}');
-        if (!form) return;
-      
-        const stopBtn = document.getElementById('stop_test');
-        let fired = false;
-      
-        //stop test after 1 min is up
-        function startAutoSkip(ms) {
-          if (window.autoSkipTimer) clearTimeout(window.autoSkipTimer);
-          window.autoSkipTimer = setTimeout(() => {
-            if (fired || window.isFrozen || form.__submitted) return;
-            if (stopBtn) {
-              form.__submitted = true;
-              stopBtn.click();   // non-response
-            } else {
-              // fallback: submit with empty answer
-              const i = document.createElement('input');
-              i.type = 'hidden'; i.name = 'answer'; i.value = '';
-              form.appendChild(i);
-              form.__submitted = true;
-              if (form.requestSubmit) form.requestSubmit(); else form.submit();
-            }
-          }, ms);
-        }
-        startAutoSkip(60000);
-      
-        // If any answer is clicked, cancel timer and prevent double submit
-        form.querySelectorAll('button[name="answer"]').forEach(btn => {
-          btn.addEventListener('click', () => {
-            fired = true;
-            if (window.autoSkipTimer) clearTimeout(window.autoSkipTimer);
-            
-          });
-        });
-      
-        // Freeze timers when modal opens; 
-        const modalEl = document.getElementById('stopModal');
-        if (modalEl) {
-          modalEl.addEventListener('show.bs.modal', () => {
-            window.isFrozen = true;
-            if (window.autoSkipTimer) clearTimeout(window.autoSkipTimer);
-          });
-          modalEl.addEventListener('hidden.bs.modal', () => {
-            window.isFrozen = false; 
-          });
-        }
-      })();
       </script>
       

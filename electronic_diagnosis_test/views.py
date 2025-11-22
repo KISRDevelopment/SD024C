@@ -2042,6 +2042,17 @@ def secondary_test2_training(request):
 
         if is_final:
             passed = request.session.get('training_correct', 0) > 0
+
+            if passed == False:
+                request.session.pop('training_correct', None)
+
+                if request.headers.get("HX-Request"):
+                    response = HttpResponse("")
+                    response["HX-Redirect"] = reverse('testsPageSec')
+                    return response
+                return HttpResponseRedirect(reverse('testsPageSec'))
+
+
             return render(request, 'secondary_test/test2_training_correct_result.html', {
                 'show_final_result': True,
                 'passed': passed
