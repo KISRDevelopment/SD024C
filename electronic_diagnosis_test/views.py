@@ -25,6 +25,7 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail
 import time
 from django.http import JsonResponse
+from .utils.arabic import normalize_arabic_spelling
 
 
 
@@ -505,7 +506,7 @@ def testsPageSec (request):
 def primary_test1_training(request):
     if request.method == 'POST':
         training_scores = [int(request.POST.get(f'train_{i}', 0)) for i in range(3)]
-        passed_training = all(score == 1 for score in training_scores)
+        passed_training = any(score == 1 for score in training_scores)
 
         if passed_training:
             request.session['training_passed'] = True
@@ -695,6 +696,16 @@ def primary_test3_training(request):
 
         if is_final:
             passed = request.session.get('training_correct', 0) > 0
+
+            if passed == False:
+                request.session.pop('training_correct', None)
+
+                if request.headers.get("HX-Request"):
+                    response = HttpResponse("")
+                    response["HX-Redirect"] = reverse('testsPage')
+                    return response
+                return HttpResponseRedirect(reverse('testsPage'))
+
             return render(request, 'primary_test/test3_training_correct_result.html', {
                 'show_final_result': True,
                 'passed': passed
@@ -1939,7 +1950,7 @@ def build_percentile_hits_per_test(percentiles_by_test):
 def secondary_test1_training(request):
     if request.method == 'POST':
         training_scores = [int(request.POST.get(f'train_{i}', 0)) for i in range(3)]
-        passed_training = all(score == 1 for score in training_scores)
+        passed_training = any(score == 1 for score in training_scores)
 
         if passed_training:
             request.session['training_passed'] = True
@@ -1977,10 +1988,10 @@ def secondary_test1(request):
         )
 
         # Clear session if you want
-        if(reason != "الوصول الى الحد السقفي"):
+        '''if(reason != "الوصول الى الحد السقفي"):
             del request.session['test1_total_correct']
             del request.session['test1_time_seconds']
-            del request.session['test1_fluency']
+            del request.session['test1_fluency']'''
 
         return redirect('testsPageSec')
 
@@ -2031,6 +2042,17 @@ def secondary_test2_training(request):
 
         if is_final:
             passed = request.session.get('training_correct', 0) > 0
+
+            if passed == False:
+                request.session.pop('training_correct', None)
+
+                if request.headers.get("HX-Request"):
+                    response = HttpResponse("")
+                    response["HX-Redirect"] = reverse('testsPageSec')
+                    return response
+                return HttpResponseRedirect(reverse('testsPageSec'))
+
+
             return render(request, 'secondary_test/test2_training_correct_result.html', {
                 'show_final_result': True,
                 'passed': passed
@@ -2245,7 +2267,7 @@ def secondary_test3_training(request):
             submitted[f"word_{idx}"] = typed
 
 
-        passed_training = typed == correct_word["text"] 
+        passed_training = True
 
         if passed_training:
             request.session['training_passed'] = True
@@ -2304,8 +2326,12 @@ def secondary_test3(request):
             typed = request.POST.get(f"word_{idx}", "") 
             submitted[f"word_{idx}"] = typed
 
+            norm_typed = normalize_arabic_spelling(typed)
+            norm_correct = normalize_arabic_spelling(correct_word["text"])
 
-            ok = typed == correct_word["text"] 
+            ok = (norm_typed == norm_correct)
+
+
             result = { 
                 "idx": idx, 
                 "typed": typed, 

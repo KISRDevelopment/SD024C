@@ -167,6 +167,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const btn = e.target.closest('.play-audio');
     if (!btn) return;
 
+    const instr_audio = document.getElementById('test-audio');
+    if (instr_audio){
+      instr_audio.pause();
+      console.log('instructiona audio is paused');
+      instr_audio.currentTime = 0;
+    }
+
     e.preventDefault();
 
     const sent = btn.getAttribute('data-sent') || "";

@@ -23,7 +23,7 @@ hx-swap="innerHTML">
         value="{{ opt.label }}"
         class="btn custom-btn fs-2 w-100 text-end"
         style="direction: rtl;">
-        {{ opt.label }}. {{ opt.text }}
+        <strong>{{ opt.label }} - </strong>{{ opt.text }}
       </button>
     </div>
     {% endfor %}
@@ -39,7 +39,7 @@ hx-swap="innerHTML">
 <br>
 <br>
   <!-- Stop test  -->
-  <div class="mt-3 text-center">
+  <div class="mt-3">
     <button id="stop_test" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#stopModal">
       إيقاف الاختبار
     </button>

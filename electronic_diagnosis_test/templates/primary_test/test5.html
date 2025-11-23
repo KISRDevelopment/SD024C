@@ -14,11 +14,6 @@
 
 <script src="https://unpkg.com/htmx.org@1.9.4"></script>
 <script>
-  function startTimer() {
-    setTimeout(() => {
-      document.getElementById('stop_test')?.click();
-    }, 60000); // 1 minutes
-  }
 
   document.addEventListener("htmx:afterSwap", (e) => {
     startTimer();

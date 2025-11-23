@@ -1,4 +1,5 @@
 
+{% load static %}
 <div id="question-area"  >
     <form 
       method="POST" 
@@ -12,6 +13,11 @@
         <!--<div class="mb-2 fw-bold fs-1 text-center p-5">
           {{ index|add:"1" }}- {{ question.text|safe }}
         </div>-->
+
+      <audio id="test-audio"
+       src="{% static 'audio/primary/test5/' %}{{ question.audio }}"
+       preload="auto"
+       ></audio>
     
         <div class="d-flex flex-column align-items-center">
           {% for opt in question.options %}
@@ -46,4 +52,53 @@
   border-color: #6c757d !important;
 }
 </style>
+
+  <script>
+
+  // This runs EVERY time this fragment is swapped in by HTMX
+  (function () {
+    console.log('Per-question audio init');
+
+    const a = document.getElementById('test-audio');
+    console.log(a);
+    if (!a) return;
+
+    function startQuestionAudio() {
+      if (a.__started) return;   // avoid double-start
+      a.__started = true;
+
+      // Small delay so DOM is ready & browser is calm
+      setTimeout(() => {
+        a.play().catch(() => {
+          const resume = () => {
+            a.play().finally(() => {
+              document.removeEventListener('click', resume, true);
+              document.removeEventListener('keydown', resume, true);
+              document.removeEventListener('touchstart', resume, true);
+            });
+          };
+          document.addEventListener('click', resume, true);
+          document.addEventListener('keydown', resume, true);
+          document.addEventListener('touchstart', resume, true);
+        });
+      }, 500);
+    }
+
+    // If intro already finished, start immediately
+    if (window.test5IntroDone) {
+      startQuestionAudio();
+    } else {
+      // Otherwise wait for the custom event fired by the intro script
+      const handler = () => {
+        document.removeEventListener('test5-intro-done', handler);
+        startQuestionAudio();
+      };
+      document.addEventListener('test5-intro-done', handler);
+    }
+
+
+
+
+  })();
+      </script>
     
