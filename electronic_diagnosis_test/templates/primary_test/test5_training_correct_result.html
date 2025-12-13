@@ -1,14 +1,14 @@
-{% if show_final_result %}
+<!--{% if show_final_result %}
 <div class="text-center mt-4">
-  {% if passed %}
+  {% if passed %}-->
     <!--<div class="alert alert-success fs-5">تم اجتياز التدريب! يمكنك الآن بدء الاختبار.</div>-->
-    <a href="{% url 'test5' %}" class="btn btn-success px-5 mt-3">ابدأ الاختبار</a>
+    <!--<a href="{% url 'test5' %}" class="btn btn-success px-5 mt-3">ابدأ الاختبار</a>
   {% else %}
     <div class="alert alert-danger fs-5">لم يتم اجتياز التدريب. حاول مرة أخرى.</div>
     <a href="{% url 'test5_training' %}" class="btn btn-danger px-5 mt-3">إعادة المحاولة</a>
   {% endif %}
 </div>
-{% else %}
+{% else %}-->
 <!--<div class="fs-1 fw-bold mb-2 text-center p-5">{{ index }}- {{ question.text }}</div>-->
 
 <div class="d-flex flex-column align-items-center">
@@ -32,14 +32,23 @@
 </div>
 
 <div class="text-center mt-4" style="padding-top: 3% ;">
+  {% if index == total_questions %}
+    {% if passed %}
+<a href="{% url 'test5' %}" class="btn btn-success px-5 mt-3">ابدأ الاختبار</a>
+{% else %}
+<a href="{% url 'testsPage' %}" class="btn btn-danger px-5 mt-3">نهاية</a>
+{% endif %}
+  {% else %}
   <button class="btn btn-primary fs-2" style="font-size: 50;"
           hx-get="{% url 'test5_training' %}?index={{ index }}{% if index == total_questions %}&final=true{% endif %}"
           hx-target="#question-area"
           hx-swap="innerHTML">
     التالي
   </button>
+  {% endif %}
 </div>
 </div>
 {% endif %}
+
 
 
