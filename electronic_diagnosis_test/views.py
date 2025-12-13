@@ -723,10 +723,21 @@ def primary_test3_training(request):
         selected = request.POST.get("answer")
         question = primary_test3_training_questions[index]
         correct = question["correct"]
+
+        if 'training_correct' not in request.session:
+            request.session['training_correct'] = 0
+
+        if selected and selected == correct:
+            request.session['training_correct'] += 1
+
         next_index = index + 1
         total = len(primary_test3_training_questions)
         is_last = next_index >= total
-        passed = request.session.get('training_correct', 0) > 0 if is_last else None
+
+
+        passed = None
+        if is_last:
+            passed = request.session['training_correct']>0
 
     if selected:
         if 'training_correct' not in request.session:
@@ -1010,10 +1021,21 @@ def primary_test5_training(request):
         selected = request.POST.get("answer")
         question = primary_test5_training_questions[index]
         correct = question["correct"]
+
+        if 'training_correct' not in request.session:
+            request.session['training_correct'] = 0
+
+        if selected and selected == correct:
+            request.session['training_correct'] += 1
+
         next_index = index + 1
         total = len(primary_test5_training_questions)
         is_last = next_index >= total
-        passed = request.session.get('training_correct', 0) > 0 if is_last else None
+
+
+        passed = None
+        if is_last:
+            passed = request.session['training_correct']>0
 
     if selected:
         if 'training_correct' not in request.session:
@@ -1241,10 +1263,19 @@ def primary_test6_training(request):
         question_first = question["questions"][0]
         question_text = question_first["question"]
         answers = question_first["answers"]
+        if 'training_correct' not in request.session:
+            request.session['training_correct'] = 0
+
+        if selected and selected == correct:
+            request.session['training_correct'] += 1
+
         next_index = index + 1
         total = len(test6_training_questions)
         is_last = next_index >= total
-        passed = request.session.get('training_correct', 0) > 0 if is_last else None
+
+        passed = None
+        if is_last:
+            passed = request.session['training_correct']>0
 
     if selected:
         if 'training_correct' not in request.session:
@@ -2119,10 +2150,21 @@ def secondary_test2_training(request):
         selected = request.POST.get("answer")
         question = secondary_test2_training_questions[index]
         correct = question["correct"]
+        if 'training_correct' not in request.session:
+            request.session['training_correct'] = 0
+
+        if selected and selected == correct:
+            request.session['training_correct'] += 1
+
+
         next_index = index + 1
         total = len(secondary_test2_training_questions)
         is_last = next_index >= total
-        passed = request.session.get('training_correct', 0) > 0 if is_last else None
+
+
+        passed = None
+        if is_last:
+            passed = request.session['training_correct']>0
 
     if selected:
         if 'training_correct' not in request.session:
@@ -2463,10 +2505,21 @@ def secondary_test4_training(request):
         question_first = question["questions"][0]
         question_text = question_first["question"]
         answers = question_first["answers"]
+
+
+        if 'training_correct' not in request.session:
+            request.session['training_correct'] = 0
+
+        if selected and selected == correct:
+            request.session['training_correct'] += 1
+
         next_index = index + 1
         total = len(test4_training_questions)
         is_last = next_index >= total
-        passed = request.session.get('training_correct', 0) > 0 if is_last else None
+
+        passed = None
+        if is_last:
+            passed = request.session['training_correct']>0
 
     if selected:
         if 'training_correct' not in request.session:
