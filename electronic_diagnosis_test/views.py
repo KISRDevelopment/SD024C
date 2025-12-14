@@ -723,10 +723,21 @@ def primary_test3_training(request):
         selected = request.POST.get("answer")
         question = primary_test3_training_questions[index]
         correct = question["correct"]
+
+        if 'training_correct' not in request.session:
+            request.session['training_correct'] = 0
+
+        if selected and selected == correct:
+            request.session['training_correct'] += 1
+
         next_index = index + 1
         total = len(primary_test3_training_questions)
         is_last = next_index >= total
-        passed = request.session.get('training_correct', 0) > 0 if is_last else None
+
+
+        passed = None
+        if is_last:
+            passed = request.session['training_correct']>0
 
     if selected:
         if 'training_correct' not in request.session:
@@ -1010,10 +1021,21 @@ def primary_test5_training(request):
         selected = request.POST.get("answer")
         question = primary_test5_training_questions[index]
         correct = question["correct"]
+
+        if 'training_correct' not in request.session:
+            request.session['training_correct'] = 0
+
+        if selected and selected == correct:
+            request.session['training_correct'] += 1
+
         next_index = index + 1
         total = len(primary_test5_training_questions)
         is_last = next_index >= total
-        passed = request.session.get('training_correct', 0) > 0 if is_last else None
+
+
+        passed = None
+        if is_last:
+            passed = request.session['training_correct']>0
 
     if selected:
         if 'training_correct' not in request.session:
@@ -1241,10 +1263,19 @@ def primary_test6_training(request):
         question_first = question["questions"][0]
         question_text = question_first["question"]
         answers = question_first["answers"]
+        if 'training_correct' not in request.session:
+            request.session['training_correct'] = 0
+
+        if selected and selected == correct:
+            request.session['training_correct'] += 1
+
         next_index = index + 1
         total = len(test6_training_questions)
         is_last = next_index >= total
-        passed = request.session.get('training_correct', 0) > 0 if is_last else None
+
+        passed = None
+        if is_last:
+            passed = request.session['training_correct']>0
 
     if selected:
         if 'training_correct' not in request.session:
@@ -1533,18 +1564,19 @@ def primary_result(request):
 
     datastd = []
     labelstd = []
+    data_chart = []
 
-    datastd.append(int(results["test1"]["percentile"]))
+    datastd.append(int(results["test1"]["std"]))
     labelstd.append("قراءة الكلمة المفردة")
-    datastd.append(int(results["test2"]["percentile"]))
+    datastd.append(int(results["test2"]["std"]))
     labelstd.append("الطلاقة في قراءة الجملة")
-    datastd.append(int(results["test3"]["percentile"]))
+    datastd.append(int(results["test3"]["std"]))
     labelstd.append("الطلاقة في فهم المقطع")
-    datastd.append(int(results["test4"]["percentile"]))
+    datastd.append(int(results["test4"]["std"]))
     labelstd.append("إملاء الكلمة")
-    datastd.append(int(results["test5"]["percentile"]))
+    datastd.append(int(results["test5"]["std"]))
     labelstd.append("اختبار الإملاء الصحيح")
-    datastd.append(int(results["test6"]["percentile"]))
+    datastd.append(int(results["test6"]["std"]))
     labelstd.append("فهم المقروء (القطعة)")
     print("datastd")
     print(datastd)
@@ -1602,7 +1634,55 @@ def primary_result(request):
     chart_rows_pct = build_pct_chart(pct_values_by_test)
     print(chart_rows_std)
 
-
+    for row in chart_rows_std:
+        print('inside chart_std')
+        
+        match row:
+            case {'hit_index': 0}:
+                print('match case is 0')
+                data_chart.append(3)
+            case {'hit_index': 1}:
+                print('match case is 1')
+                data_chart.append(2.5)
+            case {'hit_index': 2}:
+                print('match case is 2')
+                data_chart.append(2)
+            case {'hit_index': 3}:
+                print('match case is 3')
+                data_chart.append(1.5)
+            case {'hit_index': 4}:
+                print('match case is 4')
+                data_chart.append(1)
+            case {'hit_index': 5}:
+                print('match case is 5')
+                data_chart.append(0.5)
+            case {'hit_index': 6}:
+                print('match case is 7')
+                data_chart.append(0)
+            case {'hit_index': 7}:
+                print('match case is 8')
+                data_chart.append(-0.5)
+            case {'hit_index': 8}:
+                print('match case is 9')
+                data_chart.append(-1)
+            case {'hit_index': 9}:
+                print('match case is 10')
+                data_chart.append(-1.5)
+            case {'hit_index': 10}:
+                print('match case is 11')
+                data_chart.append(-2)
+            case {'hit_index': 11}:
+                print('match case is 12')
+                data_chart.append(-2.5)
+            case {'hit_index': 12}:
+                print('match case is 13')
+                data_chart.append(-3)
+            case {'hit_index': 13}:
+                print('match case is 14')
+                data_chart.append(-3.5)
+            case {'hit_index': 14}:
+                print('match case is 15')
+                data_chart.append(-4)
 
 
 
@@ -1625,7 +1705,7 @@ def primary_result(request):
         "chart_std_labels": chart_std_labels,
         'data': json.dumps(data), 
         'labels': json.dumps(labels),
-        'datastd': json.dumps(datastd), 
+        'datastd': json.dumps(data_chart), 
         'labelstd': json.dumps(labelstd),
         "test1_latest": test1_latest,
         "test2_latest": test2_latest,
@@ -2070,10 +2150,21 @@ def secondary_test2_training(request):
         selected = request.POST.get("answer")
         question = secondary_test2_training_questions[index]
         correct = question["correct"]
+        if 'training_correct' not in request.session:
+            request.session['training_correct'] = 0
+
+        if selected and selected == correct:
+            request.session['training_correct'] += 1
+
+
         next_index = index + 1
         total = len(secondary_test2_training_questions)
         is_last = next_index >= total
-        passed = request.session.get('training_correct', 0) > 0 if is_last else None
+
+
+        passed = None
+        if is_last:
+            passed = request.session['training_correct']>0
 
     if selected:
         if 'training_correct' not in request.session:
@@ -2414,10 +2505,21 @@ def secondary_test4_training(request):
         question_first = question["questions"][0]
         question_text = question_first["question"]
         answers = question_first["answers"]
+
+
+        if 'training_correct' not in request.session:
+            request.session['training_correct'] = 0
+
+        if selected and selected == correct:
+            request.session['training_correct'] += 1
+
         next_index = index + 1
         total = len(test4_training_questions)
         is_last = next_index >= total
-        passed = request.session.get('training_correct', 0) > 0 if is_last else None
+
+        passed = None
+        if is_last:
+            passed = request.session['training_correct']>0
 
     if selected:
         if 'training_correct' not in request.session:
