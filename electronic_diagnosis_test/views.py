@@ -1311,6 +1311,7 @@ def _test6_init(request):
     s['t6_started_at'] = time.time()
     s['t6_qstart_at']  = time.time()
     s['t6_total'] = sum(len(p["questions"]) for p in test6_main_questions)
+    s['t6_p12_scores'] = []
     s.modified = True
 
     
@@ -1404,7 +1405,14 @@ def primary_test6(request):
         else:
             answers.append(selected)
             correct = q_now.get("correct")
-            scores.append(1 if (selected == correct) else 0)
+            scoresp12 = 1 if (selected == correct) else 0
+            scores.append(scoresp12)
+
+            para_id_now = para_now.get("paragraph_id")
+            if para_id_now in (1,2):
+                p12 = s.get("t6_p12_scores", [])
+                p12.append(scoresp12)
+                s["t6_p12_scores"] = p12
 
         # advance index
         idx += 1
@@ -1418,6 +1426,42 @@ def primary_test6(request):
         # next question or finish
         if idx < total:
             para_next, q_next = get_linear_question(data, idx)
+
+            para_id_now = para_now.get("paragraph_id")
+            para_id_next = para_next.get("paragraph_id")
+
+            if para_id_now == 2 and para_id_next == 3:
+                p12_scores = s.get("t6_p12_scores", [])
+                p12_total = sum(len(p["questions"]) for p in data if p.get("paragraph_id") in (1, 2))
+
+                if len(p12_scores) == p12_total and all(v == 0 for v in p12_scores):
+                    stop_reason_auto = "الوصول الى الحد السقفي"
+
+                    remaining = total - idx  # idx is current next index
+                    if remaining > 0:
+                        answers.extend(["-"] * remaining)
+                        scores.extend(["-"] * remaining)
+                        durs.extend(["-"] * remaining)
+
+                    total_correct = sum(1 for x in scores if x == 1)
+                    total_time_secs = round(sum(d for d in durs if isinstance(d, (int, float))), 3)
+
+                    PrimaryTest6.objects.create(
+                        student=student,
+                        raw_scores=scores,
+                        total_correct=total_correct,
+                        durations=durs,
+                        reason=stop_reason_auto,
+                        total_time_secs=total_time_secs,
+                        date=datetime.now()
+                    )
+
+                    test_profile_url = reverse('testsPage')
+                    resp = HttpResponse('')
+                    resp['HX-Redirect'] = test_profile_url
+                    return resp
+
+
             html = render_to_string("primary_test/test6_question.html", {
                 "question": {
                     "id": q_next["id"],
@@ -2577,6 +2621,7 @@ def _test4_init(request):
     s['t4_started_at'] = time.time()
     s['t4_qstart_at']  = time.time()
     s['t4_total'] = sum(len(p["questions"]) for p in test4_main_questions)
+    s['t4_p12_scores'] = []
     s.modified = True
 
     
@@ -2670,7 +2715,14 @@ def secondary_test4(request):
         else:
             answers.append(selected)
             correct = q_now.get("correct")
-            scores.append(1 if (selected == correct) else 0)
+            scoresp12 = 1 if (selected == correct) else 0
+            scores.append(scoresp12)
+
+            para_id_now = para_now.get("paragraph_id")
+            if para_id_now in (1,2):
+                p12 = s.get("t4_p12_scores", [])
+                p12.append(scoresp12)
+                s["t4_p12_scores"] = p12
 
         # advance index
         idx += 1
@@ -2684,6 +2736,42 @@ def secondary_test4(request):
         # next question or finish
         if idx < total:
             para_next, q_next = get_linear_question(data, idx)
+
+            para_id_now = para_now.get("paragraph_id")
+            para_id_next = para_next.get("paragraph_id")
+
+            if para_id_now == 2 and para_id_next == 3:
+                p12_scores = s.get("t4_p12_scores", [])
+                p12_total = sum(len(p["questions"]) for p in data if p.get("paragraph_id") in (1, 2))
+
+                if len(p12_scores) == p12_total and all(v == 0 for v in p12_scores):
+                    stop_reason_auto = "الوصول الى الحد السقفي"
+
+                    remaining = total - idx  # idx is current next index
+                    if remaining > 0:
+                        answers.extend(["-"] * remaining)
+                        scores.extend(["-"] * remaining)
+                        durs.extend(["-"] * remaining)
+
+                    total_correct = sum(1 for x in scores if x == 1)
+                    total_time_secs = round(sum(d for d in durs if isinstance(d, (int, float))), 3)
+
+                    SecondaryTest4.objects.create(
+                        student=student,
+                        raw_scores=scores,
+                        total_correct=total_correct,
+                        durations=durs,
+                        reason=stop_reason_auto,
+                        total_time_secs=total_time_secs,
+                        date=datetime.now()
+                    )
+
+                    test_profile_url = reverse('testsPageSec')
+                    resp = HttpResponse('')
+                    resp['HX-Redirect'] = test_profile_url
+                    return resp
+
+
             html = render_to_string("secondary_test/test4_question.html", {
                 "question": {
                     "id": q_next["id"],
