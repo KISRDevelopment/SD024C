@@ -119,7 +119,7 @@
           let fired = false;
         
           // stop test when time is up
-          function startAutoSkip(ms) {
+          /*function startAutoSkip(ms) {
             if (window.autoSkipTimer) clearTimeout(window.autoSkipTimer);
             window.autoSkipTimer = setTimeout(() => {
               if (fired || window.isFrozen || form.__submitted) return;
@@ -136,7 +136,7 @@
               }
             }, ms);
           }
-          startAutoSkip(180000);
+          startAutoSkip(180000);*/
         
           // If any answer is clicked, cancel timer and prevent double submit
           form.querySelectorAll('button[name="answer"]').forEach(btn => {

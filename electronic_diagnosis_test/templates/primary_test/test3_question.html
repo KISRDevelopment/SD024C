@@ -116,7 +116,7 @@ hx-swap="innerHTML">
         let fired = false;
       
         // Start the 3m auto-skip timer, stop test when time is up
-        function startAutoSkip(ms) {
+        /*function startAutoSkip(ms) {
           if (window.autoSkipTimer) clearTimeout(window.autoSkipTimer);
           window.autoSkipTimer = setTimeout(() => {
             if (fired || window.isFrozen || form.__submitted) return;
@@ -133,7 +133,7 @@ hx-swap="innerHTML">
             }
           }, ms);
         }
-        startAutoSkip(180000);
+        startAutoSkip(180000);*/
       
         // If any answer is clicked, cancel timer and prevent double submit
         form.querySelectorAll('button[name="answer"]').forEach(btn => {
